@@ -13,17 +13,19 @@
 .lead p{margin:0 0 10px;font-size:16px;line-height:23px;max-width:66ch}
 .lead a{text-decoration:underline;text-underline-offset:3px}
 @media(max-width:866px){.lead{grid-template-columns:1fr;gap:12px}}
-.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--ink);padding:10px 0;display:flex;flex-wrap:wrap;gap:2px 20px}
-.bar a{font:400 14px/20px Archivo,sans-serif;padding:4px 0}
-.bar a b{font-weight:700;margin-right:6px}
+.sel{display:grid;grid-template-columns:160px minmax(0,1fr);align-items:center;border-bottom:1px solid var(--ink);padding:10px 0}
+.sel .lab{margin:0}
+.word b{font-weight:700;margin-right:6px}
+@media(max-width:866px){.sel{grid-template-columns:1fr}}
 section.t{scroll-margin-top:60px;border-bottom:1px solid var(--ink);padding:24px 0 28px}
 .t .h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:0 0 14px}
 .t h2{font:700 24px/30px Archivo,sans-serif;margin:0}
 .t h2 span{color:var(--grey);font-weight:400;margin-right:10px}
 .t .acts{display:flex;gap:18px;font:700 14px/20px Archivo,sans-serif}
 .t .acts a{text-decoration:underline;text-underline-offset:3px}
-.t .fig{border:1px solid var(--hair);background:#fff;overflow:hidden;cursor:zoom-in}
-.t .fig img{display:block;width:100%;height:auto}
+.t .fig{border:1px solid var(--hair);background:#fff;overflow:hidden;cursor:zoom-in;display:flex;justify-content:center;animation:fade .35s ease}
+.t .fig img{display:block;max-width:100%;max-height:calc(100vh - 120px);width:auto;height:auto}
+@keyframes fade{from{opacity:0}}
 .t .g{margin:8px 0 0;font-size:12px;line-height:17px}
 #zoom{position:fixed;inset:0;background:#fff;z-index:20;display:none;overflow:auto;cursor:zoom-out}
 #zoom img{display:block;width:2420px;max-width:none;margin:0 auto}
@@ -39,9 +41,9 @@ section.t{scroll-margin-top:60px;border-bottom:1px solid var(--ink);padding:24px
 <div class="lead">
  <h1>Tavole tipologiche</h1>
  <div><p>Le otto tavole tipologiche del catalogo Danese 2026, una per categoria. A sinistra la <b>lettura (L)</b>: chi lo usa, la posizione sulla mappa dei valori (la stessa delle mappe del sito) e, per ogni prodotto, la frase della scheda su danesemilano.com da cui viene il voto. A destra la <b>struttura (R)</b>, rilevata dalle schede: materiali, uso, dimensioni.</p>
- <p class="g">Clic su una tavola per vederla a grandezza piena. Le citazioni con il loro link sono raccolte nel file <a href="tipologiche/fonti-quadrato.csv" download>fonti del quadrato semiotico (CSV, 180 righe)</a>; la <a href="tipologiche/legenda.pdf" target="_blank" rel="noopener">legenda</a> spiega come si legge il mapping.</p></div>
+ <p class="g">Scegli una categoria per vedere la sua tavola; clic sulla tavola per vederla a grandezza piena. Le citazioni con il loro link sono raccolte nel file <a href="tipologiche/fonti-quadrato.csv" download>fonti del quadrato semiotico (CSV, 180 righe)</a>; la <a href="tipologiche/legenda.pdf" target="_blank" rel="noopener">legenda</a> spiega come si legge il mapping.</p></div>
 </div>
-<nav class="bar" id="nav"></nav>
+<div class="sel"><p class="lab">categoria</p><div class="words" id="nav"></div></div>
 <main id="list"></main>
 <footer>
  <div><p><b>Progetto</b></p><p>Fare book Danese Milano, fase 1. Design del Prodotto 3, prof. Datti, ISIA Roma, 2026.</p></div>
@@ -57,9 +59,15 @@ const T=[['0','Legenda','legenda.png','legenda.pdf',''],
 ['1','Ingresso e spazi comuni','tipologica-1.svg','',25],['2','Accessori per la tavola','tipologica-2.svg','',30],['3','Accessori vari','tipologica-3.svg','',19],['4','Scrivania e oggetti personali','tipologica-4.svg','',19],
 ['5','Sedute e tavoli','tipologica-5.svg','',12],['6','Librerie e carrelli','tipologica-6.svg','',11],['7','Lampade','tipologica-7.svg','',13],['8','Edizioni d’arte','tipologica-8.svg','',51]];
 const $=id=>document.getElementById(id);
-$('nav').innerHTML=T.map(t=>`<a href="#t${t[0]}"><b>${t[0]}</b>${t[1]}</a>`).join('');
-$('list').innerHTML=T.map(t=>`<section class="t" id="t${t[0]}"><div class="h"><h2><span>${t[0]}</span>${t[1]}</h2><div class="acts">${t[4]?`<a href="index.html#danese">vedi sulla mappa</a>`:''}<a href="tipologiche/${t[3]||t[2]}" target="_blank" rel="noopener">apri ${t[3]?'il PDF':'a parte'} ↗</a><a href="tipologiche/${t[3]||t[2]}" download>scarica</a></div></div>
-<div class="fig" data-src="tipologiche/${t[2]}"><img src="tipologiche/${t[2]}" alt="Tavola tipologica ${t[0]} · ${t[1]}" loading="lazy"></div>${t[4]?`<p class="g">${t[4]} prodotti · Danese Catalogue 2026</p>`:''}</section>`).join('');
+let cur=(location.hash.match(/^#t(\d)$/)||[])[1]||'1';
+function show(id){cur=id;const t=T.find(x=>x[0]===id);
+ $('nav').innerHTML=T.map(x=>`<button class="word" aria-pressed="${x[0]===id}" data-id="${x[0]}"><b>${x[0]}</b>${x[1]}</button>`).join('');
+ $('list').innerHTML=`<section class="t" id="t${t[0]}"><div class="h"><h2><span>${t[0]}</span>${t[1]}</h2><div class="acts">${t[4]?`<span class="g">${t[4]} prodotti</span>`:''}<a href="#" id="big">ingrandisci</a><a href="tipologiche/${t[3]||t[2]}" target="_blank" rel="noopener">apri ${t[3]?'il PDF':'a parte'} ↗</a><a href="tipologiche/${t[3]||t[2]}" download>scarica</a></div></div>
+<div class="fig" data-src="tipologiche/${t[2]}"><img src="tipologiche/${t[2]}" alt="Tavola tipologica ${t[0]} · ${t[1]}"></div><p class="g">Clic sulla tavola per vederla a grandezza piena e leggere le citazioni.</p></section>`;
+ try{history.replaceState(null,'','#t'+id)}catch(e){}
+ $('big').onclick=e=>{e.preventDefault();document.querySelector('.fig').click()}}
+$('nav').addEventListener('click',e=>{const b=e.target.closest('button');if(b)show(b.dataset.id)});
+show(cur);
 const Z=$('zoom');
 document.addEventListener('click',e=>{const f=e.target.closest('.fig');if(f){Z.querySelector('img').src=f.dataset.src;Z.style.display='block';document.body.style.overflow='hidden';Z.scrollTo(0,0);return}if(e.target.closest('#zoom')){Z.style.display='none';document.body.style.overflow=''}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){Z.style.display='none';document.body.style.overflow=''}});
