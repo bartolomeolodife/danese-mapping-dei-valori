@@ -84,7 +84,7 @@
  <div class="sep cpr"></div>
  <p class="lab cpr">colora per</p><div class="row cpr" id="grps"></div>
  <div class="sep msr"></div>
- <p class="lab msr">mostra</p><div class="row msr"><div class="words" id="leg"></div><button class="act" id="all">vedi tutte</button></div>
+ <p class="lab msr">mostra</p><div class="row msr"><div class="words" id="leg"></div><button class="act" id="all">vedi tutte</button><button class="act" id="nonecat">deseleziona tutte</button></div>
 </div>
 <div class="stage">
  <div class="figcol">
@@ -226,6 +226,7 @@ function side(vis,col){
  if(q){const r=vis.filter(match).sort((a,b)=>a.n.localeCompare(b.n));$('qn').textContent=r.length+(r.length===1?' risultato':' risultati');
   $('side').innerHTML=`<p class="lab">${r.length} ${r.length===1?'prodotto trovato':'prodotti trovati'}</p><div class="res">`+r.slice(0,300).map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+(col[key(it)]||OTHER)+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+(r.length?'':'<p class="hint" style="padding:12px 0">Nessun prodotto. Prova ad accendere altre aziende.</p>')+'</div>';return}
  $('qn').textContent='';
+ if(hide.size&&!vis.length){$('side').innerHTML='<p class="hint">Nessuna categoria selezionata. Scegline una o più in «mostra», oppure premi «vedi tutte».</p>';return}
  if(hide.size){const ks=[...new Set(vis.map(key))],r=vis.slice().sort((a,b)=>a.n.localeCompare(b.n));
   $('side').innerHTML=`<h2 style="margin:0 0 4px">${ks.map(k=>`<span class="dot" style="background:${col[k]||OTHER}"></span> ${esc(k)}`).join('<br>')}</h2><p class="lab">${r.length} ${r.length===1?'prodotto':'prodotti'}</p><div class="res">`+r.map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+(col[key(it)]||OTHER)+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+'</div>';return}
  $('side').innerHTML=mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
@@ -251,8 +252,9 @@ $('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dat
 $('vista').onclick=e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.v;selBlob=null;selId=null;$('vista').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()};
 $('grps').onclick=e=>{const b=e.target.closest('button');if(!b)return;grp=b.dataset.g;hide.clear();bars();draw()};
 $('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;const allk=[...$('leg').querySelectorAll('button')].map(x=>x.dataset.k);
- if(!hide.size){allk.forEach(x=>{if(x!==k)hide.add(x)})}else{hide.has(k)?hide.delete(k):hide.add(k);if(hide.size===allk.length)hide.clear()}draw()};
+ if(!hide.size){allk.forEach(x=>{if(x!==k)hide.add(x)})}else{hide.has(k)?hide.delete(k):hide.add(k)}draw()};
 $('all').onclick=()=>{hide.clear();draw()};
+$('nonecat').onclick=()=>{[...$('leg').querySelectorAll('button')].forEach(x=>hide.add(x.dataset.k));selId=null;draw()};
 $('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();QP=SMART.compile(q);selId=null;if(q&&mode==='macchie'){mode='pallini';$('vista').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='pallini'))}draw()});
 $('side').addEventListener('click',e=>{const b=e.target.closest('.res button');if(b)pick(b.dataset.id)});
 let lit=null;const unlit=()=>{if(!lit)return;const c=lit.firstChild;c.style.r=c.dataset.r0;lit.classList.remove('on');$('dots').classList.remove('hov');$('svg').classList.remove('peek');lit=null};
