@@ -53,8 +53,8 @@
  <p class="lab">aziende</p><div class="row" id="brands"></div>
  <div class="sep"></div>
  <p class="lab">vista</p><div class="row" id="views"><button class="word" data-v="obj" aria-pressed="true">ogni oggetto</button><button class="word" data-v="cell" aria-pressed="false">cerchi per posizione</button></div>
- <div class="sep"></div>
- <p class="lab">colora per</p><div class="row" id="grps"></div>
+ <div class="sep cpr"></div>
+ <p class="lab cpr">colora per</p><div class="row cpr" id="grps"></div>
  <div class="sep"></div>
  <p class="lab">mostra</p><div class="row"><div class="words" id="leg"></div><button class="act" id="all">tutte</button></div>
 </div>
@@ -81,13 +81,13 @@ const OTHER='#cfcfcf',MAXC=12;
 const QN=['missione','progetto','informazione','euforia','sugli assi'],QF=['#000','#555','#999','#d0d0d0','#fff'];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let view='obj',B=[],on=new Set(['danese']),grp='marchio',hide=new Set(),sel=null,vb=[0,0,1000,1000];
+let view='obj',B=[],on=new Set(['danese']),grp='categoria',hide=new Set(),sel=null,vb=[0,0,1000,1000];
 const P=v=>500+v*130;               // -3..3 -> 110..890
 const xy=it=>{const [U,Pr,C,L]=it.v.split('').map(Number);return [L-C,U-Pr]};
 const quad=([x,y])=>y>0&&x<0?0:y>0&&x>0?1:y<0&&x<0?2:y<0&&x>0?3:4;
 const items=()=>B.filter(b=>on.has(b.id)).flatMap(b=>b.items.map(it=>({...it,b})));
 const key=it=>grp==='marchio'?it.b.name:((it.g[grp]||['n.d.'])[0]);
-function groups(){const a=B.filter(b=>on.has(b.id));const s=a.length?a.map(b=>b.groups).reduce((p,c)=>p.filter(g=>c.includes(g))):[];return ['marchio',...s]}
+function groups(){const a=B.filter(b=>on.has(b.id));return a.length===1?a[0].groups:['marchio']}
 function colors(list){
  const col={};
  if(grp==='marchio'){B.forEach(b=>col[b.name]=b.col);return {keys:B.filter(b=>on.has(b.id)).map(b=>b.name),col}}
@@ -127,7 +127,7 @@ function draw(){
   s+=`<g class="cell" data-k="${k}">`+its.map((it,i)=>{const t=i*2.39996,rr=sp*Math.sqrt(i+.5);const x=cx+rr*Math.cos(t),y=cy+rr*Math.sin(t);
    return `<a class="ob" data-n="${esc(it.n)}" data-b="${esc(it.b.name)}" data-v="${it.v}" data-c="${esc(key(it))}" ${it.u?`href="${esc(it.u)}" target="_blank" rel="noopener"`:''}><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${rd}" fill="${col[key(it)]||OTHER}"/></a>`}).join('')+'</g>'});
  // baricentri
- B.filter(b=>on.has(b.id)).forEach(b=>{const m=b.items.filter(it=>grp!=='marchio'||!hide.has(b.name));if(!m.length||grp!=='marchio'&&on.size<2)return;
+ B.filter(b=>on.has(b.id)).forEach(b=>{const m=b.items.filter(it=>grp!=='marchio'||!hide.has(b.name));if(!m.length)return;
   const mx=m.reduce((a,it)=>a+xy(it)[0],0)/m.length,my=m.reduce((a,it)=>a+xy(it)[1],0)/m.length,x=P(mx),y=P(-my);
   s+=`<g pointer-events="none"><line x1="${x-14}" y1="${y}" x2="${x+14}" y2="${y}" stroke="${b.col}" stroke-width="3"/><line x1="${x}" y1="${y-14}" x2="${x}" y2="${y+14}" stroke="${b.col}" stroke-width="3"/><text x="${x+18}" y="${y-8}" font-family="Archivo,sans-serif" font-size="14" font-weight="700" fill="${b.col}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(b.name)}</text></g>`});
  $('svg').innerHTML=s;
@@ -147,7 +147,7 @@ function side(all,vis,cells,col,keys){
 }
 function bars(){
  $('brands').innerHTML=B.map(b=>`<button class="word" aria-pressed="${on.has(b.id)}" data-id="${b.id}"><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</button>`).join('');
- const gs=groups();if(!gs.includes(grp))grp='marchio';
+ const gs=groups();if(!gs.includes(grp))grp=gs[0];const one=on.size===1;document.querySelectorAll('.cpr').forEach(e=>e.style.display=one?'':'none');
  $('grps').innerHTML=gs.map(g=>`<button class="word" aria-pressed="${g===grp}" data-g="${esc(g)}">${esc(g)}</button>`).join('');
 }
 function setView(){$('svg').setAttribute('viewBox',vb.join(' '))}
