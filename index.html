@@ -14,7 +14,9 @@
 .ctrl .row{display:flex;flex-wrap:wrap;align-items:center;gap:6px 26px}
 .ctrl .sep{grid-column:1/-1;border-top:1px solid var(--hair);margin:6px 0}
 @media(max-width:592px){.ctrl{grid-template-columns:1fr}.ctrl .lab{padding-top:8px}}
-.stage{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:0}
+#q{font:400 16px/22px Archivo,sans-serif;border:0;border-bottom:1px solid #000;border-radius:0;background:#fff;color:#000;padding:6px 0;min-height:38px;width:min(420px,100%);-webkit-appearance:none;appearance:none}
+#q::placeholder{color:#9a9a9a}
+.stage{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr)}
 @media(max-width:992px){.stage{grid-template-columns:minmax(0,1fr)}}
 .figcol{border-right:1px solid var(--ink)}
 @media(max-width:992px){.figcol{border-right:0;border-bottom:1px solid var(--ink)}}
@@ -22,41 +24,41 @@
 .fig.drag{cursor:grabbing}
 .fig svg{position:absolute;inset:0;width:100%;height:100%}
 .zoom{display:flex;gap:22px;border-top:1px solid var(--hair);padding:2px 0}
-.side{padding:18px 0 0 24px}
-@media(max-width:992px){.side{padding:18px 0 0}}
-.side h2{font:700 16px/22px Archivo,sans-serif;margin:0 0 4px}
-.side .sub{font-size:14px;line-height:20px;color:var(--grey);margin:0 0 16px}
-.bar{margin:0 0 14px}
-.bar .nm{display:flex;justify-content:space-between;font-size:14px;line-height:20px;margin-bottom:4px}
-.bar .nm b{display:flex;align-items:center;gap:8px}
-.bar .track{display:flex;height:18px;border:1px solid var(--ink)}
-.bar .track span{height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1;overflow:hidden;white-space:nowrap}
-.qkey{display:flex;flex-wrap:wrap;gap:4px 16px;font-size:12px;line-height:17px;color:var(--grey);margin:2px 0 18px}
-.qkey i{display:inline-block;width:12px;height:12px;border:1px solid var(--ink);vertical-align:-2px;margin-right:6px}
-.list{border-top:1px solid var(--ink);max-height:560px;overflow:auto}
-.list .gh{display:flex;align-items:center;gap:8px;font:700 12px/17px Archivo,sans-serif;text-transform:uppercase;padding:12px 0 4px}
-.list a{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:6px 0;border-bottom:1px solid var(--hair);font-size:14px;line-height:20px}
-.list a span{color:var(--grey);font-size:12px;white-space:nowrap}
-.list a:hover{text-decoration:none;background:#f4f4f4}
+.side{padding:18px 0 0 24px;position:sticky;top:0;align-self:start;max-height:100vh;overflow:auto}
+@media(max-width:992px){.side{padding:18px 0 0;position:static;max-height:none}}
+.side .hint{font-size:14px;line-height:20px;color:var(--grey);margin:0}
+.card .ph{aspect-ratio:1/1;background:#fff;border-bottom:1px solid var(--hair);display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+.card .ph img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+.card .ph .no{font-size:13px;color:var(--light)}
+.card h2{font:700 20px/24px Archivo,sans-serif;margin:0 0 4px;display:flex;gap:10px;align-items:baseline}
+.card .meta{font-size:14px;line-height:20px;color:var(--grey);margin:0 0 12px}
+.card .desc{font-size:15px;line-height:22px;margin:0 0 6px}
+.card .from{font-size:12px;line-height:17px;color:var(--grey);margin:0 0 16px}
+.vv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink);border-bottom:1px solid var(--hair);margin:0 0 12px}
+.vv div{padding:8px 0;font-size:12px;line-height:16px;color:var(--grey)}
+.vv b{display:block;font-size:20px;line-height:24px;color:#000}
+.vv i{display:flex;gap:3px;margin-top:4px}.vv i span{width:7px;height:7px;border-radius:50%;border:1px solid #000}.vv i span.f{background:#000}
+.card .q{font-size:14px;line-height:20px;margin:0 0 14px}
+.go{display:inline-block;font:700 14px/20px Archivo,sans-serif;text-decoration:underline;text-underline-offset:3px;padding:6px 0}
+.res{border-top:1px solid var(--ink)}
+.res button{display:grid;grid-template-columns:48px minmax(0,1fr);gap:12px;align-items:center;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid var(--hair);padding:6px 0;cursor:pointer;font:400 14px/19px Archivo,sans-serif;color:#000}
+.res button:hover{background:#f4f4f4}
+.res .th{width:48px;height:48px;display:flex;align-items:center;justify-content:center}
+.res .th img{max-width:48px;max-height:48px;object-fit:contain}
+.res small{display:block;color:var(--grey);font-size:12px;line-height:16px}
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
-#tip b{display:block}#tip{position:fixed;pointer-events:none;background:#fff;border:1px solid #000;padding:8px 10px;font-size:13px;line-height:18px;max-width:260px;display:none;z-index:9}
-.cell{cursor:pointer}
-#q{font:400 16px/22px Archivo,sans-serif;border:0;border-bottom:1px solid #000;border-radius:0;background:#fff;color:#000;padding:6px 0;min-height:38px;width:min(420px,100%);-webkit-appearance:none;appearance:none}
-#q::placeholder{color:#9a9a9a}
+#tip{position:fixed;pointer-events:none;background:#fff;border:1px solid #000;padding:8px;font-size:13px;line-height:18px;width:200px;display:none;z-index:9}
+#tip img{width:100%;height:120px;object-fit:contain;display:block;margin-bottom:6px}
+#tip b{display:block}
+#dots circle{transition:transform .7s cubic-bezier(.2,.8,.2,1),r .45s ease,fill .45s ease,opacity .2s ease;cursor:pointer}
+#dots.hov a.ob circle{opacity:.18}
+#dots.hov a.ob.on circle,#dots a.ob.sel circle{opacity:1;stroke:#000;stroke-width:2px;vector-effect:non-scaling-stroke}
 #dots a.ob.dim circle{opacity:.07}
 #dots a.ob.hit circle{stroke:#000;stroke-width:1.5px;vector-effect:non-scaling-stroke}
-#dots circle{transition:transform .7s cubic-bezier(.2,.8,.2,1),r .45s ease,fill .45s ease,opacity .2s ease}
-#dots.hov a.ob circle{opacity:.18}#dots.hov a.ob.on circle{opacity:1;stroke:#000;stroke-width:1.5px;vector-effect:non-scaling-stroke}#dots.hov a.ob.on{}
 .bc{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s}
-#cells circle{transition:fill-opacity .3s}
-.pop{animation:pop .55s cubic-bezier(.2,.8,.2,1) both;transform-box:fill-box;transform-origin:center}
-@keyframes pop{from{transform:scale(0);opacity:0}}
-.track span{animation:grow .7s cubic-bezier(.2,.8,.2,1) both;transform-origin:left}
-@keyframes grow{from{transform:scaleX(0)}}
-#side>*{animation:fade .4s ease both}
+#side>*{animation:fade .35s ease both}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}}
 .word{transition:color .25s}.word .dot{transition:opacity .25s}
-.ctrl .row,.ctrl .lab,.ctrl .sep{transition:opacity .3s}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -70,8 +72,6 @@
  <p class="lab">cerca</p><div class="row"><input type="search" id="q" placeholder="nome del prodotto, designer, categoria" autocomplete="off"><span class="g" id="qn"></span></div>
  <div class="sep"></div>
  <p class="lab">aziende</p><div class="row" id="brands"></div>
- <div class="sep"></div>
- <p class="lab">vista</p><div class="row" id="views"><button class="word" data-v="obj" aria-pressed="true">ogni oggetto</button><button class="word" data-v="cell" aria-pressed="false">cerchi per posizione</button></div>
  <div class="sep cpr"></div>
  <p class="lab cpr">colora per</p><div class="row cpr" id="grps"></div>
  <div class="sep msr"></div>
@@ -79,7 +79,7 @@
 </div>
 <div class="stage">
  <div class="figcol">
-  <div class="fig" id="fig"><svg id="svg" viewBox="0 0 1000 1000" role="img" aria-label="Quadrato dei valori: cerchi grandi quanto il numero di prodotti in ogni posizione"></svg></div>
+  <div class="fig" id="fig"><svg id="svg" viewBox="0 0 1000 1000" role="img" aria-label="Quadrato dei valori: un pallino per prodotto"></svg></div>
   <div class="zoom"><button class="act" id="zin">zoom +</button><button class="act" id="zout">zoom −</button><button class="act" id="zre">vista intera</button></div>
  </div>
  <div class="side" id="side"></div>
@@ -88,7 +88,7 @@
  <div><p><b>Progetto</b></p><p>Fare book Danese Milano, fase 1. Design del Prodotto 3, prof. Datti, ISIA Roma, 2026.</p></div>
  <div><p><b>Autori</b></p><p>Bartolomeo Lodi-Fè<br>Alessandro dell’Aquila</p></div>
  <div><p><b>Lettura</b></p><p>I voti sono la nostra lettura (L), proposta da verificare: si basano sulle foto del prodotto, sul prodotto in sé, sul prezzo, su come è costruito e su come viene descritto. Come si calcolano: <a href="metodo.html"><u>metodo</u></a>.</p></div>
- <div><p><b>Avvertenza</b></p><p>Progetto di studio, non è un sito di Danese Milano né dei marchi citati.</p></div>
+ <div><p><b>Avvertenza</b></p><p>Progetto di studio, non è un sito di Danese Milano né dei marchi citati. Foto e descrizioni vengono dalle schede dei siti delle aziende, a cui ogni prodotto rimanda.</p></div>
 </footer>
 </div>
 <div id="tip"></div>
@@ -96,136 +96,124 @@
 {
 const PAL=['#000000','#f0b400','#d7261e','#1f4fa3','#2e8b57','#7B5EA7','#8B5A2B','#e8772e','#E8426A','#7fb6e0','#B5AEA2','#3B8F4E'];
 const FIX={'Fondatori (Mari, Munari)':'#d7261e','Dal 2017':'#1f4fa3','Altri autori':'#b5b5b5','metallo':'#1E1E1E','vetro':'#7FC6E0','ceramica':'#D9733F','legno':'#8B5A2B','plastica':'#E8426A','marmo, pietra, cemento':'#B5AEA2','carta, cartone':'#F0B400','tessuto, feltro':'#7B5EA7','sughero, gomma':'#3B8F4E','bambini':'#f0b400','una persona':'#d7261e','famiglia':'#1f4fa3','ospiti':'#2e8b57','pubblico':'#000000'};
-const OTHER='#cfcfcf',MAXC=12;
-const QN=['missione','progetto','informazione','euforia','sugli assi'],QF=['#000','#555','#999','#d0d0d0','#fff'];
+const OTHER='#cfcfcf',MAXC=12,QN=['missione','progetto','informazione','euforia','sugli assi'],NAME={U:'utopica',P:'pratica',C:'critica',L:'ludica'};
 const $=id=>document.getElementById(id);
-const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let q='',view='obj',B=[],on=new Set(['danese']),grp='categoria',hide=new Set(),sel=null,vb=[0,0,1000,1000];
-const P=v=>500+v*130;               // -3..3 -> 110..890
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let q='',B=[],on=new Set(['danese']),grp='uno',hide=new Set(),selId=null,vb=[0,0,1000,1000],cur=[0,0,1000,1000],raf=0,ALL=[];
+const P=v=>500+v*130;
 const xy=it=>{const [U,Pr,C,L]=it.v.split('').map(Number);return [L-C,U-Pr]};
 const quad=([x,y])=>y>0&&x<0?0:y>0&&x>0?1:y<0&&x<0?2:y<0&&x>0?3:4;
-const items=()=>B.filter(b=>on.has(b.id)).flatMap(b=>b.items.map((it,i)=>({...it,b,id:b.id+'_'+i})));
+const items=()=>ALL.filter(it=>on.has(it.b.id));
 const match=it=>!q||(it.n+' '+it.b.name+' '+(it.i||'')+' '+Object.values(it.g).flat().join(' ')).toLowerCase().includes(q);
-const key=it=>grp==='marchio'?it.b.name:((it.g[grp]||['n.d.'])[0]);
-function groups(){const a=B.filter(b=>on.has(b.id));return a.length===1?a[0].groups:['marchio']}
+const key=it=>on.size>1?it.b.name:grp==='uno'?it.b.name:((it.g[grp]||['n.d.'])[0]);
 function colors(list){
- const col={};
- if(grp==='marchio'){B.forEach(b=>col[b.name]=b.col);return {keys:B.filter(b=>on.has(b.id)).map(b=>b.name),col}}
+ const col={};B.forEach(b=>col[b.name]=b.col);
+ if(on.size>1||grp==='uno')return {keys:B.filter(b=>on.has(b.id)).map(b=>b.name),col};
  const cnt={};list.forEach(it=>{const k=key(it);cnt[k]=(cnt[k]||0)+1});
  const keys=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]||a.localeCompare(b));
  const fixed=keys.every(k=>FIX[k]);keys.forEach((k,i)=>col[k]=fixed?FIX[k]:(i<MAXC?PAL[i]:OTHER));return {keys,col};
-}
-function pie(cx,cy,r,parts){
- const tot=parts.reduce((a,p)=>a+p[1],0);if(parts.length===1)return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${parts[0][0]}"/>`;
- let a0=-Math.PI/2,s='';parts.forEach(([c,n])=>{const a1=a0+n/tot*2*Math.PI;const L=a1-a0>Math.PI?1:0;
-  s+=`<path d="M${cx},${cy} L${(cx+r*Math.cos(a0)).toFixed(2)},${(cy+r*Math.sin(a0)).toFixed(2)} A${r},${r} 0 ${L} 1 ${(cx+r*Math.cos(a1)).toFixed(2)},${(cy+r*Math.sin(a1)).toFixed(2)} Z" fill="${c}"/>`;a0=a1});
- return s+`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#fff" stroke-width="1"/>`;
 }
 function frame(){
  const f=[];const T=(x,y,s,sz,w,an,c)=>f.push(`<text x="${x}" y="${y}" font-family="Archivo,Helvetica,sans-serif" font-size="${sz}" font-weight="${w}" text-anchor="${an}" fill="${c}">${s}</text>`);
  f.push('<rect width="1000" height="1000" fill="#fff"/>');
  for(let i=-3;i<=3;i++)for(let j=-3;j<=3;j++)f.push(`<circle cx="${P(i)}" cy="${P(-j)}" r="2" fill="#c8c8c8"/>`);
  f.push(`<line x1="70" y1="500" x2="930" y2="500" stroke="#000" stroke-width="1" vector-effect="non-scaling-stroke"/><line x1="500" y1="70" x2="500" y2="930" stroke="#000" stroke-width="1" vector-effect="non-scaling-stroke"/>`);
- T(500,52,'UTOPICA',15,700,'middle','#000');T(500,962,'PRATICA',15,700,'middle','#000');
- T(62,505,'CRITICA',15,700,'end','#000');T(938,505,'LUDICA',15,700,'start','#000');
+ T(500,52,'UTOPICA',15,700,'middle','#000');T(500,962,'PRATICA',15,700,'middle','#000');T(62,505,'CRITICA',15,700,'end','#000');T(938,505,'LUDICA',15,700,'start','#000');
  T(70,40,'missione',15,700,'start','#9a9a9a');T(930,40,'progetto',15,700,'end','#9a9a9a');T(70,975,'informazione',15,700,'start','#9a9a9a');T(930,975,'euforia',15,700,'end','#9a9a9a');
  return f.join('');
 }
+// anelli concentrici: anello 0 = 1 posto, anello k = 6k posti
+function slots(n,s){const out=[[0,0]];for(let k=1;out.length<n;k++){const m=6*k,off=k%2?Math.PI/m:0;for(let j=0;j<m&&out.length<n;j++){const a=off+j*2*Math.PI/m;out.push([k*s*Math.cos(a),k*s*Math.sin(a)])}}return out}
 function draw(){
  const all=items(),{keys,col}=colors(all);
  const vis=all.filter(it=>!hide.has(key(it)));
  const cells={};vis.forEach(it=>{const p=xy(it);const k=p.join(',');(cells[k]=cells[k]||{p,its:[]}).its.push(it)});
  const nmax=Math.max(1,...Object.values(cells).map(c=>c.its.length));
- const rd=Math.max(2.2,Math.min(9,(60/Math.sqrt(nmax)/.56-1.6)/2)),sp=Math.min(.56*(2*rd+1.6),60/Math.sqrt(nmax));
- if(!$('fr')){$('svg').innerHTML=`<g id="fr">${frame()}</g><g id="cells"></g><g id="dots"></g><g id="bary" pointer-events="none"></g>`}
- // cells: pies (vista cerchi) or invisible hit areas (vista oggetti)
- let cs='';
- Object.entries(cells).forEach(([k,c])=>{const n=c.its.length;const cx=P(c.p[0]),cy=P(-c.p[1]);
-  if(view==='cell'){const r=Math.max(5,62*Math.sqrt(n/nmax));const cnt={};c.its.forEach(it=>{const kk=key(it);cnt[kk]=(cnt[kk]||0)+1});
-   const parts=keys.filter(kk=>cnt[kk]).map(kk=>[col[kk]||OTHER,cnt[kk]]);
-   cs+=`<g class="cell pop" data-k="${k}">${sel===k?`<circle cx="${cx}" cy="${cy}" r="${r+7}" fill="none" stroke="#000" stroke-width="1.5" vector-effect="non-scaling-stroke"/>`:''}${pie(cx,cy,r,parts)}</g>`}
-  else{const R=sp*Math.sqrt(n)+rd+6;cs+=`<g class="cell" data-k="${k}"><circle cx="${cx}" cy="${cy}" r="${R}" fill="${sel===k?'#f2f2f2':'#fff'}" fill-opacity="${sel===k?1:0}"/></g>`}});
- $('cells').innerHTML=cs;
- // dots: keyed, animated
+ let K=0;while(1+3*K*(K+1)<nmax)K++;
+ const s=K?Math.min(19,60/K):19,rd=Math.max(1.8,Math.min(8.5,s/2-.7));
+ if(!$('fr'))$('svg').innerHTML=`<g id="fr">${frame()}</g><g id="dots"></g><g id="bary" pointer-events="none"></g>`;
  const tgt=new Map();
- if(view==='obj')Object.entries(cells).forEach(([k,c])=>{const cx=P(c.p[0]),cy=P(-c.p[1]);
-  c.its.slice().sort((a,b)=>keys.indexOf(key(a))-keys.indexOf(key(b))||a.n.localeCompare(b.n)).forEach((it,i)=>{const t=i*2.39996,rr=sp*Math.sqrt(i+.5);
-   tgt.set(it.id,{it,x:cx+rr*Math.cos(t),y:cy+rr*Math.sin(t),c:col[key(it)]||OTHER,k})})});
+ Object.values(cells).forEach(c=>{const cx=P(c.p[0]),cy=P(-c.p[1]);
+  const its=c.its.slice().sort((a,b)=>keys.indexOf(key(a))-keys.indexOf(key(b))||a.n.localeCompare(b.n));
+  const sl=slots(its.length,s);its.forEach((it,i)=>tgt.set(it.id,{it,x:cx+sl[i][0],y:cy+sl[i][1],c:col[key(it)]||OTHER}))});
  const G=$('dots');
  G.querySelectorAll('a.ob').forEach(el=>{if(!tgt.has(el.dataset.id)&&!el.dataset.out){el.dataset.out=1;const ci=el.firstChild;ci.style.r=0;ci.style.opacity=0;setTimeout(()=>el.remove(),450)}});
- tgt.forEach((d,id)=>{let el=G.querySelector(`a.ob[data-id="${id}"]`);const it=d.it;
+ tgt.forEach((d,id)=>{let el=G.querySelector(`a.ob[data-id="${id}"]`);
   if(el&&el.dataset.out){el.remove();el=null}
-  if(!el){el=document.createElementNS('http://www.w3.org/2000/svg','a');el.setAttribute('class','ob');el.dataset.id=id;
-   if(it.u){el.setAttribute('href',it.u);el.setAttribute('target','_blank');el.setAttribute('rel','noopener')}
-   const ci=document.createElementNS('http://www.w3.org/2000/svg','circle');ci.setAttribute('r',0);ci.style.r=0;ci.style.transform=`translate(${d.x}px,${d.y}px)`;ci.setAttribute('fill',d.c);el.appendChild(ci);G.appendChild(el);
-   ci.getBoundingClientRect()}
-  Object.assign(el.dataset,{n:it.n,b:it.b.name,v:it.v,c:key(it),k:d.k});el.classList.toggle('dim',!!q&&!match(it));el.classList.toggle('hit',!!q&&match(it));
-  const ci=el.firstChild;ci.style.transform=`translate(${d.x.toFixed(1)}px,${d.y.toFixed(1)}px)`;const hr=q&&match(it)?Math.max(rd*2,7):rd;ci.style.r=hr;ci.setAttribute('r',hr);if(q&&match(it))G.appendChild(el);ci.style.fill=d.c;ci.style.opacity=''});
- // baricentri, keyed
- const BG=$('bary');const act=B.filter(b=>on.has(b.id));
+  if(!el){el=document.createElementNS('http://www.w3.org/2000/svg','a');el.setAttribute('class','ob');el.dataset.id=id;el.setAttribute('tabindex','0');
+   const ci=document.createElementNS('http://www.w3.org/2000/svg','circle');ci.setAttribute('r',0);ci.style.r=0;ci.style.transform=`translate(${d.x}px,${d.y}px)`;ci.setAttribute('fill',d.c);el.appendChild(ci);G.appendChild(el);ci.getBoundingClientRect()}
+  const m=q&&match(d.it);el.classList.toggle('dim',!!q&&!m);el.classList.toggle('hit',!!m);el.classList.toggle('sel',selId===id);
+  const ci=el.firstChild,hr=m||selId===id?Math.max(rd*1.6,Math.min(7,s*.8)):rd;ci.style.transform=`translate(${d.x.toFixed(1)}px,${d.y.toFixed(1)}px)`;ci.style.r=hr;ci.setAttribute('r',hr);ci.style.fill=d.c;ci.style.opacity='';
+  if(m||selId===id)G.appendChild(el)});
+ const BG=$('bary');
  BG.querySelectorAll('g').forEach(g=>{if(!on.has(g.dataset.id)){g.style.opacity=0;setTimeout(()=>g.remove(),400)}});
- act.forEach(b=>{const m=b.items;const mx=m.reduce((a,it)=>a+xy(it)[0],0)/m.length,my=m.reduce((a,it)=>a+xy(it)[1],0)/m.length,x=P(mx),y=P(-my);
+ B.filter(b=>on.has(b.id)).forEach(b=>{const m=b.items;const mx=m.reduce((a,it)=>a+xy(it)[0],0)/m.length,my=m.reduce((a,it)=>a+xy(it)[1],0)/m.length,x=P(mx),y=P(-my);
   let g=BG.querySelector(`g[data-id="${b.id}"]`);
   if(!g){g=document.createElementNS('http://www.w3.org/2000/svg','g');g.dataset.id=b.id;g.setAttribute('class','bc');g.style.opacity=0;g.style.transform=`translate(${x}px,${y}px)`;
    g.innerHTML=`<line x1="-14" y1="0" x2="14" y2="0" stroke="${b.col}" stroke-width="3"/><line x1="0" y1="-14" x2="0" y2="14" stroke="${b.col}" stroke-width="3"/><text x="18" y="-8" font-family="Archivo,sans-serif" font-size="14" font-weight="700" fill="${b.col}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(b.name)}</text>`;BG.appendChild(g);g.getBoundingClientRect()}
-  g.style.opacity=q?.2:1;g.style.transform=`translate(${x}px,${y}px)`});
- // legend as filter words
+  g.style.opacity=q||selId?.2:1;g.style.transform=`translate(${x}px,${y}px)`});
  $('leg').innerHTML=keys.map(k=>`<button class="word" aria-pressed="${!hide.has(k)}" data-k="${esc(k)}"><span class="dot" style="background:${col[k]||OTHER}"></span>${esc(k)}</button>`).join('');
- side(all,vis,cells,col,keys);
+ document.querySelectorAll('.msr').forEach(e=>e.style.display=on.size>1||grp==='uno'?'none':'');
+ side(vis,col);
 }
-function side(all,vis,cells,col,keys){
+function dots(v){return '<i>'+[0,1,2].map(i=>`<span class="${i<v?'f':''}"></span>`).join('')+'</i>'}
+function card(it,col){
+ const v=it.v.split('').map(Number),[x,y]=xy(it);
+ return `<div class="card"><div class="ph">${it.p?`<img src="${esc(it.p)}" alt="${esc(it.n)}" loading="lazy" referrerpolicy="no-referrer">`:'<span class="no">foto non disponibile sul sito</span>'}</div>
+ <h2><span class="dot" style="background:${col[key(it)]||OTHER}"></span>${esc(it.n)}</h2>
+ <p class="meta">${esc(it.b.name)}${it.i?' · '+esc(it.i):''}<br>${esc(Object.entries(it.g).map(([k,a])=>k+': '+a.join(', ')).join(' · '))}</p>
+ ${it.d?`<p class="desc">${esc(it.d)}</p><p class="from">dalla scheda di ${esc(it.b.site)}</p>`:''}
+ <div class="vv">${'UPCL'.split('').map((k,i)=>`<div><b>${v[i]}</b>${NAME[k]}${dots(v[i])}</div>`).join('')}</div>
+ <p class="q">x ${x>0?'+':''}${x} · y ${y>0?'+':''}${y} · <b>${QN[quad([x,y])]}</b></p>
+ ${it.u?`<a class="go" href="${esc(it.u)}" target="_blank" rel="noopener">${it.s?'cerca sul sito di '+esc(it.b.name):'apri la scheda su '+esc(it.b.site)} ↗</a>`:'<p class="hint">Questo prodotto non ha una scheda sul sito.</p>'}
+ <p><button class="act" id="close">chiudi</button></p></div>`;
+}
+function side(vis,col){
+ const sel=selId&&ALL.find(it=>it.id===selId);
+ if(sel){$('side').innerHTML=card(sel,col);$('close').onclick=()=>{selId=null;draw()};return}
  if(q){const r=vis.filter(match).sort((a,b)=>a.n.localeCompare(b.n));$('qn').textContent=r.length+(r.length===1?' risultato':' risultati');
-  $('side').innerHTML=`<h2>${r.length} ${r.length===1?'prodotto trovato':'prodotti trovati'}</h2><p class="sub">Cerchi «${esc(q)}» tra le aziende accese. Sul quadrato restano pieni solo i prodotti trovati. Clic su un nome per aprire la scheda sul sito.</p><div class="list">`+
-  r.map(it=>{const [x,y]=xy(it);return `<a ${it.u?`href="${esc(it.u)}" target="_blank" rel="noopener"`:''}><span style="color:#000;font-size:14px;white-space:normal"><span class="dot" style="background:${col[key(it)]||OTHER};margin-right:8px"></span>${esc(it.n)}</span><span>${esc(it.b.name)} · ${QN[quad([x,y])]} · U${it.v[0]} P${it.v[1]} C${it.v[2]} L${it.v[3]}${it.u?' ↗':''}</span></a>`}).join('')+(r.length?'':'<p class="g" style="padding:12px 0">Nessun prodotto. Prova ad accendere altre aziende.</p>')+'</div>';return}
+  $('side').innerHTML=`<p class="lab">${r.length} ${r.length===1?'prodotto trovato':'prodotti trovati'}</p><div class="res">`+r.slice(0,300).map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+(col[key(it)]||OTHER)+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+(r.length?'':'<p class="hint" style="padding:12px 0">Nessun prodotto. Prova ad accendere altre aziende.</p>')+'</div>';return}
  $('qn').textContent='';
- if(sel&&cells[sel]){const c=cells[sel];const [x,y]=c.p;const f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v);
-  const by={};c.its.forEach(it=>{(by[key(it)]=by[key(it)]||[]).push(it)});
-  $('side').innerHTML=`<h2>${c.its.length} ${c.its.length===1?'prodotto':'prodotti'} · ${QN[quad(c.p)]}</h2><p class="sub">x ${f(x)} (ludica − critica) · y ${f(y)} (utopica − pratica) · clic su un nome per aprire la scheda sul sito · <button class="act" id="back">chiudi</button></p><div class="list">`+
-   keys.filter(k=>by[k]).map(k=>`<div class="gh"><span class="dot" style="background:${col[k]||OTHER}"></span>${esc(k)} · ${by[k].length}</div>`+by[k].sort((a,b)=>a.n.localeCompare(b.n)).map(it=>`<a ${it.u?`href="${esc(it.u)}" target="_blank" rel="noopener"`:''}>${esc(it.n)}<span>${on.size>1&&grp!=='marchio'?esc(it.b.name)+' · ':''}U${it.v[0]} P${it.v[1]} C${it.v[2]} L${it.v[3]}${it.u?(it.s?' · ricerca':' ↗'):' · non sul sito'}</span></a>`).join('')).join('')+'</div>';
-  $('back').onclick=()=>{sel=null;draw()};return}
- const rows=B.filter(b=>on.has(b.id)).map(b=>{const m=b.items.filter(it=>!hide.has(grp==='marchio'?b.name:((it.g[grp]||['n.d.'])[0])));const q=[0,0,0,0,0];m.forEach(it=>q[quad(xy(it))]++);
-  return `<div class="bar"><div class="nm"><b><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</b><span class="g">${m.length} prodotti</span></div><div class="track">${q.map((n,i)=>n?`<span title="${QN[i]}: ${n}" style="width:${n/m.length*100}%;background:${QF[i]};color:${i<2?'#fff':'#000'}">${n/m.length>.06?n:''}</span>`:'').join('')}</div></div>`}).join('');
- $('side').innerHTML=`<h2>Dove stanno i prodotti</h2><p class="sub">${view==='obj'?'Ogni pallino è un prodotto: passaci sopra per leggerlo, clic per aprire la sua scheda sul sito. I prodotti con gli stessi voti stanno insieme; con lo zoom li vedi più grandi.':'Ogni cerchio è una posizione del quadrato: più è grande, più prodotti ci sono. Clic su un cerchio per vedere quali prodotti contiene, con i link.'} La croce colorata è il baricentro di ogni azienda.</p>${rows||'<p class="g">Accendi almeno un’azienda.</p>'}<div class="qkey">${QN.map((q,i)=>`<span><i style="background:${QF[i]}"></i>${q}</span>`).join('')}</div>`;
+ $('side').innerHTML=`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
 }
 function bars(){
  $('brands').innerHTML=B.map(b=>`<button class="word" aria-pressed="${on.has(b.id)}" data-id="${b.id}"><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</button>`).join('')+`<button class="act" data-all="1">vedi tutte</button>`;
- document.querySelectorAll('.msr').forEach(e=>e.style.display=on.size>1?'none':'');
- const gs=groups();if(!gs.includes(grp))grp=gs[0];const one=on.size===1;document.querySelectorAll('.cpr').forEach(e=>e.style.display=one?'':'none');
- $('grps').innerHTML=gs.map(g=>`<button class="word" aria-pressed="${g===grp}" data-g="${esc(g)}">${esc(g)}</button>`).join('');
+ const one=on.size===1;document.querySelectorAll('.cpr').forEach(e=>e.style.display=one?'':'none');
+ if(one){const b=B.find(b=>on.has(b.id));const gs=['uno',...b.groups];if(!gs.includes(grp))grp='uno';
+  $('grps').innerHTML=gs.map(g=>`<button class="word" aria-pressed="${g===grp}" data-g="${esc(g)}">${g==='uno'?'un colore':esc(g)}</button>`).join('')}
 }
-let cur=[0,0,1000,1000],raf=0;
-function setView(){if(raf)return;const step=()=>{let done=true;cur=cur.map((c,i)=>{const d=vb[i]-c;if(Math.abs(d)>.3)done=false;return c+d*.22});$('svg').setAttribute('viewBox',cur.join(' '));raf=done?0:requestAnimationFrame(step);if(done){cur=vb.slice();$('svg').setAttribute('viewBox',cur.join(' '))}};raf=requestAnimationFrame(step)}
-function zoom(f,cx,cy){const nw=Math.min(1000,Math.max(120,vb[2]*f)),k=nw/vb[2];if(cx==null){cx=vb[0]+vb[2]/2;cy=vb[1]+vb[3]/2}vb=[cx-(cx-vb[0])*k,cy-(cy-vb[1])*k,nw,nw];if(nw>=1000)vb=[0,0,1000,1000];setView()}
+function setView(){if(raf)return;const step=()=>{let done=true;cur=cur.map((c,i)=>{const d=vb[i]-c;if(Math.abs(d)>.3)done=false;return c+d*.22});$('svg').setAttribute('viewBox',cur.join(' '));if(done){cur=vb.slice();$('svg').setAttribute('viewBox',cur.join(' '));raf=0}else raf=requestAnimationFrame(step)};raf=requestAnimationFrame(step)}
+function zoom(f,cx,cy){const nw=Math.min(1000,Math.max(100,vb[2]*f)),k=nw/vb[2];if(cx==null){cx=vb[0]+vb[2]/2;cy=vb[1]+vb[3]/2}vb=[cx-(cx-vb[0])*k,cy-(cy-vb[1])*k,nw,nw];if(nw>=1000)vb=[0,0,1000,1000];setView()}
 function toSvg(e){const r=$('svg').getBoundingClientRect();return [cur[0]+(e.clientX-r.left)/r.width*cur[2],cur[1]+(e.clientY-r.top)/r.height*cur[3]]}
-function save(){try{location.replace('#'+[...on].join('-'))}catch(e){}}
-$('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.all){B.forEach(x=>on.add(x.id));hide.clear();sel=null;bars();draw();save();return}const id=b.dataset.id;on.has(id)?on.delete(id):on.add(id);if(!on.size)on.add(id);hide.clear();sel=null;bars();draw();save()};
-$('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();sel=null;draw()});
-$('views').onclick=e=>{const b=e.target.closest('button');if(!b)return;view=b.dataset.v;$('views').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));sel=null;draw()};
-$('grps').onclick=e=>{const b=e.target.closest('button');if(!b)return;grp=b.dataset.g;hide.clear();sel=null;bars();draw()};
-$('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;
- const allk=[...$('leg').querySelectorAll('button')].map(x=>x.dataset.k);
- if(!hide.size){allk.forEach(x=>{if(x!==k)hide.add(x)})}else{hide.has(k)?hide.delete(k):hide.add(k);if(hide.size===allk.length)hide.clear()}
- sel=null;draw()};
-$('all').onclick=()=>{hide.clear();sel=null;draw()};
+function save(){try{history.replaceState(null,'','#'+[...on].join('-'))}catch(e){}}
+function pick(id){selId=id;draw();if(innerWidth<992)$('side').scrollIntoView({behavior:'smooth'})}
+$('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.all){B.forEach(x=>on.add(x.id))}else{const id=b.dataset.id;on.has(id)?on.delete(id):on.add(id);if(!on.size)on.add(id)}hide.clear();selId=null;bars();draw();save()};
+$('grps').onclick=e=>{const b=e.target.closest('button');if(!b)return;grp=b.dataset.g;hide.clear();bars();draw()};
+$('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;const allk=[...$('leg').querySelectorAll('button')].map(x=>x.dataset.k);
+ if(!hide.size){allk.forEach(x=>{if(x!==k)hide.add(x)})}else{hide.has(k)?hide.delete(k):hide.add(k);if(hide.size===allk.length)hide.clear()}draw()};
+$('all').onclick=()=>{hide.clear();draw()};
+$('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();selId=null;draw()});
+$('side').addEventListener('click',e=>{const b=e.target.closest('.res button');if(b)pick(b.dataset.id)});
 $('zin').onclick=()=>zoom(.7);$('zout').onclick=()=>zoom(1/.7);$('zre').onclick=()=>{vb=[0,0,1000,1000];setView()};
 const fig=$('fig'),tip=$('tip');
 fig.addEventListener('wheel',e=>{e.preventDefault();const [x,y]=toSvg(e);zoom(e.deltaY>0?1.15:1/1.15,x,y)},{passive:false});
 const pts=new Map();let drag=null,moved=false,pinch=null;
 fig.addEventListener('pointerdown',e=>{pts.set(e.pointerId,[e.clientX,e.clientY]);moved=false;if(pts.size===1)drag={x:e.clientX,y:e.clientY,vb:vb.slice()};if(pts.size===2){const p=[...pts.values()];pinch={d:Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]),w:vb[2]}}});
 window.addEventListener('pointermove',e=>{if(pts.has(e.pointerId))pts.set(e.pointerId,[e.clientX,e.clientY]);
- if(pinch&&pts.size===2){const p=[...pts.values()];const d=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]);zoom(Math.min(1000,Math.max(120,pinch.w*pinch.d/d))/vb[2]);moved=true;return}
+ if(pinch&&pts.size===2){const p=[...pts.values()];const d=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]);zoom(Math.min(1000,Math.max(100,pinch.w*pinch.d/d))/vb[2]);moved=true;return}
  if(drag&&vb[2]<1000){const r=$('svg').getBoundingClientRect();if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4){moved=true;fig.classList.add('drag')}
   if(moved){vb=[drag.vb[0]-(e.clientX-drag.x)/r.width*vb[2],drag.vb[1]-(e.clientY-drag.y)/r.height*vb[3],vb[2],vb[3]];setView()}}});
 window.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!pts.size){drag=null;fig.classList.remove('drag')}});
-fig.addEventListener('click',e=>{if(moved){e.preventDefault();moved=false;return}if(e.target.closest('.ob'))return;const g=e.target.closest('.cell');sel=g?(sel===g.dataset.k?null:g.dataset.k):null;draw();if(sel&&innerWidth<992)$('side').scrollIntoView({behavior:'smooth'})});
-fig.addEventListener('pointerover',e=>{const o=e.target.closest('.ob');if(o){$('dots').classList.add('hov');$('dots').querySelectorAll('a.on').forEach(x=>x.classList.remove('on'));o.classList.add('on');o.parentNode.appendChild(o);const v=o.dataset.v;tip.innerHTML=`<b>${esc(o.dataset.n)}</b><span class="g">${esc(o.dataset.b)}${grp!=='marchio'?' · '+esc(o.dataset.c):''}</span><br>U${v[0]} P${v[1]} C${v[2]} L${v[3]}<br><span class="g">${o.hasAttribute('href')?'clic: apri la scheda sul sito':'nessuna scheda sul sito'}</span>`;tip.style.display='block';return}
- $('dots').classList.remove('hov');const g=e.target.closest('.cell');if(!g)return;const [x,y]=g.dataset.k.split(',').map(Number);
- const its=items().filter(it=>!hide.has(key(it))&&xy(it).join(',')===g.dataset.k);
- tip.innerHTML=`<b>${its.length} ${its.length===1?'prodotto':'prodotti'}</b> · ${QN[quad([x,y])]}<br><span class="g">${esc(its.slice(0,6).map(i=>i.n).join(', '))}${its.length>6?'…':''}</span>`;tip.style.display='block'});
+fig.addEventListener('click',e=>{if(moved){moved=false;return}const o=e.target.closest('.ob');if(o)pick(o.dataset.id);else if(selId){selId=null;draw()}});
+fig.addEventListener('keydown',e=>{const o=e.target.closest&&e.target.closest('.ob');if(o&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(o.dataset.id)}});
+fig.addEventListener('pointerover',e=>{const o=e.target.closest('.ob');if(!o){$('dots').classList.remove('hov');return}
+ const it=ALL.find(x=>x.id===o.dataset.id);$('dots').classList.add('hov');$('dots').querySelectorAll('a.on').forEach(x=>x.classList.remove('on'));o.classList.add('on');
+ tip.innerHTML=`${it.p?`<img src="${esc(it.p)}" alt="" referrerpolicy="no-referrer">`:''}<b>${esc(it.n)}</b><span class="g">${esc(it.b.name)} · U${it.v[0]} P${it.v[1]} C${it.v[2]} L${it.v[3]}</span>`;tip.style.display='block'});
 fig.addEventListener('pointermove',e=>{if(tip.style.display==='block'){tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,e.clientX+16)+'px';tip.style.top=Math.min(innerHeight-tip.offsetHeight-8,e.clientY+16)+'px'}});
+fig.addEventListener('pointerout',e=>{const o=e.target.closest('.ob');if(o){o.classList.remove('on');tip.style.display='none';if(!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ob')))$('dots').classList.remove('hov')}});
 fig.addEventListener('pointerleave',()=>{$('dots').classList.remove('hov');tip.style.display='none'});
-fig.addEventListener('pointerout',e=>{const o=e.target.closest('.ob');if(o){o.classList.remove('on');if(!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ob')))$('dots').classList.remove('hov')}if(e.target.closest('.cell')||o)tip.style.display='none'});
-fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{B=d;const h=location.hash.slice(1).split('-').filter(x=>B.some(b=>b.id===x));if(h.length)on=new Set(h);bars();draw()}).catch(()=>{$('side').textContent='Dati non caricati.'});
+fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{B=d;ALL=B.flatMap(b=>b.items.map((it,i)=>({...it,b,id:b.id+'_'+i})));
+ const h=location.hash.slice(1).split('-').filter(x=>B.some(b=>b.id===x));if(h.length)on=new Set(h);bars();draw()}).catch(()=>{$('side').textContent='Dati non caricati.'});
 }
 </script>
 </body>
