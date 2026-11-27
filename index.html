@@ -41,8 +41,8 @@
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
 #tip b{display:block}#tip{position:fixed;pointer-events:none;background:#fff;border:1px solid #000;padding:8px 10px;font-size:13px;line-height:18px;max-width:260px;display:none;z-index:9}
 .cell{cursor:pointer}
-#dots circle{transition:transform .7s cubic-bezier(.2,.8,.2,1),r .45s ease,fill .45s ease,opacity .4s ease}
-.ob:hover circle{stroke:#000;stroke-width:1.5px;vector-effect:non-scaling-stroke}
+#dots circle{transition:transform .7s cubic-bezier(.2,.8,.2,1),r .45s ease,fill .45s ease,opacity .2s ease}
+#dots.hov a.ob circle{opacity:.18}#dots.hov a.ob.on circle{opacity:1;stroke:#000;stroke-width:1.5px;vector-effect:non-scaling-stroke}#dots.hov a.ob.on{}
 .bc{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s}
 #cells circle{transition:fill-opacity .3s}
 .pop{animation:pop .55s cubic-bezier(.2,.8,.2,1) both;transform-box:fill-box;transform-origin:center}
@@ -153,7 +153,7 @@ function draw(){
    const ci=document.createElementNS('http://www.w3.org/2000/svg','circle');ci.setAttribute('r',0);ci.style.r=0;ci.style.transform=`translate(${d.x}px,${d.y}px)`;ci.setAttribute('fill',d.c);el.appendChild(ci);G.appendChild(el);
    ci.getBoundingClientRect()}
   Object.assign(el.dataset,{n:it.n,b:it.b.name,v:it.v,c:key(it),k:d.k});
-  const ci=el.firstChild;ci.style.transform=`translate(${d.x.toFixed(1)}px,${d.y.toFixed(1)}px)`;ci.style.r=rd;ci.setAttribute('r',rd);ci.style.fill=d.c;ci.style.opacity=1});
+  const ci=el.firstChild;ci.style.transform=`translate(${d.x.toFixed(1)}px,${d.y.toFixed(1)}px)`;ci.style.r=rd;ci.setAttribute('r',rd);ci.style.fill=d.c;ci.style.opacity=''});
  // baricentri, keyed
  const BG=$('bary');const act=B.filter(b=>on.has(b.id));
  BG.querySelectorAll('g').forEach(g=>{if(!on.has(g.dataset.id)){g.style.opacity=0;setTimeout(()=>g.remove(),400)}});
@@ -206,12 +206,13 @@ window.addEventListener('pointermove',e=>{if(pts.has(e.pointerId))pts.set(e.poin
   if(moved){vb=[drag.vb[0]-(e.clientX-drag.x)/r.width*vb[2],drag.vb[1]-(e.clientY-drag.y)/r.height*vb[3],vb[2],vb[3]];setView()}}});
 window.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!pts.size){drag=null;fig.classList.remove('drag')}});
 fig.addEventListener('click',e=>{if(moved){e.preventDefault();moved=false;return}if(e.target.closest('.ob'))return;const g=e.target.closest('.cell');sel=g?(sel===g.dataset.k?null:g.dataset.k):null;draw();if(sel&&innerWidth<992)$('side').scrollIntoView({behavior:'smooth'})});
-fig.addEventListener('pointerover',e=>{const o=e.target.closest('.ob');if(o){const v=o.dataset.v;tip.innerHTML=`<b>${esc(o.dataset.n)}</b><span class="g">${esc(o.dataset.b)}${grp!=='marchio'?' · '+esc(o.dataset.c):''}</span><br>U${v[0]} P${v[1]} C${v[2]} L${v[3]}<br><span class="g">${o.hasAttribute('href')?'clic: apri la scheda sul sito':'nessuna scheda sul sito'}</span>`;tip.style.display='block';return}
- const g=e.target.closest('.cell');if(!g)return;const [x,y]=g.dataset.k.split(',').map(Number);
+fig.addEventListener('pointerover',e=>{const o=e.target.closest('.ob');if(o){$('dots').classList.add('hov');$('dots').querySelectorAll('a.on').forEach(x=>x.classList.remove('on'));o.classList.add('on');o.parentNode.appendChild(o);const v=o.dataset.v;tip.innerHTML=`<b>${esc(o.dataset.n)}</b><span class="g">${esc(o.dataset.b)}${grp!=='marchio'?' · '+esc(o.dataset.c):''}</span><br>U${v[0]} P${v[1]} C${v[2]} L${v[3]}<br><span class="g">${o.hasAttribute('href')?'clic: apri la scheda sul sito':'nessuna scheda sul sito'}</span>`;tip.style.display='block';return}
+ $('dots').classList.remove('hov');const g=e.target.closest('.cell');if(!g)return;const [x,y]=g.dataset.k.split(',').map(Number);
  const its=items().filter(it=>!hide.has(key(it))&&xy(it).join(',')===g.dataset.k);
  tip.innerHTML=`<b>${its.length} ${its.length===1?'prodotto':'prodotti'}</b> · ${QN[quad([x,y])]}<br><span class="g">${esc(its.slice(0,6).map(i=>i.n).join(', '))}${its.length>6?'…':''}</span>`;tip.style.display='block'});
 fig.addEventListener('pointermove',e=>{if(tip.style.display==='block'){tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,e.clientX+16)+'px';tip.style.top=Math.min(innerHeight-tip.offsetHeight-8,e.clientY+16)+'px'}});
-fig.addEventListener('pointerout',e=>{if(e.target.closest('.cell')||e.target.closest('.ob'))tip.style.display='none'});
+fig.addEventListener('pointerleave',()=>{$('dots').classList.remove('hov');tip.style.display='none'});
+fig.addEventListener('pointerout',e=>{const o=e.target.closest('.ob');if(o){o.classList.remove('on');if(!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ob')))$('dots').classList.remove('hov')}if(e.target.closest('.cell')||o)tip.style.display='none'});
 fetch('data.json').then(r=>r.json()).then(d=>{B=d;const h=location.hash.slice(1).split('-').filter(x=>B.some(b=>b.id===x));if(h.length)on=new Set(h);bars();draw()}).catch(()=>{$('side').textContent='Dati non caricati.'});
 }
 </script>
