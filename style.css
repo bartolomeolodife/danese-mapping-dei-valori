@@ -1,0 +1,34 @@
+/* Linee guida del Fare book (03 Identita, design system Danese):
+   bianco come unico fondo, nero pieno, grigio sito #464646 per i dati secondari;
+   Archivo Regular e Bold, nessuna spaziatura tra le lettere; filetti 1px, raggio 0, nessuna ombra;
+   contenitore all'80% della finestra; menu e categorie in minuscolo; azioni scritte come parole. */
+:root{--ink:#000;--grey:#464646;--light:#9a9a9a;--hair:#d6d6d6;color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:20px}
+body{margin:0;background:#fff;color:var(--ink);font:400 16px/22.86px Archivo,Helvetica,Arial,sans-serif;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+:focus-visible{outline:1px solid #000;outline-offset:3px}
+.wrap{width:80%;margin:0 auto}
+@media(max-width:866px){.wrap{width:auto;margin:0 16px}}
+header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding:28px 0 24px;border-bottom:1px solid var(--ink)}
+.brand{font-weight:700;font-size:16px;line-height:20px}
+.brand span{display:block;font-weight:400;color:var(--grey)}
+nav.menu{display:flex;flex-wrap:wrap;gap:4px 24px;font:700 14px/20px Archivo,sans-serif}
+nav.menu a{color:var(--grey)}
+nav.menu a[aria-current=page]{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.lab{font:700 12px/17px Archivo,sans-serif;text-transform:uppercase;margin:0 0 6px}
+.g{color:var(--grey)}
+.words{display:flex;flex-wrap:wrap;gap:6px 22px}
+.word{font:400 16px/22px Archivo,sans-serif;background:none;border:0;padding:6px 0;cursor:pointer;color:var(--light);display:inline-flex;align-items:center;gap:8px;min-height:36px}
+.word:hover{color:var(--ink)}
+.word[aria-pressed=true]{color:var(--ink);font-weight:700}
+.word .dot{width:10px;height:10px;border-radius:50%;flex:none}
+.word[aria-pressed=false] .dot{opacity:.25}
+.act{font:700 14px/20px Archivo,sans-serif;background:none;border:0;padding:6px 0;cursor:pointer;color:var(--ink);min-height:36px}
+.act:hover{text-decoration:underline;text-underline-offset:3px}
+footer{border-top:1px solid var(--ink);margin-top:56px;padding:14px 0 40px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 18px;font-size:12px;line-height:17px;color:var(--grey)}
+footer b{color:var(--ink);text-transform:uppercase}
+footer p{margin:0 0 8px}
+@media(max-width:866px){footer{grid-template-columns:1fr 1fr}}
+@media(max-width:592px){footer{grid-template-columns:1fr}}

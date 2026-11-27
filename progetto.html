@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>progetto e fonti · mapping dei valori</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.lead{padding:26px 0 28px;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.lead h1{font:700 32px/36px Archivo,sans-serif;margin:0}
+.lead p{margin:0 0 10px;font-size:16px;line-height:23px;max-width:62ch}
+@media(max-width:866px){.lead{grid-template-columns:1fr;gap:12px}}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-bottom:1px solid var(--ink)}
+.grid>div{padding:16px 18px 20px 0;border-right:1px solid var(--ink);border-bottom:1px solid var(--hair)}
+.grid>div:nth-child(3n){border-right:0}
+.grid>div:not(:nth-child(3n+1)){padding-left:18px}
+.grid h2{font:700 16px/22px Archivo,sans-serif;margin:0 0 4px;display:flex;align-items:center;gap:8px}
+.grid .big{font:700 32px/36px Archivo,sans-serif;margin:8px 0 2px}
+.grid p{margin:0;font-size:14px;line-height:20px;color:var(--grey)}
+.grid a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:866px){.grid{grid-template-columns:1fr}.grid>div{border-right:0!important;padding-left:0!important}}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+.notes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 24px;padding:22px 0}
+.notes h3{font:700 16px/22px Archivo,sans-serif;margin:0 0 6px}
+.notes p{margin:0 0 10px;font-size:14px;line-height:20px}
+@media(max-width:866px){.notes{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <a class="brand" href="index.html">mapping dei valori<span>Fare book Danese · ISIA Roma</span></a>
+ <nav class="menu"><a href="index.html">mappe</a><a href="metodo.html">metodo</a><a href="progetto.html" aria-current="page">progetto e fonti</a></nav>
+</header>
+<div class="lead">
+ <h1>Il progetto</h1>
+ <div><p>Questo sito raccoglie le mappe dei valori fatte per il Fare book su Danese Milano: la ricerca strategica della fase 1 del corso di Design del Prodotto 3 (prof. Datti, ISIA Roma, 2026), di Bartolomeo Lodi-Fè e Alessandro dell’Aquila.</p>
+ <p>Abbiamo mappato i prodotti di Danese e di alcuni concorrenti per capire dove si colloca ciascuno tra uso, senso, gioco e intelligenza, e dove resta spazio. È un progetto di studio: non è un sito di Danese Milano né dei marchi citati.</p></div>
+</div>
+<div class="grid" id="grid"></div>
+<div class="notes">
+ <div><h3>Da dove vengono i dati</h3><p>Prodotti, categorie, designer e link sono letti dalle schede dei siti dei marchi il 27 novembre 2026; per Danese dal Danese Catalogue 2026. Varianti di colore, misure ed edizioni speciali dello stesso modello contano una volta.</p></div>
+ <div><h3>I voti</h3><p>I voti U P C L sono la nostra lettura (L), proposta da verificare, dati con il metodo descritto nella pagina <a href="metodo.html"><u>metodo</u></a>. Danese: voti delle otto tabelle del 26/11. Italian Radical Design: voti verificati con il metodo. Seletti e Design House Stockholm: prima versione.</p></div>
+ <div><h3>Cosa manca</h3><p>Alessi e la versione di Seletti divisa per designer: non abbiamo ancora gli elenchi con nome e voti di ogni famiglia. Bali e Bali Suspension di Danese non hanno una scheda sul sito; alcune famiglie Seletti non sono nel catalogo online e il clic apre la ricerca del sito.</p></div>
+</div>
+<footer>
+ <div><p><b>Bibliografia</b></p><p>Floch, Sémiotique, marketing et communication, PUF 1990. Petitimbert, Acta Semiotica II, 3, 2022. Semprini, Le marketing de la marque, Liaisons 1992.</p></div>
+ <div><p><b>Autori</b></p><p>Bartolomeo Lodi-Fè<br>Alessandro dell’Aquila</p></div>
+ <div><p><b>Carattere</b></p><p>Archivo (Omnibus-Type, licenza SIL Open Font), lo stesso del sito Danese.</p></div>
+ <div><p><b>Avvertenza</b></p><p>Nomi, prodotti e marchi appartengono ai rispettivi proprietari.</p></div>
+</footer>
+</div>
+<script>
+{
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+fetch('data.json').then(r=>r.json()).then(B=>{
+ document.getElementById('grid').innerHTML=B.map(b=>`<div><h2><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</h2><p class="big">${b.items.length}</p><p>${esc(b.note)}<br>fonte: <a href="https://${esc(b.site)}" target="_blank" rel="noopener">${esc(b.site)}</a> · <a href="index.html#${b.id}">vedi la mappa</a></p></div>`).join('');
+});
+}
+</script>
+</body>
+</html>
