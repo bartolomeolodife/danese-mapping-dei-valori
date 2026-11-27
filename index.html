@@ -58,6 +58,7 @@
 .bc{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s}
 #side>*{animation:fade .35s ease both}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}}
+.sub{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px 22px;padding-left:18px;border-left:1px solid #2f9a5c;max-height:0;overflow:hidden;opacity:0;transition:max-height .45s ease,opacity .35s ease,margin .45s ease}.sub.open{max-height:80px;opacity:1;margin:2px 0 4px}
 .word{transition:color .25s}.word .dot{transition:opacity .25s}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -93,6 +94,7 @@
 </div>
 <div id="tip"></div>
 <script>
+let irdOpen=false;
 {
 const PAL=['#000000','#f0b400','#d7261e','#1f4fa3','#2e8b57','#7B5EA7','#8B5A2B','#e8772e','#E8426A','#7fb6e0','#B5AEA2','#3B8F4E'];
 const FIX={'Fondatori (Mari, Munari)':'#d7261e','Dal 2017':'#1f4fa3','Altri autori':'#b5b5b5','metallo':'#1E1E1E','vetro':'#7FC6E0','ceramica':'#D9733F','legno':'#8B5A2B','plastica':'#E8426A','marmo, pietra, cemento':'#B5AEA2','carta, cartone':'#F0B400','tessuto, feltro':'#7B5EA7','sughero, gomma':'#3B8F4E','bambini':'#f0b400','una persona':'#d7261e','famiglia':'#1f4fa3','ospiti':'#2e8b57','pubblico':'#000000'};
@@ -122,15 +124,19 @@ function frame(){
  T(70,40,'missione',15,700,'start','#9a9a9a');T(930,40,'progetto',15,700,'end','#9a9a9a');T(70,975,'informazione',15,700,'start','#9a9a9a');T(930,975,'euforia',15,700,'end','#9a9a9a');
  return f.join('');
 }
-// anelli concentrici: anello 0 = 1 posto, anello k = 6k posti
-function slots(n,s){const out=[[0,0]];for(let k=1;out.length<n;k++){const m=6*k,off=k%2?Math.PI/m:0;for(let j=0;j<m&&out.length<n;j++){const a=off+j*2*Math.PI/m;out.push([k*s*Math.cos(a),k*s*Math.sin(a)])}}return out}
+// gruppo compatto: i posti più vicini al centro su una griglia a nido d'ape, poi riempiti a righe (dall'alto, da sinistra), così ogni colore è un blocco unico
+const SLOTC={};
+function slots(n,s){const k=n+'_'+s;if(SLOTC[k])return SLOTC[k];const pts=[],R=Math.ceil(Math.sqrt(n))+2,h=s*Math.sqrt(3)/2;
+ for(let r=-R;r<=R;r++)for(let c=-R;c<=R;c++){const x=(c+(r&1?.5:0))*s,y=r*h;pts.push([x,y,Math.hypot(x,y)])}
+ pts.sort((a,b)=>a[2]-b[2]||a[1]-b[1]||a[0]-b[0]);const sel=pts.slice(0,n);
+ const cy=sel.reduce((t,p)=>t+p[1],0)/n,cx=sel.reduce((t,p)=>t+p[0],0)/n;
+ sel.sort((a,b)=>a[1]-b[1]||a[0]-b[0]);return SLOTC[k]=sel.map(p=>[p[0]-cx,p[1]-cy])}
 function draw(){
  const all=items(),{keys,col}=colors(all);
  const vis=all.filter(it=>!hide.has(key(it)));
  const cells={};vis.forEach(it=>{const p=xy(it);const k=p.join(',');(cells[k]=cells[k]||{p,its:[]}).its.push(it)});
  const nmax=Math.max(1,...Object.values(cells).map(c=>c.its.length));
- let K=0;while(1+3*K*(K+1)<nmax)K++;
- const s=K?Math.min(19,60/K):19,rd=Math.max(1.8,Math.min(8.5,s/2-.7));
+ const s=Math.min(19,96/Math.sqrt(nmax*1.1)),rd=Math.max(1.8,Math.min(8.5,s/2-.7));
  if(!$('fr'))$('svg').innerHTML=`<g id="fr">${frame()}</g><g id="dots"></g><g id="bary" pointer-events="none"></g>`;
  const tgt=new Map();
  Object.values(cells).forEach(c=>{const cx=P(c.p[0]),cy=P(-c.p[1]);
@@ -177,7 +183,13 @@ function side(vis,col){
  $('side').innerHTML=`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
 }
 function bars(){
- $('brands').innerHTML=B.map(b=>`<button class="word" aria-pressed="${on.has(b.id)}" data-id="${b.id}"><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</button>`).join('')+`<button class="act" data-all="1">vedi tutte</button>`;
+ const IRD=['gufram','memphis','meritalia'];
+ const btn=b=>`<button class="word" aria-pressed="${on.has(b.id)}" data-id="${b.id}"><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</button>`;
+ const irdOn=IRD.some(i=>on.has(i));if(irdOn)irdOpen=true;
+ $('brands').innerHTML=B.filter(b=>!IRD.includes(b.id)).map(btn).join('')
+  +`<button class="word" aria-pressed="${irdOn}" aria-expanded="${irdOpen}" data-ird="1"><span class="dot" style="background:#2f9a5c"></span>Italian Radical Design <span class="g">${irdOpen?'−':'+'}</span></button>`
+  +`<button class="act" data-all="1">vedi tutte</button>`
+  +`<div class="sub${irdOpen?' open':''}">${B.filter(b=>IRD.includes(b.id)).map(btn).join('')}</div>`;
  const one=on.size===1;document.querySelectorAll('.cpr').forEach(e=>e.style.display=one?'':'none');
  if(one){const b=B.find(b=>on.has(b.id));const gs=['uno',...b.groups];if(!gs.includes(grp))grp='uno';
   $('grps').innerHTML=gs.map(g=>`<button class="word" aria-pressed="${g===grp}" data-g="${esc(g)}">${g==='uno'?'un colore':esc(g)}</button>`).join('')}
@@ -187,7 +199,7 @@ function zoom(f,cx,cy){const nw=Math.min(1000,Math.max(100,vb[2]*f)),k=nw/vb[2];
 function toSvg(e){const r=$('svg').getBoundingClientRect();return [cur[0]+(e.clientX-r.left)/r.width*cur[2],cur[1]+(e.clientY-r.top)/r.height*cur[3]]}
 function save(){try{history.replaceState(null,'','#'+[...on].join('-'))}catch(e){}}
 function pick(id){selId=id;draw();if(innerWidth<992)$('side').scrollIntoView({behavior:'smooth'})}
-$('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.all){B.forEach(x=>on.add(x.id))}else{const id=b.dataset.id;on.has(id)?on.delete(id):on.add(id);if(!on.size)on.add(id)}hide.clear();selId=null;bars();draw();save()};
+$('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.all){B.forEach(x=>on.add(x.id));irdOpen=true}else if(b.dataset.ird){const IRD=['gufram','memphis','meritalia'];if(irdOpen&&IRD.every(i=>on.has(i))){IRD.forEach(i=>on.delete(i));irdOpen=false;if(!on.size)on.add('danese')}else{IRD.forEach(i=>on.add(i));irdOpen=true}}else{const id=b.dataset.id;on.has(id)?on.delete(id):on.add(id);if(!on.size)on.add(id)}hide.clear();selId=null;bars();draw();save()};
 $('grps').onclick=e=>{const b=e.target.closest('button');if(!b)return;grp=b.dataset.g;hide.clear();bars();draw()};
 $('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;const allk=[...$('leg').querySelectorAll('button')].map(x=>x.dataset.k);
  if(!hide.size){allk.forEach(x=>{if(x!==k)hide.add(x)})}else{hide.has(k)?hide.delete(k):hide.add(k);if(hide.size===allk.length)hide.clear()}draw()};
