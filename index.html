@@ -56,7 +56,7 @@
  <div class="sep cpr"></div>
  <p class="lab cpr">colora per</p><div class="row cpr" id="grps"></div>
  <div class="sep"></div>
- <p class="lab">mostra</p><div class="row"><div class="words" id="leg"></div><button class="act" id="all">tutte</button></div>
+ <p class="lab">mostra</p><div class="row"><div class="words" id="leg"></div><button class="act" id="all">vedi tutte</button></div>
 </div>
 <div class="stage">
  <div class="figcol">
@@ -132,6 +132,8 @@ function draw(){
   s+=`<g pointer-events="none"><line x1="${x-14}" y1="${y}" x2="${x+14}" y2="${y}" stroke="${b.col}" stroke-width="3"/><line x1="${x}" y1="${y-14}" x2="${x}" y2="${y+14}" stroke="${b.col}" stroke-width="3"/><text x="${x+18}" y="${y-8}" font-family="Archivo,sans-serif" font-size="14" font-weight="700" fill="${b.col}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(b.name)}</text></g>`});
  $('svg').innerHTML=s;
  // legend as filter words
+ $('leg').style.display=on.size>1?'none':'';
+ $('all').textContent=on.size>1?'vedi tutte le aziende':'vedi tutte';
  $('leg').innerHTML=keys.map(k=>`<button class="word" aria-pressed="${!hide.has(k)}" data-k="${esc(k)}"><span class="dot" style="background:${col[k]||OTHER}"></span>${esc(k)}</button>`).join('');
  side(all,vis,cells,col,keys);
 }
@@ -161,7 +163,7 @@ $('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.d
  const allk=[...$('leg').querySelectorAll('button')].map(x=>x.dataset.k);
  if(!hide.size){allk.forEach(x=>{if(x!==k)hide.add(x)})}else{hide.has(k)?hide.delete(k):hide.add(k);if(hide.size===allk.length)hide.clear()}
  sel=null;draw()};
-$('all').onclick=()=>{hide.clear();sel=null;draw()};
+$('all').onclick=()=>{if(on.size>1){B.forEach(b=>on.add(b.id));bars();save()}hide.clear();sel=null;draw()};
 $('zin').onclick=()=>zoom(.7);$('zout').onclick=()=>zoom(1/.7);$('zre').onclick=()=>{vb=[0,0,1000,1000];setView()};
 const fig=$('fig'),tip=$('tip');
 fig.addEventListener('wheel',e=>{e.preventDefault();const [x,y]=toSvg(e);zoom(e.deltaY>0?1.15:1/1.15,x,y)},{passive:false});
