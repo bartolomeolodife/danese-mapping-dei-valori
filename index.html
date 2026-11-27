@@ -59,6 +59,11 @@
 #side>*{animation:fade .35s ease both}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}}
 .sub{flex-basis:100%;display:flex;flex-wrap:wrap;gap:6px 22px;padding-left:18px;border-left:1px solid #2f9a5c;max-height:0;overflow:hidden;opacity:0;transition:max-height .45s ease,opacity .35s ease,margin .45s ease}.sub.open{max-height:80px;opacity:1;margin:2px 0 4px}
+#blobs path{transition:opacity .45s ease,fill .45s ease;cursor:pointer}
+#blobs{transition:opacity .45s ease}#dots{transition:opacity .45s ease}
+#svg:not(.mac) #blobs{opacity:0;pointer-events:none}
+#svg.mac #dots{opacity:0;pointer-events:none}
+#blobs.hov path{opacity:.08!important}#blobs.hov path.on,#blobs path.sel{opacity:.45!important}
 .word{transition:color .25s}.word .dot{transition:opacity .25s}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -73,6 +78,8 @@
  <p class="lab">cerca</p><div class="row"><input type="search" id="q" placeholder="nome del prodotto, designer, categoria" autocomplete="off"><span class="g" id="qn"></span></div>
  <div class="sep"></div>
  <p class="lab">aziende</p><div class="row" id="brands"></div>
+ <div class="sep"></div>
+ <p class="lab">vista</p><div class="row" id="vista"><button class="word" aria-pressed="true" data-v="pallini">pallini</button><button class="word" aria-pressed="false" data-v="macchie">macchie</button></div>
  <div class="sep cpr"></div>
  <p class="lab cpr">colora per</p><div class="row cpr" id="grps"></div>
  <div class="sep msr"></div>
@@ -93,6 +100,7 @@
 </footer>
 </div>
 <div id="tip"></div>
+<script src="d3-contour.js"></script>
 <script>
 let irdOpen=false;
 {
@@ -101,7 +109,7 @@ const FIX={'Fondatori (Mari, Munari)':'#d7261e','Dal 2017':'#1f4fa3','Altri auto
 const OTHER='#cfcfcf',MAXC=12,QN=['missione','progetto','informazione','euforia','sugli assi'],NAME={U:'utopica',P:'pratica',C:'critica',L:'ludica'};
 const $=id=>document.getElementById(id);
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let q='',B=[],on=new Set(['danese']),grp='uno',hide=new Set(),selId=null,vb=[0,0,1000,1000],cur=[0,0,1000,1000],raf=0,ALL=[];
+let mode='pallini',selBlob=null,q='',B=[],on=new Set(['danese']),grp='uno',hide=new Set(),selId=null,vb=[0,0,1000,1000],cur=[0,0,1000,1000],raf=0,ALL=[];
 const P=v=>500+v*130;
 const xy=it=>{const [U,Pr,C,L]=it.v.split('').map(Number);return [L-C,U-Pr]};
 const quad=([x,y])=>y>0&&x<0?0:y>0&&x>0?1:y<0&&x<0?2:y<0&&x>0?3:4;
@@ -131,13 +139,43 @@ function slots(n,s){const k=n+'_'+s;if(SLOTC[k])return SLOTC[k];const pts=[],R=M
  pts.sort((a,b)=>a[2]-b[2]||a[1]-b[1]||a[0]-b[0]);const sel=pts.slice(0,n);
  const cy=sel.reduce((t,p)=>t+p[1],0)/n,cx=sel.reduce((t,p)=>t+p[0],0)/n;
  sel.sort((a,b)=>a[1]-b[1]||a[0]-b[0]);return SLOTC[k]=sel.map(p=>[p[0]-cx,p[1]-cy])}
+// macchie: per ogni gruppo (azienda o categoria) un campo morbido attorno alle caselle occupate;
+// le caselle vicine si fondono in una macchia, una casella lontana diventa una seconda macchia separata
+const GN=200,GS=1000/GN,SIG=58;
+function blobs(vis,keys,col){
+ const by={};vis.forEach(it=>{const k=key(it);(by[k]=by[k]||[]).push(it)});
+ const out=[];
+ keys.filter(k=>by[k]).forEach(k=>{
+  const cells={};by[k].forEach(it=>{const p=xy(it),c=p.join(',');(cells[c]=cells[c]||{p,its:[]}).its.push(it)});
+  const cl=Object.values(cells),mx=Math.max(...cl.map(c=>c.its.length));
+  const f=new Float64Array(GN*GN);
+  cl.forEach(c=>{const cx=P(c.p[0]),cy=P(-c.p[1]),w=.75+.5*Math.sqrt(c.its.length/mx);
+   const i0=Math.max(0,Math.floor((cx-3*SIG)/GS)),i1=Math.min(GN-1,Math.ceil((cx+3*SIG)/GS)),j0=Math.max(0,Math.floor((cy-3*SIG)/GS)),j1=Math.min(GN-1,Math.ceil((cy+3*SIG)/GS));
+   for(let j=j0;j<=j1;j++)for(let i=i0;i<=i1;i++){const dx=(i+.5)*GS-cx,dy=(j+.5)*GS-cy;f[j*GN+i]+=w*Math.exp(-(dx*dx+dy*dy)/(2*SIG*SIG))}});
+  const mp=d3.contours().size([GN,GN]).thresholds([.5])(f)[0];
+  mp.coordinates.forEach((poly,pi)=>{
+   const d=poly.map(r=>'M'+r.map(([x,y])=>(x*GS).toFixed(1)+','+(y*GS).toFixed(1)).join('L')+'Z').join('');
+   // oggetti dentro questa macchia: le caselle il cui centro cade nell'anello esterno
+   const ring=poly[0],ins=(x,y)=>{let o=false;for(let a=0,b=ring.length-1;a<ring.length;b=a++){const [xa,ya]=ring[a],[xb,yb]=ring[b];if((ya>y)!==(yb>y)&&x<(xb-xa)*(y-ya)/(yb-ya)+xa)o=!o}return o};
+   const its=cl.filter(c=>ins(P(c.p[0])/GS,P(-c.p[1])/GS)).flatMap(c=>c.its);
+   out.push({id:k+'#'+pi,k,c:col[k]||OTHER,d,its})})});
+ return out;
+}
+function drawBlobs(vis,keys,col){
+ const G=$('blobs'),bl=mode==='macchie'?blobs(vis,keys,col):[];window.BL=bl;
+ const ids=new Set(bl.map(b=>b.id));
+ G.querySelectorAll('path').forEach(p=>{if(!ids.has(p.dataset.id)&&!p.dataset.out){p.dataset.out=1;p.style.opacity=0;setTimeout(()=>p.remove(),450)}});
+ bl.forEach(b=>{let p=G.querySelector(`path[data-id="${CSS.escape(b.id)}"]`);if(p&&p.dataset.out){p.remove();p=null}
+  if(!p){p=document.createElementNS('http://www.w3.org/2000/svg','path');p.dataset.id=b.id;p.style.opacity=0;G.appendChild(p);p.getBoundingClientRect()}
+  p.setAttribute('d',b.d);p.style.fill=b.c;p.dataset.k=b.k;p.style.opacity=on.size>2?.2:.3;p.classList.toggle('sel',selBlob===b.id)});
+}
 function draw(){
  const all=items(),{keys,col}=colors(all);
  const vis=all.filter(it=>!hide.has(key(it)));
  const cells={};vis.forEach(it=>{const p=xy(it);const k=p.join(',');(cells[k]=cells[k]||{p,its:[]}).its.push(it)});
  const nmax=Math.max(1,...Object.values(cells).map(c=>c.its.length));
  const s=Math.min(19,96/Math.sqrt(nmax*1.1)),rd=Math.max(1.8,Math.min(8.5,s/2-.7));
- if(!$('fr'))$('svg').innerHTML=`<g id="fr">${frame()}</g><g id="dots"></g><g id="bary" pointer-events="none"></g>`;
+ if(!$('fr'))$('svg').innerHTML=`<g id="fr">${frame()}</g><g id="blobs"></g><g id="dots"></g><g id="bary" pointer-events="none"></g>`;
  const tgt=new Map();
  Object.values(cells).forEach(c=>{const cx=P(c.p[0]),cy=P(-c.p[1]);
   const its=c.its.slice().sort((a,b)=>keys.indexOf(key(a))-keys.indexOf(key(b))||a.n.localeCompare(b.n));
@@ -160,6 +198,7 @@ function draw(){
   g.style.opacity=q||selId?.2:1;g.style.transform=`translate(${x}px,${y}px)`});
  $('leg').innerHTML=keys.map(k=>`<button class="word" aria-pressed="${!hide.has(k)}" data-k="${esc(k)}"><span class="dot" style="background:${col[k]||OTHER}"></span>${esc(k)}</button>`).join('');
  document.querySelectorAll('.msr').forEach(e=>e.style.display=on.size>1||grp==='uno'?'none':'');
+ $('svg').classList.toggle('mac',mode==='macchie');drawBlobs(vis,keys,col);
  side(vis,col);
 }
 function dots(v){return '<i>'+[0,1,2].map(i=>`<span class="${i<v?'f':''}"></span>`).join('')+'</i>'}
@@ -176,11 +215,15 @@ function card(it,col){
 }
 function side(vis,col){
  const sel=selId&&ALL.find(it=>it.id===selId);
+ const bs=mode==='macchie'&&selBlob&&(window.BL||[]).find(b=>b.id===selBlob);
+ if(!sel&&bs){const r=bs.its.slice().sort((a,b)=>a.n.localeCompare(b.n)),n=(window.BL||[]).filter(b=>b.k===bs.k).length;
+  $('side').innerHTML=`<h2 style="margin:0 0 4px"><span class="dot" style="background:${bs.c}"></span> ${esc(bs.k)}</h2><p class="lab">${r.length} ${r.length===1?'prodotto':'prodotti'} in questa macchia${n>1?' · '+n+' macchie in tutto':''}</p><div class="res">`+r.map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+bs.c+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+`</div><p><button class="act" id="close">chiudi</button></p>`;
+  $('close').onclick=()=>{selBlob=null;draw()};return}
  if(sel){$('side').innerHTML=card(sel,col);$('close').onclick=()=>{selId=null;draw()};return}
  if(q){const r=vis.filter(match).sort((a,b)=>a.n.localeCompare(b.n));$('qn').textContent=r.length+(r.length===1?' risultato':' risultati');
   $('side').innerHTML=`<p class="lab">${r.length} ${r.length===1?'prodotto trovato':'prodotti trovati'}</p><div class="res">`+r.slice(0,300).map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+(col[key(it)]||OTHER)+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+(r.length?'':'<p class="hint" style="padding:12px 0">Nessun prodotto. Prova ad accendere altre aziende.</p>')+'</div>';return}
  $('qn').textContent='';
- $('side').innerHTML=`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
+ $('side').innerHTML=mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
 }
 function bars(){
  const IRD=['gufram','memphis','meritalia'];
@@ -199,12 +242,13 @@ function zoom(f,cx,cy){const nw=Math.min(1000,Math.max(100,vb[2]*f)),k=nw/vb[2];
 function toSvg(e){const r=$('svg').getBoundingClientRect();return [cur[0]+(e.clientX-r.left)/r.width*cur[2],cur[1]+(e.clientY-r.top)/r.height*cur[3]]}
 function save(){try{history.replaceState(null,'','#'+[...on].join('-'))}catch(e){}}
 function pick(id){selId=id;draw();if(innerWidth<992)$('side').scrollIntoView({behavior:'smooth'})}
-$('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.all){B.forEach(x=>on.add(x.id));irdOpen=true}else if(b.dataset.ird){const IRD=['gufram','memphis','meritalia'];if(irdOpen&&IRD.every(i=>on.has(i))){IRD.forEach(i=>on.delete(i));irdOpen=false;if(!on.size)on.add('danese')}else{IRD.forEach(i=>on.add(i));irdOpen=true}}else{const id=b.dataset.id;on.has(id)?on.delete(id):on.add(id);if(!on.size)on.add(id)}hide.clear();selId=null;bars();draw();save()};
+$('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.all){B.forEach(x=>on.add(x.id));irdOpen=true}else if(b.dataset.ird){const IRD=['gufram','memphis','meritalia'];if(irdOpen&&IRD.every(i=>on.has(i))){IRD.forEach(i=>on.delete(i));irdOpen=false;if(!on.size)on.add('danese')}else{IRD.forEach(i=>on.add(i));irdOpen=true}}else{const id=b.dataset.id;on.has(id)?on.delete(id):on.add(id);if(!on.size)on.add(id)}hide.clear();selId=null;selBlob=null;bars();draw();save()};
+$('vista').onclick=e=>{const b=e.target.closest('button');if(!b)return;mode=b.dataset.v;selBlob=null;selId=null;$('vista').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));draw()};
 $('grps').onclick=e=>{const b=e.target.closest('button');if(!b)return;grp=b.dataset.g;hide.clear();bars();draw()};
 $('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;const allk=[...$('leg').querySelectorAll('button')].map(x=>x.dataset.k);
  if(!hide.size){allk.forEach(x=>{if(x!==k)hide.add(x)})}else{hide.has(k)?hide.delete(k):hide.add(k);if(hide.size===allk.length)hide.clear()}draw()};
 $('all').onclick=()=>{hide.clear();draw()};
-$('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();selId=null;draw()});
+$('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();selId=null;if(q&&mode==='macchie'){mode='pallini';$('vista').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='pallini'))}draw()});
 $('side').addEventListener('click',e=>{const b=e.target.closest('.res button');if(b)pick(b.dataset.id)});
 $('zin').onclick=()=>zoom(.7);$('zout').onclick=()=>zoom(1/.7);$('zre').onclick=()=>{vb=[0,0,1000,1000];setView()};
 const fig=$('fig'),tip=$('tip');
@@ -216,14 +260,18 @@ window.addEventListener('pointermove',e=>{if(pts.has(e.pointerId))pts.set(e.poin
  if(drag&&vb[2]<1000){const r=$('svg').getBoundingClientRect();if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4){moved=true;fig.classList.add('drag')}
   if(moved){vb=[drag.vb[0]-(e.clientX-drag.x)/r.width*vb[2],drag.vb[1]-(e.clientY-drag.y)/r.height*vb[3],vb[2],vb[3]];setView()}}});
 window.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!pts.size){drag=null;fig.classList.remove('drag')}});
-fig.addEventListener('click',e=>{if(moved){moved=false;return}const o=e.target.closest('.ob');if(o)pick(o.dataset.id);else if(selId){selId=null;draw()}});
+fig.addEventListener('click',e=>{if(moved){moved=false;return}const o=e.target.closest('.ob');if(o)pick(o.dataset.id);else{const bp=e.target.closest('#blobs path');if(bp){selBlob=bp.dataset.id;selId=null;draw()}else if(selId||selBlob){selId=null;selBlob=null;draw()}}});
 fig.addEventListener('keydown',e=>{const o=e.target.closest&&e.target.closest('.ob');if(o&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(o.dataset.id)}});
-fig.addEventListener('pointerover',e=>{const o=e.target.closest('.ob');if(!o){$('dots').classList.remove('hov');return}
+fig.addEventListener('pointerover',e=>{const bp=e.target.closest&&e.target.closest('#blobs path');
+ if(bp){$('blobs').classList.add('hov');$('blobs').querySelectorAll('path.on').forEach(x=>x.classList.remove('on'));$('blobs').querySelectorAll('path').forEach(x=>{if(x.dataset.k===bp.dataset.k&&x===bp)x.classList.add('on')});
+  const b=(window.BL||[]).find(x=>x.id===bp.dataset.id);tip.innerHTML=`<b>${esc(b.k)}</b><span class="g">${b.its.length} ${b.its.length===1?'prodotto':'prodotti'}</span>`;tip.style.display='block';return}
+ if(mode==='macchie'){$('blobs').classList.remove('hov');tip.style.display='none';return}
+ const o=e.target.closest('.ob');if(!o){$('dots').classList.remove('hov');return}
  const it=ALL.find(x=>x.id===o.dataset.id);$('dots').classList.add('hov');$('dots').querySelectorAll('a.on').forEach(x=>x.classList.remove('on'));o.classList.add('on');
  tip.innerHTML=`${it.p?`<img src="${esc(it.p)}" alt="" referrerpolicy="no-referrer">`:''}<b>${esc(it.n)}</b><span class="g">${esc(it.b.name)} · U${it.v[0]} P${it.v[1]} C${it.v[2]} L${it.v[3]}</span>`;tip.style.display='block'});
 fig.addEventListener('pointermove',e=>{if(tip.style.display==='block'){tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,e.clientX+16)+'px';tip.style.top=Math.min(innerHeight-tip.offsetHeight-8,e.clientY+16)+'px'}});
 fig.addEventListener('pointerout',e=>{const o=e.target.closest('.ob');if(o){o.classList.remove('on');tip.style.display='none';if(!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ob')))$('dots').classList.remove('hov')}});
-fig.addEventListener('pointerleave',()=>{$('dots').classList.remove('hov');tip.style.display='none'});
+fig.addEventListener('pointerleave',()=>{$('blobs')&&$('blobs').classList.remove('hov');$('dots').classList.remove('hov');tip.style.display='none'});
 fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{B=d;ALL=B.flatMap(b=>b.items.map((it,i)=>({...it,b,id:b.id+'_'+i})));
  const h=location.hash.slice(1).split('-').filter(x=>B.some(b=>b.id===x));if(h.length)on=new Set(h);bars();draw()}).catch(()=>{$('side').textContent='Dati non caricati.'});
 }
