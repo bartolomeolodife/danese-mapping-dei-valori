@@ -41,6 +41,10 @@
 .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
 #tip b{display:block}#tip{position:fixed;pointer-events:none;background:#fff;border:1px solid #000;padding:8px 10px;font-size:13px;line-height:18px;max-width:260px;display:none;z-index:9}
 .cell{cursor:pointer}
+#q{font:400 16px/22px Archivo,sans-serif;border:0;border-bottom:1px solid #000;border-radius:0;background:#fff;color:#000;padding:6px 0;min-height:38px;width:min(420px,100%);-webkit-appearance:none;appearance:none}
+#q::placeholder{color:#9a9a9a}
+#dots a.ob.dim circle{opacity:.1}
+#dots a.ob.hit circle{stroke:#000;stroke-width:1.5px;vector-effect:non-scaling-stroke}
 #dots circle{transition:transform .7s cubic-bezier(.2,.8,.2,1),r .45s ease,fill .45s ease,opacity .2s ease}
 #dots.hov a.ob circle{opacity:.18}#dots.hov a.ob.on circle{opacity:1;stroke:#000;stroke-width:1.5px;vector-effect:non-scaling-stroke}#dots.hov a.ob.on{}
 .bc{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .4s}
@@ -63,6 +67,8 @@
  <nav class="menu"><a href="index.html" aria-current="page">mappe</a><a href="metodo.html">metodo</a><a href="progetto.html">progetto e fonti</a></nav>
 </header>
 <div class="ctrl">
+ <p class="lab">cerca</p><div class="row"><input type="search" id="q" placeholder="nome del prodotto, designer, categoria" autocomplete="off"><span class="g" id="qn"></span></div>
+ <div class="sep"></div>
  <p class="lab">aziende</p><div class="row" id="brands"></div>
  <div class="sep"></div>
  <p class="lab">vista</p><div class="row" id="views"><button class="word" data-v="obj" aria-pressed="true">ogni oggetto</button><button class="word" data-v="cell" aria-pressed="false">cerchi per posizione</button></div>
@@ -94,11 +100,12 @@ const OTHER='#cfcfcf',MAXC=12;
 const QN=['missione','progetto','informazione','euforia','sugli assi'],QF=['#000','#555','#999','#d0d0d0','#fff'];
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-let view='obj',B=[],on=new Set(['danese']),grp='categoria',hide=new Set(),sel=null,vb=[0,0,1000,1000];
+let q='',view='obj',B=[],on=new Set(['danese']),grp='categoria',hide=new Set(),sel=null,vb=[0,0,1000,1000];
 const P=v=>500+v*130;               // -3..3 -> 110..890
 const xy=it=>{const [U,Pr,C,L]=it.v.split('').map(Number);return [L-C,U-Pr]};
 const quad=([x,y])=>y>0&&x<0?0:y>0&&x>0?1:y<0&&x<0?2:y<0&&x>0?3:4;
 const items=()=>B.filter(b=>on.has(b.id)).flatMap(b=>b.items.map((it,i)=>({...it,b,id:b.id+'_'+i})));
+const match=it=>!q||(it.n+' '+it.b.name+' '+(it.i||'')+' '+Object.values(it.g).flat().join(' ')).toLowerCase().includes(q);
 const key=it=>grp==='marchio'?it.b.name:((it.g[grp]||['n.d.'])[0]);
 function groups(){const a=B.filter(b=>on.has(b.id));return a.length===1?a[0].groups:['marchio']}
 function colors(list){
@@ -152,7 +159,7 @@ function draw(){
    if(it.u){el.setAttribute('href',it.u);el.setAttribute('target','_blank');el.setAttribute('rel','noopener')}
    const ci=document.createElementNS('http://www.w3.org/2000/svg','circle');ci.setAttribute('r',0);ci.style.r=0;ci.style.transform=`translate(${d.x}px,${d.y}px)`;ci.setAttribute('fill',d.c);el.appendChild(ci);G.appendChild(el);
    ci.getBoundingClientRect()}
-  Object.assign(el.dataset,{n:it.n,b:it.b.name,v:it.v,c:key(it),k:d.k});
+  Object.assign(el.dataset,{n:it.n,b:it.b.name,v:it.v,c:key(it),k:d.k});el.classList.toggle('dim',!!q&&!match(it));el.classList.toggle('hit',!!q&&match(it));
   const ci=el.firstChild;ci.style.transform=`translate(${d.x.toFixed(1)}px,${d.y.toFixed(1)}px)`;ci.style.r=rd;ci.setAttribute('r',rd);ci.style.fill=d.c;ci.style.opacity=''});
  // baricentri, keyed
  const BG=$('bary');const act=B.filter(b=>on.has(b.id));
@@ -167,6 +174,10 @@ function draw(){
  side(all,vis,cells,col,keys);
 }
 function side(all,vis,cells,col,keys){
+ if(q){const r=vis.filter(match).sort((a,b)=>a.n.localeCompare(b.n));$('qn').textContent=r.length+(r.length===1?' risultato':' risultati');
+  $('side').innerHTML=`<h2>${r.length} ${r.length===1?'prodotto trovato':'prodotti trovati'}</h2><p class="sub">Cerchi «${esc(q)}» tra le aziende accese. Sul quadrato restano pieni solo i prodotti trovati. Clic su un nome per aprire la scheda sul sito.</p><div class="list">`+
+  r.map(it=>{const [x,y]=xy(it);return `<a ${it.u?`href="${esc(it.u)}" target="_blank" rel="noopener"`:''}><span style="color:#000;font-size:14px;white-space:normal"><span class="dot" style="background:${col[key(it)]||OTHER};margin-right:8px"></span>${esc(it.n)}</span><span>${esc(it.b.name)} · ${QN[quad([x,y])]} · U${it.v[0]} P${it.v[1]} C${it.v[2]} L${it.v[3]}${it.u?' ↗':''}</span></a>`}).join('')+(r.length?'':'<p class="g" style="padding:12px 0">Nessun prodotto. Prova ad accendere altre aziende.</p>')+'</div>';return}
+ $('qn').textContent='';
  if(sel&&cells[sel]){const c=cells[sel];const [x,y]=c.p;const f=v=>(v>0?'+':v<0?'−':'')+Math.abs(v);
   const by={};c.its.forEach(it=>{(by[key(it)]=by[key(it)]||[]).push(it)});
   $('side').innerHTML=`<h2>${c.its.length} ${c.its.length===1?'prodotto':'prodotti'} · ${QN[quad(c.p)]}</h2><p class="sub">x ${f(x)} (ludica − critica) · y ${f(y)} (utopica − pratica) · clic su un nome per aprire la scheda sul sito · <button class="act" id="back">chiudi</button></p><div class="list">`+
@@ -188,6 +199,7 @@ function zoom(f,cx,cy){const nw=Math.min(1000,Math.max(120,vb[2]*f)),k=nw/vb[2];
 function toSvg(e){const r=$('svg').getBoundingClientRect();return [cur[0]+(e.clientX-r.left)/r.width*cur[2],cur[1]+(e.clientY-r.top)/r.height*cur[3]]}
 function save(){try{location.replace('#'+[...on].join('-'))}catch(e){}}
 $('brands').onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.all){B.forEach(x=>on.add(x.id));hide.clear();sel=null;bars();draw();save();return}const id=b.dataset.id;on.has(id)?on.delete(id):on.add(id);if(!on.size)on.add(id);hide.clear();sel=null;bars();draw();save()};
+$('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();sel=null;draw()});
 $('views').onclick=e=>{const b=e.target.closest('button');if(!b)return;view=b.dataset.v;$('views').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x===b));sel=null;draw()};
 $('grps').onclick=e=>{const b=e.target.closest('button');if(!b)return;grp=b.dataset.g;hide.clear();sel=null;bars();draw()};
 $('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.dataset.k;
