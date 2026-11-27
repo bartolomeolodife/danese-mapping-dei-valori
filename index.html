@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mapping dei valori · Fare book Danese</title>
+<meta name="description" content="Mapping dei valori dei prodotti Danese Milano e dei concorrenti. Progetto di studio, ISIA Roma.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* Linee guida: design system Danese del Fare book (03 Identita)
+   bianco come unico fondo, nero puro, web-grey #464646 per i dati secondari
+   un carattere, due pesi: Archivo Regular e Bold, nessuna spaziatura tra le lettere
+   la linea al posto della scatola: filetti 1px, raggio 0, nessuna ombra
+   contenitore all'80% della finestra, menu e categorie in minuscolo, azioni come parole */
+:root{--ink:#000;--grey:#464646;--line:#000;--hair:#c8c8c8;color-scheme:light}
+*{box-sizing:border-box;min-width:0}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fff;color:var(--ink);font:400 16px/22.86px Archivo,Helvetica,Arial,sans-serif;overflow-x:clip}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.wrap{width:80%;margin:0 auto}
+@media(max-width:866px){.wrap{width:auto;margin:0 16px}}
+header.top{display:flex;justify-content:space-between;align-items:flex-start;gap:24px;padding:28px 0 26px}
+.brand{font-weight:700;font-size:16px;line-height:20px}
+.brand span{display:block;font-weight:400;color:var(--grey)}
+nav.menu{display:flex;flex-wrap:wrap;gap:4px 22px;font:700 14px/20px Archivo,sans-serif}
+nav.menu a{color:var(--grey)}nav.menu a[aria-current=true]{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px}
+.intro{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line)}
+.intro>div{padding:12px 14px 16px 0;border-right:1px solid var(--line);min-height:120px}
+.intro>div+div{padding-left:14px}
+.intro>div:last-child{border-right:0}
+.intro h1{font:700 16px/22.86px Archivo,sans-serif;margin:0}
+.intro p{margin:0;font-size:14px;line-height:20px;color:var(--grey)}
+.intro b{color:var(--ink)}
+@media(max-width:866px){.intro{grid-template-columns:1fr 1fr}.intro>div{min-height:0;border-bottom:1px solid var(--line)}.intro>div:nth-child(2n){border-right:0}}
+.ctrl{display:flex;flex-wrap:wrap;gap:12px 28px;align-items:end;border-top:1px solid var(--line);padding:14px 0 16px}
+.ctrl label{display:flex;flex-direction:column;gap:2px;font:700 12px/17px Archivo,sans-serif;text-transform:uppercase}
+select,input[type=search]{font:400 16px/22px Archivo,sans-serif;border:0;border-bottom:1px solid var(--ink);border-radius:0;background:#fff;color:var(--ink);padding:4px 0;min-height:36px;-webkit-appearance:none;appearance:none}
+select{padding-right:18px;background:linear-gradient(45deg,transparent 50%,#000 50%) right 6px top 50%/5px 5px no-repeat,linear-gradient(-45deg,transparent 50%,#000 50%) right 1px top 50%/5px 5px no-repeat}
+input[type=search]{width:240px}
+.chk{flex-direction:row!important;align-items:center;gap:8px!important;text-transform:none!important;font:400 14px/20px Archivo,sans-serif!important;min-height:36px}
+.chk input{width:16px;height:16px;accent-color:#000;margin:0}
+.act{font:700 14px/20px Archivo,sans-serif;background:none;border:0;padding:8px 0;cursor:pointer;color:var(--ink);min-height:36px}
+.act:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:1px solid #000;outline-offset:3px}
+.stage{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);border-top:1px solid var(--line)}
+@media(max-width:992px){.stage{grid-template-columns:minmax(0,1fr)}}
+.fig{position:relative;aspect-ratio:1/1;touch-action:none;user-select:none;overflow:hidden;cursor:grab}
+
+.fig.drag{cursor:grabbing}
+.fig svg{position:absolute;inset:0;width:100%;height:100%}
+.figcol{border-right:1px solid var(--line)}@media(max-width:992px){.figcol{border-right:0}}.zoom{display:flex;gap:22px;padding:4px 0;border-top:1px solid var(--line)}
+.side{padding:0 0 0 22px}
+@media(max-width:992px){.side{padding:0}}
+.side h2{font:700 12px/17px Archivo,sans-serif;text-transform:uppercase;margin:16px 0 6px}
+.leg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border-top:1px solid var(--line);max-height:380px;overflow:auto}
+.leg button{display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:8px;align-items:center;text-align:left;font:400 14px/18px Archivo,sans-serif;color:var(--ink);background:#fff;border:0;border-bottom:1px solid var(--hair);padding:8px 10px 8px 0;cursor:pointer;min-height:40px}
+.leg button:nth-child(odd){border-right:1px solid var(--hair)}.leg button:nth-child(even){padding-left:10px}
+.leg button[aria-pressed=true]{font-weight:700}
+.leg button.off{color:#9a9a9a}
+.dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+.n{color:var(--grey);font-variant-numeric:tabular-nums}
+table{border-collapse:collapse;width:100%;font-size:14px;line-height:20px}
+td{padding:5px 0;border-bottom:1px solid var(--hair);vertical-align:top}
+td:last-child{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:10px}
+tr:first-child td{border-top:1px solid var(--line)}
+.g{color:var(--grey)}
+.hint{font-size:12px;line-height:17px;color:var(--grey);margin:8px 0}
+#tip{position:fixed;pointer-events:none;background:#fff;border:1px solid #000;padding:10px 12px;font-size:14px;line-height:20px;max-width:320px;display:none;z-index:9}
+#tip b{display:block}#tip .g{font-size:12px;line-height:17px}
+section.metodo{border-top:1px solid var(--line);margin-top:40px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+section.metodo>div{padding:12px 14px 18px 0;border-right:1px solid var(--line)}
+section.metodo>div+div{padding-left:14px}section.metodo>div:last-child{border-right:0}
+section.metodo h3{font:700 16px/22.86px Archivo,sans-serif;margin:0 0 6px}
+section.metodo p{margin:0 0 8px;font-size:14px;line-height:20px}
+@media(max-width:866px){section.metodo{grid-template-columns:1fr}section.metodo>div{border-right:0;border-bottom:1px solid var(--line);padding-left:0!important}}
+footer{border-top:1px solid var(--line);margin-top:40px;padding:14px 0 40px;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:0 14px;font-size:12px;line-height:17px;color:var(--grey)}
+footer b{color:var(--ink);text-transform:uppercase}
+footer p{margin:0 0 8px}
+@media(max-width:866px){footer{grid-template-columns:1fr}}
+@media(prefers-reduced-motion:no-preference){svg a circle{transition:opacity .2s}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <a class="brand" href="#danese">mapping dei valori<span>Fare book Danese · ISIA Roma</span></a>
+ <nav class="menu" id="tabs" aria-label="mappe"></nav>
+</header>
+<div class="intro">
+ <div><h1 id="mtitle"></h1><p id="msub"></p></div>
+ <div><p><b>Il punto</b><br>x = ludica − critica<br>y = utopica − pratica<br>voti 0–3 su U P C L</p></div>
+ <div><p><b>Missione</b> utopica + critica<br><b>Progetto</b> utopica + ludica<br><b>Informazione</b> pratica + critica<br><b>Euforia</b> ludica + pratica</p></div>
+ <div><p><b>Come si usa</b><br>rotella o due dita per lo zoom, trascina per spostare, passa sopra un punto per leggerlo, clic per aprire la scheda sul sito</p></div>
+ <div><p><b>Lettura</b><br>i voti sono la nostra lettura (L), proposta da verificare, con il metodo descritto in fondo alla pagina</p></div>
+</div>
+<div class="ctrl">
+ <label>colora per<select id="grp"></select></label>
+ <label class="chk" id="edw"><input type="checkbox" id="ed"> senza edizioni d’arte</label>
+ <label>cerca<input type="search" id="q" placeholder="nome o designer"></label>
+ <button class="act" id="clear">mostra tutto</button>
+</div>
+<div class="stage">
+ <div class="figcol">
+  <div class="fig" id="fig"><svg id="svg" viewBox="-70 -70 1140 1140" role="img" aria-label="Quadrato dei valori con i prodotti"></svg></div>
+  <div class="zoom"><button class="act" id="zin">zoom +</button><button class="act" id="zout">zoom −</button><button class="act" id="zre">vista intera</button></div>
+ </div>
+ <div class="side">
+  <h2 id="legt">legenda</h2>
+  <div class="leg" id="leg"></div>
+  <p class="hint">Clic su una voce per isolarla, di nuovo per tornare a tutte. Se un prodotto ha più voci, l’anello è la seconda.</p>
+  <h2>famiglie per riquadro <span class="g" id="vis"></span></h2>
+  <table id="quad"></table>
+  <h2 id="mt">media x · media y</h2>
+  <table id="means"></table>
+ </div>
+</div>
+<section class="metodo" id="metodo">
+ <div><h3>Il metodo</h3><p>Partiamo dai quattro valori di consumo di J.-M. Floch, con il valore critico allargato da J.-P. Petitimbert, incrociati nel mapping di A. Semprini. Ogni prodotto riceve quattro voti da 0 a 3; la posizione si calcola, non si sceglie a occhio.</p></div>
+ <div><h3>Pratica · P</h3><p>Vale per quello che fa? Facilità d’uso, comodità, affidabilità. 0 nessun uso, 1 uso nominale, 2 uso e forma pesano uguale, 3 è un attrezzo.</p></div>
+ <div><h3>Utopica · U</h3><p>Dice chi sono o come voglio vivere? Identità, relazione, cura, educazione. 1 un riferimento culturale, 2 un tema di senso, 3 un oggetto per un modo di vivere, raro.</p></div>
+ <div><h3>Critica · C</h3><p>Conviene, è intelligente? Qualità e prezzo, economia di mezzi, ingegno tecnico. La critica sta nella produzione: una provocazione o un’ironia è ludica, non critica.</p></div>
+ <div><h3>Ludica · L</h3><p>Vale anche se non servisse a niente? Forma, piacere, gioco, ironia, gratuità. La sostenibilità come calcolo è critica, come modo di vivere è utopica.</p></div>
+</section>
+<footer>
+ <div><p><b>Progetto</b></p><p>Fare book Danese Milano, fase 1: ricerca strategica. Design del Prodotto 3, prof. Datti, ISIA Roma, 2026.</p></div>
+ <div><p><b>Autori</b></p><p>Bartolomeo Lodi-Fè<br>Alessandro dell’Aquila</p></div>
+ <div><p><b>Fonti</b></p><p id="src"></p></div>
+ <div><p><b>Note</b></p><p>Alessi e la versione «Seletti per designer» non sono ancora qui: mancano gli elenchi con nome e voti di ogni famiglia. Dove una scheda non è nel catalogo online il clic apre la ricerca del sito.</p></div>
+ <div><p><b>Avvertenza</b></p><p>Progetto di studio, non è un sito di Danese Milano né dei marchi citati. Nomi e prodotti appartengono ai rispettivi proprietari.</p></div>
+</footer>
+</div>
+<div id="tip"></div>
+<script>
+{
+const PAL=['#000000','#f0b400','#d7261e','#1f4fa3','#2e8b57','#7B5EA7','#8B5A2B','#e8772e','#E8426A','#7fb6e0','#B5AEA2','#3B8F4E'];
+const FIX={'Gufram':'#2e8b57','Memphis Milano':'#E8426A','Meritalia':'#1f4fa3','Fondatori (Mari, Munari)':'#d7261e','Dal 2017':'#1f4fa3','Altri autori':'#b5b5b5',
+'metallo':'#1E1E1E','vetro':'#7FC6E0','ceramica':'#D9733F','legno':'#8B5A2B','plastica':'#E8426A','marmo, pietra, cemento':'#B5AEA2','carta, cartone':'#F0B400','tessuto, feltro':'#7B5EA7','sughero, gomma':'#3B8F4E',
+'bambini':'#f0b400','una persona':'#d7261e','famiglia':'#1f4fa3','ospiti':'#2e8b57','pubblico':'#000000',
+'Tableware':'#f0b400','Objects':'#d7261e','Lighting':'#1f4fa3','Furniture':'#000000','Outdoor':'#2e8b57','Collectibles':'#7B5EA7','Senza categoria sul sito':'#aaaaaa','n.d.':'#cccccc'};
+const OTHER='#d0d0d0',MAXC=12,HOME=[-70,-70,1140,1140];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let MAPS=[],map=null,grp='',iso=null,q='',noEd=false,vb=HOME.slice();
+const S=1000,X=v=>S/2+v*(S/2-34)/3,Y=v=>S/2-v*(S/2-34)/3;
+const xy=it=>{const [U,P,C,L]=it.v.split('').map(Number);return [L-C,U-P]};
+const quad=it=>{const [x,y]=xy(it);return y>0&&x<0?'Missione':y>0&&x>0?'Progetto':y<0&&x<0?'Informazione':y<0&&x>0?'Euforia':'Sugli assi'};
+const fmt=v=>{v=Math.round(v*10)/10;return (v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(1)};
+function colors(){
+ const cnt={};map.items.forEach(it=>(it.g[grp]||[]).forEach(v=>cnt[v]=(cnt[v]||0)+1));
+ let keys=Object.keys(cnt).sort((a,b)=>cnt[b]-cnt[a]||a.localeCompare(b));const col={};
+ if(grp==='categoria'&&map.id!=='seletti'){keys=[];map.items.forEach(it=>{const v=it.g.categoria[0];if(!keys.includes(v))keys.push(v)});keys.forEach((v,i)=>col[v]=PAL[i%PAL.length]);return{keys,col}}
+ const fixed=keys.every(k=>FIX[k]);let k=0;
+ keys.forEach((v,i)=>{col[v]=fixed?FIX[v]:(i<MAXC?PAL[k++%PAL.length]:OTHER)});
+ return {keys,col};
+}
+function visible(it){
+ if(noEd&&it.ed)return false;
+ if(iso&&!(it.g[grp]||[]).includes(iso))return false;
+ if(q){const s=(it.n+' '+(it.info||'')+' '+Object.values(it.g).flat().join(' ')).toLowerCase();if(!s.includes(q))return false}
+ return true;
+}
+function frame(){
+ const f=[];const L=(a,b,c,d,col,w)=>f.push(`<line x1="${a}" y1="${b}" x2="${c}" y2="${d}" stroke="${col}" stroke-width="${w}" vector-effect="non-scaling-stroke"/>`);
+ const T=(x,y,s,sz,w,an,c)=>f.push(`<text x="${x}" y="${y}" font-family="Archivo,Helvetica,sans-serif" font-size="${sz*1.15}" font-weight="${w}" text-anchor="${an}" fill="${c}">${s}</text>`);
+ f.push(`<rect x="-70" y="-70" width="1140" height="1140" fill="#fff"/><rect x="0" y="0" width="${S}" height="${S}" fill="none" stroke="#000" stroke-width="1" vector-effect="non-scaling-stroke"/>`);
+ L(S/2,0,S/2,S,'#c8c8c8',1);L(0,S/2,S,S/2,'#c8c8c8',1);
+ for(let v=-3;v<=3;v++)if(v){L(X(v),S/2-5,X(v),S/2+5,'#000',1);L(S/2-5,Y(v),S/2+5,Y(v),'#000',1)}
+ T(S/2,-28,'UTOPICA',15,700,'middle','#000');T(S/2,-12,'valori esistenziali',12,400,'middle','#464646');
+ T(S/2,S+26,'PRATICA',15,700,'middle','#000');T(S/2,S+42,'valori utilitari',12,400,'middle','#464646');
+ T(-8,S/2-4,'CRITICA',13,700,'end','#000');T(-8,S/2+12,'valori non',11,400,'end','#464646');T(-8,S/2+25,'esistenziali',11,400,'end','#464646');
+ T(S+8,S/2-4,'LUDICA',13,700,'start','#000');T(S+8,S/2+12,'valori non',11,400,'start','#464646');T(S+8,S/2+25,'utilitari',11,400,'start','#464646');
+ [['missione','utopica + critica',0,-28,'start'],['progetto','utopica + ludica',S,-28,'end'],['informazione','pratica + critica',0,S+26,'start'],['euforia','ludica + pratica',S,S+26,'end']].forEach(([a,b,x,y,an])=>{T(x,y,a,14,700,an,'#000');T(x,y+15,b,11,400,an,'#464646')});
+ return f.join('');
+}
+function draw(){
+ const {keys,col}=colors();const r=map.r;
+ const dots=map.items.map((it,i)=>{const vs=it.g[grp]||['n.d.'];const on=visible(it);const c=col[vs[0]]||OTHER;
+  const ring=vs.length>1?`<circle cx="${it.px}" cy="${it.py}" r="${r+2.2}" fill="${col[vs[1]]||OTHER}"/>`:'';
+  return `<a ${it.url?`href="${esc(it.url)}" target="_blank" rel="noopener"`:''} data-i="${i}" style="${on?'':'pointer-events:none;opacity:.07'}">${ring}<circle cx="${it.px}" cy="${it.py}" r="${vs.length>1?r-.6:r}" fill="${c}"/></a>`}).join('');
+ $('svg').innerHTML=frame()+'<g>'+dots+'</g>';
+ const shown=map.items.filter(visible);
+ $('legt').textContent='legenda · '+grp;
+ $('leg').innerHTML=keys.map(k=>{const n=map.items.filter(it=>(it.g[grp]||[]).includes(k)&&(!noEd||!it.ed)).length;if(!n)return'';
+  return `<button data-k="${esc(k)}" aria-pressed="${iso===k}" class="${iso&&iso!==k?'off':''}"><span class="dot" style="background:${col[k]}"></span><span>${esc(k)}</span><span class="n">${n}</span></button>`}).join('');
+ $('vis').textContent='· '+shown.length+' visibili';
+ const sub={'Missione':'utopica + critica','Progetto':'utopica + ludica','Informazione':'pratica + critica','Euforia':'ludica + pratica','Sugli assi':'tra due riquadri'};const qc={};shown.forEach(it=>qc[quad(it)]=(qc[quad(it)]||0)+1);
+ $('quad').innerHTML=Object.keys(sub).map(k=>`<tr><td>${k} <span class="g">${sub[k]}</span></td><td>${qc[k]||0}</td></tr>`).join('');
+ $('mt').textContent='per '+grp+' · media x · media y';
+ $('means').innerHTML=keys.slice(0,40).map(k=>{const m=shown.filter(it=>(it.g[grp]||[]).includes(k));if(!m.length)return'';
+  const mx=m.reduce((a,it)=>a+xy(it)[0],0)/m.length,my=m.reduce((a,it)=>a+xy(it)[1],0)/m.length,up=m.filter(it=>xy(it)[1]>0).length;
+  return `<tr><td><span class="dot" style="background:${col[k]};margin-right:8px;width:9px;height:9px"></span>${esc(k)}</td><td>${fmt(mx)} · ${fmt(my)} <span class="g">· sopra l’asse ${up} su ${m.length}</span></td></tr>`}).join('');
+}
+function setView(){$('svg').setAttribute('viewBox',vb.join(' '))}
+function zoom(f,cx,cy){const nw=Math.min(1140,Math.max(70,vb[2]*f)),k=nw/vb[2];if(cx==null){cx=vb[0]+vb[2]/2;cy=vb[1]+vb[3]/2}vb=[cx-(cx-vb[0])*k,cy-(cy-vb[1])*k,nw,nw];setView()}
+function toSvg(e){const r=$('svg').getBoundingClientRect();return [vb[0]+(e.clientX-r.left)/r.width*vb[2],vb[1]+(e.clientY-r.top)/r.height*vb[3]]}
+function open(id){
+ map=MAPS.find(m=>m.id===id)||MAPS[0];grp=map.groups[0];iso=null;q='';$('q').value='';noEd=false;$('ed').checked=false;
+ $('edw').style.display=map.hasEd?'':'none';
+ $('grp').innerHTML=map.groups.map(g=>`<option value="${esc(g)}">${esc(g)}</option>`).join('');
+ $('mtitle').textContent=map.title;$('msub').textContent=map.sub;
+ $('src').textContent='Prodotti, categorie e link dalle schede di '+map.site+', lette il 27/11/2026. Voti (L) come nelle tavole di lavoro del Fare book.';
+ document.querySelectorAll('#tabs a').forEach(a=>a.setAttribute('aria-current',a.dataset.id===map.id));
+ document.title=map.title.toLowerCase()+' · mapping dei valori';
+ vb=HOME.slice();setView();draw();
+}
+$('grp').onchange=e=>{grp=e.target.value;iso=null;draw()};
+$('ed').onchange=e=>{noEd=e.target.checked;draw()};
+$('q').oninput=e=>{q=e.target.value.trim().toLowerCase();draw()};
+$('clear').onclick=()=>{iso=null;q='';$('q').value='';noEd=false;$('ed').checked=false;vb=HOME.slice();setView();draw()};
+$('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;iso=iso===b.dataset.k?null:b.dataset.k;draw()};
+$('zin').onclick=()=>zoom(.7);$('zout').onclick=()=>zoom(1/.7);$('zre').onclick=()=>{vb=HOME.slice();setView()};
+const fig=$('fig');
+fig.addEventListener('wheel',e=>{e.preventDefault();const [x,y]=toSvg(e);zoom(e.deltaY>0?1.15:1/1.15,x,y)},{passive:false});
+const pts=new Map();let drag=null,moved=false,pinch=null;
+fig.addEventListener('pointerdown',e=>{if(e.target.closest('.zoom'))return;pts.set(e.pointerId,[e.clientX,e.clientY]);moved=false;
+ if(pts.size===1)drag={x:e.clientX,y:e.clientY,vb:vb.slice()};
+ if(pts.size===2){const p=[...pts.values()];pinch={d:Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]),w:vb[2]}}});
+window.addEventListener('pointermove',e=>{
+ if(pts.has(e.pointerId))pts.set(e.pointerId,[e.clientX,e.clientY]);
+ if(pinch&&pts.size===2){const p=[...pts.values()];const d=Math.hypot(p[0][0]-p[1][0],p[0][1]-p[1][1]);zoom(Math.min(1140,Math.max(70,pinch.w*pinch.d/d))/vb[2]);moved=true;return}
+ if(drag){const r=$('svg').getBoundingClientRect();const dx=(e.clientX-drag.x)/r.width*vb[2],dy=(e.clientY-drag.y)/r.height*vb[3];
+  if(Math.abs(e.clientX-drag.x)+Math.abs(e.clientY-drag.y)>4){moved=true;fig.classList.add('drag')}
+  if(moved){vb=[drag.vb[0]-dx,drag.vb[1]-dy,vb[2],vb[3]];setView()}}});
+window.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!pts.size){drag=null;fig.classList.remove('drag')}});
+fig.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopPropagation();moved=false}},true);
+const tip=$('tip');
+fig.addEventListener('pointerover',e=>{const a=e.target.closest('a[data-i]');if(!a)return;const it=map.items[+a.dataset.i];const [x,y]=xy(it);const v=it.v;
+ tip.innerHTML=`<b>${esc(it.n)}</b><div class="g">${esc(it.info||'')}</div><div>U${v[0]} P${v[1]} C${v[2]} L${v[3]} · x ${x>0?'+':''}${x} · y ${y>0?'+':''}${y} · ${quad(it).toLowerCase()}</div><div class="g">${esc(Object.entries(it.g).map(([k,a])=>k+': '+a.join(', ')).join(' · '))}</div><div class="g">${it.url?(it.url.includes('search?q=')?'clic: ricerca sul sito':'clic: apri la scheda sul sito'):'nessuna scheda sul sito'}</div>`;tip.style.display='block'});
+fig.addEventListener('pointermove',e=>{if(tip.style.display==='block'){const w=tip.offsetWidth,h=tip.offsetHeight;tip.style.left=Math.min(innerWidth-w-8,e.clientX+16)+'px';tip.style.top=Math.min(innerHeight-h-8,e.clientY+16)+'px'}});
+fig.addEventListener('pointerout',e=>{if(e.target.closest('a[data-i]'))tip.style.display='none'});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1);if(MAPS.some(m=>m.id===h))open(h)});
+fetch('data.json').then(r=>r.json()).then(d=>{MAPS=d;
+ $('tabs').innerHTML=MAPS.map(m=>`<a href="#${m.id}" data-id="${m.id}">${esc(m.title.toLowerCase())}</a>`).join('')+'<a href="#metodo">metodo</a>';
+ const h=location.hash.slice(1);open(MAPS.some(m=>m.id===h)?h:'danese')}).catch(()=>{$('msub').textContent='Dati non caricati.'});
+}
+</script>
+</body>
+</html>
