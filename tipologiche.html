@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tipologiche · mapping dei valori</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.lead{padding:26px 0 28px;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.lead h1{font:700 32px/36px Archivo,sans-serif;margin:0}
+.lead p{margin:0 0 10px;font-size:16px;line-height:23px;max-width:66ch}
+.lead a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:866px){.lead{grid-template-columns:1fr;gap:12px}}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--ink);padding:10px 0;display:flex;flex-wrap:wrap;gap:2px 20px}
+.bar a{font:400 14px/20px Archivo,sans-serif;padding:4px 0}
+.bar a b{font-weight:700;margin-right:6px}
+section.t{scroll-margin-top:60px;border-bottom:1px solid var(--ink);padding:24px 0 28px}
+.t .h{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;margin:0 0 14px}
+.t h2{font:700 24px/30px Archivo,sans-serif;margin:0}
+.t h2 span{color:var(--grey);font-weight:400;margin-right:10px}
+.t .acts{display:flex;gap:18px;font:700 14px/20px Archivo,sans-serif}
+.t .acts a{text-decoration:underline;text-underline-offset:3px}
+.t .fig{border:1px solid var(--hair);background:#fff;overflow:hidden;cursor:zoom-in}
+.t .fig img{display:block;width:100%;height:auto}
+.t .g{margin:8px 0 0;font-size:12px;line-height:17px}
+#zoom{position:fixed;inset:0;background:#fff;z-index:20;display:none;overflow:auto;cursor:zoom-out}
+#zoom img{display:block;width:2420px;max-width:none;margin:0 auto}
+#zoom .x{position:fixed;top:14px;right:18px;font:700 14px/20px Archivo,sans-serif;background:#fff;border:1px solid #000;padding:6px 10px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <a class="brand" href="index.html">mapping dei valori<span>Fare book Danese · ISIA Roma</span></a>
+ <nav class="menu"><a href="index.html">mappe</a><a href="metodo.html">metodo</a><a href="tipologiche.html" aria-current="page">tipologiche</a><a href="archivio.html">archivio</a><a href="progetto.html">progetto e fonti</a></nav>
+</header>
+<div class="lead">
+ <h1>Tavole tipologiche</h1>
+ <div><p>Le otto tavole tipologiche del catalogo Danese 2026, una per categoria. A sinistra la <b>lettura (L)</b>: chi lo usa, i voti sul quadrato semiotico e, per ogni prodotto, la frase della scheda su danesemilano.com da cui viene il voto. A destra la <b>struttura (R)</b>, rilevata dalle schede: materiali, uso, dimensioni.</p>
+ <p class="g">Clic su una tavola per vederla a grandezza piena. Le citazioni con il loro link sono raccolte nel file <a href="tipologiche/fonti-quadrato.csv" download>fonti del quadrato semiotico (CSV, 180 righe)</a>; la <a href="tipologiche/legenda.pdf" target="_blank" rel="noopener">legenda</a> spiega come si legge il mapping.</p></div>
+</div>
+<nav class="bar" id="nav"></nav>
+<main id="list"></main>
+<footer>
+ <div><p><b>Progetto</b></p><p>Fare book Danese Milano, fase 1. Design del Prodotto 3, prof. Datti, ISIA Roma, 2026.</p></div>
+ <div><p><b>Autori</b></p><p>Bartolomeo Lodi-Fè<br>Alessandro dell’Aquila</p></div>
+ <div><p><b>Fonti</b></p><p>Schede prodotto di danesemilano.com, consultate il 26/11/2026. Valori da Floch, valore critico allargato da Petitimbert (2022), quadranti da Semprini.</p></div>
+ <div><p><b>Avvertenza</b></p><p>Progetto di studio, non è un sito di Danese Milano. Foto dei prodotti dalle schede di danesemilano.com.</p></div>
+</footer>
+</div>
+<div id="zoom" role="dialog" aria-label="Tavola a grandezza piena"><span class="x">chiudi</span><img alt=""></div>
+<script>
+{
+const T=[['0','Legenda','legenda.png','legenda.pdf',''],
+['1','Ingresso e spazi comuni','tipologica-1.svg','',25],['2','Accessori per la tavola','tipologica-2.svg','',30],['3','Accessori vari','tipologica-3.svg','',19],['4','Scrivania e oggetti personali','tipologica-4.svg','',19],
+['5','Sedute e tavoli','tipologica-5.svg','',12],['6','Librerie e carrelli','tipologica-6.svg','',11],['7','Lampade','tipologica-7.svg','',13],['8','Edizioni d’arte','tipologica-8.svg','',51]];
+const $=id=>document.getElementById(id);
+$('nav').innerHTML=T.map(t=>`<a href="#t${t[0]}"><b>${t[0]}</b>${t[1]}</a>`).join('');
+$('list').innerHTML=T.map(t=>`<section class="t" id="t${t[0]}"><div class="h"><h2><span>${t[0]}</span>${t[1]}</h2><div class="acts">${t[4]?`<a href="index.html#danese">vedi sulla mappa</a>`:''}<a href="tipologiche/${t[3]||t[2]}" target="_blank" rel="noopener">apri ${t[3]?'il PDF':'a parte'} ↗</a><a href="tipologiche/${t[3]||t[2]}" download>scarica</a></div></div>
+<div class="fig" data-src="tipologiche/${t[2]}"><img src="tipologiche/${t[2]}" alt="Tavola tipologica ${t[0]} · ${t[1]}" loading="lazy"></div>${t[4]?`<p class="g">${t[4]} prodotti · Danese Catalogue 2026</p>`:''}</section>`).join('');
+const Z=$('zoom');
+document.addEventListener('click',e=>{const f=e.target.closest('.fig');if(f){Z.querySelector('img').src=f.dataset.src;Z.style.display='block';document.body.style.overflow='hidden';Z.scrollTo(0,0);return}if(e.target.closest('#zoom')){Z.style.display='none';document.body.style.overflow=''}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){Z.style.display='none';document.body.style.overflow=''}});
+}
+</script>
+</body>
+</html>
