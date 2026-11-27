@@ -225,7 +225,7 @@ fig.addEventListener('pointerover',e=>{const o=e.target.closest('.ob');if(o){$('
 fig.addEventListener('pointermove',e=>{if(tip.style.display==='block'){tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,e.clientX+16)+'px';tip.style.top=Math.min(innerHeight-tip.offsetHeight-8,e.clientY+16)+'px'}});
 fig.addEventListener('pointerleave',()=>{$('dots').classList.remove('hov');tip.style.display='none'});
 fig.addEventListener('pointerout',e=>{const o=e.target.closest('.ob');if(o){o.classList.remove('on');if(!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ob')))$('dots').classList.remove('hov')}if(e.target.closest('.cell')||o)tip.style.display='none'});
-fetch('data.json').then(r=>r.json()).then(d=>{B=d;const h=location.hash.slice(1).split('-').filter(x=>B.some(b=>b.id===x));if(h.length)on=new Set(h);bars();draw()}).catch(()=>{$('side').textContent='Dati non caricati.'});
+fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{B=d;const h=location.hash.slice(1).split('-').filter(x=>B.some(b=>b.id===x));if(h.length)on=new Set(h);bars();draw()}).catch(()=>{$('side').textContent='Dati non caricati.'});
 }
 </script>
 </body>
