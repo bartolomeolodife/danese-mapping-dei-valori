@@ -179,7 +179,7 @@ function drawMed(vis,keys,col){const G=$('med');if(mode!=='mediane'){window.MEDL
  const pts=keys.filter(k=>by[k]).map(k=>{const xs=by[k].map(p=>p[0]),ys=by[k].map(p=>p[1]);return {k,n:xs.length,mx:xs.reduce((a,b)=>a+b,0)/xs.length,my:ys.reduce((a,b)=>a+b,0)/ys.length,x1:qtl(xs,.25),x3:qtl(xs,.75),y1:qtl(ys,.25),y3:qtl(ys,.75),c:col[k]||OTHER}});
  const seen={};pts.forEach(p=>{const s=p.mx+','+p.my;const i=seen[s]=(seen[s]||0)+1;p.i=i-1});
  const cnt={};pts.forEach(p=>{const s=p.mx+','+p.my;cnt[s]=(cnt[s]||0)+1});
- window.MEDL='<div class="res">'+pts.map(p=>`<button data-k="${esc(p.k)}" tabindex="-1"><span class="th"><span class="dot" style="background:${p.c}"></span></span><span>${esc(p.k)}<small>baricentro x ${p.mx>0?'+':''}${p.mx.toFixed(2)} · y ${p.my>0?'+':''}${p.my.toFixed(2)} · ${QN[quad([p.mx,p.my])]} · ${p.n} prodotti</small></span></button>`).join('')+'</div>';
+ window.MEDL='<div class="res">'+pts.map(p=>`<button data-k="${esc(p.k)}" tabindex="-1"><span class="th"><span class="dot" style="background:${p.c}"></span></span><span>${esc(p.k)}<small>baricentro x ${p.mx>0?'+':''}${p.mx.toFixed(2)} · y ${p.my>0?'+':''}${p.my.toFixed(2)} · ${QN[quad([p.mx,p.my])]} · ${p.n} prodotti · <u>vai al sito ↗</u></small></span></button>`).join('')+'</div>';
  G.innerHTML=pts.map(p=>{const tot=cnt[p.mx+','+p.my],a=tot>1?2*Math.PI*p.i/tot:0,off=tot>1?24:0,X=P(p.mx)+off*Math.cos(a),Y=P(-p.my)+off*Math.sin(a);
   return `<g data-k="${esc(p.k)}" style="transform:translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)"><circle r="11" fill="${p.c}" stroke="#fff" stroke-width="2"/><text x="16" y="-12" font-family="Archivo,sans-serif" font-size="15" font-weight="700" fill="${p.c}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(p.k)}</text><title>${esc(p.k)} · baricentro x ${p.mx.toFixed(2)} y ${p.my.toFixed(2)} · ${p.n} prodotti</title></g>`}).join('');
 }
@@ -268,7 +268,9 @@ $('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.d
 $('all').onclick=()=>{hide.clear();draw()};
 $('nonecat').onclick=()=>{[...$('leg').querySelectorAll('button')].forEach(x=>hide.add(x.dataset.k));selId=null;draw()};
 $('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();QP=SMART.compile(q);selId=null;if(q&&mode==='macchie'){mode='pallini';$('vista').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='pallini'))}draw()});
-$('side').addEventListener('click',e=>{const b=e.target.closest('.res button');if(b)pick(b.dataset.id)});
+$('side').addEventListener('click',e=>{const b=e.target.closest('.res button');if(!b)return;
+ if(b.dataset.k){const br=B.find(x=>x.name===b.dataset.k)||B.find(x=>on.has(x.id));if(br)window.open('https://'+br.site,'_blank','noopener');return}
+ pick(b.dataset.id)});
 let lit=null;const unlit=()=>{if(!lit)return;const c=lit.firstChild;c.style.r=c.dataset.r0;lit.classList.remove('on');$('dots').classList.remove('hov');$('svg').classList.remove('peek');lit=null};
 $('side').addEventListener('pointerover',e=>{const b=e.target.closest('.res button');if(!b){unlit();return}
  const el=$('dots').querySelector(`a.ob[data-id="${b.dataset.id}"]`);if(el===lit)return;unlit();if(!el)return;
