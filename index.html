@@ -63,6 +63,7 @@
 #blobs{transition:opacity .45s ease}#dots{transition:opacity .45s ease}
 #svg:not(.mac) #blobs{opacity:0;pointer-events:none}
 #svg.mac #dots{opacity:0;pointer-events:none}
+#svg.med #dots,#svg.med #bary{opacity:0;pointer-events:none}#svg:not(.med) #med{opacity:0;pointer-events:none}#med{transition:opacity .45s ease}#med g{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .3s}#med.hov g{opacity:.15}#med.hov g.on{opacity:1}#bary{transition:opacity .45s}
 #svg.mac.peek #dots{opacity:1}#svg.mac.peek #dots a.ob circle{opacity:0!important}#svg.mac.peek #dots a.ob.on circle{opacity:1!important}
 #blobs.hov path{opacity:.08!important}#blobs.hov path.on,#blobs path.sel{opacity:.45!important}
 .word{transition:color .25s}.word .dot{transition:opacity .25s}
@@ -80,7 +81,7 @@
  <div class="sep"></div>
  <p class="lab">aziende</p><div class="row" id="brands"></div>
  <div class="sep"></div>
- <p class="lab">vista</p><div class="row" id="vista"><button class="word" aria-pressed="true" data-v="pallini">pallini</button><button class="word" aria-pressed="false" data-v="macchie">macchie</button></div>
+ <p class="lab">vista</p><div class="row" id="vista"><button class="word" aria-pressed="true" data-v="pallini">pallini</button><button class="word" aria-pressed="false" data-v="macchie">macchie</button><button class="word" aria-pressed="false" data-v="mediane">solo mediane</button></div>
  <div class="sep cpr"></div>
  <p class="lab cpr">colora per</p><div class="row cpr" id="grps"></div>
  <div class="sep msr"></div>
@@ -171,13 +172,24 @@ function drawBlobs(vis,keys,col){
   if(!p){p=document.createElementNS('http://www.w3.org/2000/svg','path');p.dataset.id=b.id;p.style.opacity=0;G.appendChild(p);p.getBoundingClientRect()}
   p.setAttribute('d',b.d);p.style.fill=b.c;p.dataset.k=b.k;p.style.opacity=on.size>2?.2:.3;p.classList.toggle('sel',selBlob===b.id)});
 }
+// mediane: per ogni gruppo il punto mediano (mediana di x e mediana di y) e, in linea sottile, lo scarto interquartile (dal 25% al 75% dei prodotti)
+const qtl=(a,p)=>{const s=a.slice().sort((x,y)=>x-y),i=(s.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo)};
+function drawMed(vis,keys,col){const G=$('med');if(mode!=='mediane'){window.MEDL='';return}
+ const by={};vis.forEach(it=>{const k=key(it);(by[k]=by[k]||[]).push(xy(it))});
+ const pts=keys.filter(k=>by[k]).map(k=>{const xs=by[k].map(p=>p[0]),ys=by[k].map(p=>p[1]);return {k,n:xs.length,mx:qtl(xs,.5),my:qtl(ys,.5),x1:qtl(xs,.25),x3:qtl(xs,.75),y1:qtl(ys,.25),y3:qtl(ys,.75),c:col[k]||OTHER}});
+ const seen={};pts.forEach(p=>{const s=p.mx+','+p.my;const i=seen[s]=(seen[s]||0)+1;p.i=i-1});
+ const cnt={};pts.forEach(p=>{const s=p.mx+','+p.my;cnt[s]=(cnt[s]||0)+1});
+ window.MEDL='<div class="res">'+pts.map(p=>`<button data-k="${esc(p.k)}" tabindex="-1"><span class="th"><span class="dot" style="background:${p.c}"></span></span><span>${esc(p.k)}<small>mediana x ${p.mx>0?'+':''}${p.mx} · y ${p.my>0?'+':''}${p.my} · ${QN[quad([p.mx,p.my])]} · ${p.n} prodotti</small></span></button>`).join('')+'</div>';
+ G.innerHTML=pts.map(p=>{const tot=cnt[p.mx+','+p.my],a=tot>1?2*Math.PI*p.i/tot:0,off=tot>1?24:0,X=P(p.mx)+off*Math.cos(a),Y=P(-p.my)+off*Math.sin(a);
+  return `<g data-k="${esc(p.k)}" style="transform:translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)"><line x1="${P(p.x1)-X}" y1="0" x2="${P(p.x3)-X}" y2="0" stroke="${p.c}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><line x1="0" y1="${P(-p.y3)-Y}" x2="0" y2="${P(-p.y1)-Y}" stroke="${p.c}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><circle r="11" fill="${p.c}" stroke="#fff" stroke-width="2"/><text x="16" y="-12" font-family="Archivo,sans-serif" font-size="15" font-weight="700" fill="${p.c}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(p.k)}</text><title>${esc(p.k)} · mediana x ${p.mx} y ${p.my} · ${p.n} prodotti</title></g>`}).join('');
+}
 function draw(){
  const all=items(),{keys,col}=colors(all);
  const vis=all.filter(it=>!hide.has(key(it)));
  const cells={};vis.forEach(it=>{const p=xy(it);const k=p.join(',');(cells[k]=cells[k]||{p,its:[]}).its.push(it)});
  const nmax=Math.max(1,...Object.values(cells).map(c=>c.its.length));
  const s=Math.min(19,96/Math.sqrt(nmax*1.1)),rd=Math.max(1.8,Math.min(8.5,s/2-.7));
- if(!$('fr'))$('svg').innerHTML=`<g id="fr">${frame()}</g><g id="blobs"></g><g id="dots"></g><g id="bary" pointer-events="none"></g>`;
+ if(!$('fr'))$('svg').innerHTML=`<g id="fr">${frame()}</g><g id="blobs"></g><g id="dots"></g><g id="bary" pointer-events="none"></g><g id="med"></g>`;
  const tgt=new Map();
  Object.values(cells).forEach(c=>{const cx=P(c.p[0]),cy=P(-c.p[1]);
   const its=c.its.slice().sort((a,b)=>keys.indexOf(key(a))-keys.indexOf(key(b))||a.n.localeCompare(b.n));
@@ -200,7 +212,7 @@ function draw(){
   g.style.opacity=q||selId?.2:1;g.style.transform=`translate(${x}px,${y}px)`});
  $('leg').innerHTML=keys.map(k=>`<button class="word" aria-pressed="${!hide.has(k)}" data-k="${esc(k)}"><span class="dot" style="background:${col[k]||OTHER}"></span>${esc(k)}</button>`).join('');
  document.querySelectorAll('.msr').forEach(e=>e.style.display=on.size>1||grp==='uno'?'none':'');
- $('svg').classList.toggle('mac',mode==='macchie');drawBlobs(vis,keys,col);
+ $('svg').classList.toggle('mac',mode==='macchie');$('svg').classList.toggle('med',mode==='mediane');drawBlobs(vis,keys,col);drawMed(vis,keys,col);
  side(vis,col);
 }
 function dots(v){return '<i>'+[0,1,2].map(i=>`<span class="${i<v?'f':''}"></span>`).join('')+'</i>'}
@@ -229,7 +241,7 @@ function side(vis,col){
  if(hide.size&&!vis.length){$('side').innerHTML='<p class="hint">Nessuna categoria selezionata. Scegline una o più in «mostra», oppure premi «vedi tutte».</p>';return}
  if(hide.size){const ks=[...new Set(vis.map(key))],r=vis.slice().sort((a,b)=>a.n.localeCompare(b.n));
   $('side').innerHTML=`<h2 style="margin:0 0 4px">${ks.map(k=>`<span class="dot" style="background:${col[k]||OTHER}"></span> ${esc(k)}`).join('<br>')}</h2><p class="lab">${r.length} ${r.length===1?'prodotto':'prodotti'}</p><div class="res">`+r.map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+(col[key(it)]||OTHER)+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+'</div>';return}
- $('side').innerHTML=mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
+ $('side').innerHTML=mode==='mediane'?`<p class="hint">Il pallino grande è la mediana di ogni gruppo: metà dei prodotti sta a sinistra e metà a destra, metà sopra e metà sotto. Le due linee sottili vanno dal 25% al 75% dei prodotti, cioè dove sta la metà centrale del catalogo: più sono lunghe, più l’azienda è sparsa sulla mappa.</p>`+(window.MEDL||''):mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
 }
 function bars(){
  const IRD=['gufram','memphis','meritalia'];
@@ -274,7 +286,8 @@ window.addEventListener('pointermove',e=>{if(pts.has(e.pointerId))pts.set(e.poin
 window.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!pts.size){drag=null;fig.classList.remove('drag')}});
 fig.addEventListener('click',e=>{if(moved){moved=false;return}const o=e.target.closest('.ob');if(o)pick(o.dataset.id);else{const bp=e.target.closest('#blobs path');if(bp){selBlob=bp.dataset.id;selId=null;draw()}else if(selId||selBlob){selId=null;selBlob=null;draw()}}});
 fig.addEventListener('keydown',e=>{const o=e.target.closest&&e.target.closest('.ob');if(o&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(o.dataset.id)}});
-fig.addEventListener('pointerover',e=>{const bp=e.target.closest&&e.target.closest('#blobs path');
+fig.addEventListener('pointerover',e=>{const mg=e.target.closest&&e.target.closest('#med g');$('med').classList.toggle('hov',!!mg);$('med').querySelectorAll('g.on').forEach(x=>x.classList.remove('on'));if(mg){mg.classList.add('on');return}
+ const bp=e.target.closest&&e.target.closest('#blobs path');
  if(bp){$('blobs').classList.add('hov');$('blobs').querySelectorAll('path.on').forEach(x=>x.classList.remove('on'));$('blobs').querySelectorAll('path').forEach(x=>{if(x.dataset.k===bp.dataset.k&&x===bp)x.classList.add('on')});
   const b=(window.BL||[]).find(x=>x.id===bp.dataset.id);tip.innerHTML=`<b>${esc(b.k)}</b><span class="g">${b.its.length} ${b.its.length===1?'prodotto':'prodotti'}</span>`;tip.style.display='block';return}
  if(mode==='macchie'){$('blobs').classList.remove('hov');tip.style.display='none';return}
@@ -283,7 +296,7 @@ fig.addEventListener('pointerover',e=>{const bp=e.target.closest&&e.target.close
  tip.innerHTML=`${it.p?`<img src="${esc(it.p)}" alt="" referrerpolicy="no-referrer">`:''}<b>${esc(it.n)}</b><span class="g">${esc(it.b.name)} · U${it.v[0]} P${it.v[1]} C${it.v[2]} L${it.v[3]}</span>`;tip.style.display='block'});
 fig.addEventListener('pointermove',e=>{if(tip.style.display==='block'){tip.style.left=Math.min(innerWidth-tip.offsetWidth-8,e.clientX+16)+'px';tip.style.top=Math.min(innerHeight-tip.offsetHeight-8,e.clientY+16)+'px'}});
 fig.addEventListener('pointerout',e=>{const o=e.target.closest('.ob');if(o){o.classList.remove('on');tip.style.display='none';if(!(e.relatedTarget&&e.relatedTarget.closest&&e.relatedTarget.closest('.ob')))$('dots').classList.remove('hov')}});
-fig.addEventListener('pointerleave',()=>{$('blobs')&&$('blobs').classList.remove('hov');$('dots').classList.remove('hov');tip.style.display='none'});
+fig.addEventListener('pointerleave',()=>{$('med').classList.remove('hov');$('blobs')&&$('blobs').classList.remove('hov');$('dots').classList.remove('hov');tip.style.display='none'});
 fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{B=d;ALL=B.flatMap(b=>b.items.map((it,i)=>({...it,b,id:b.id+'_'+i})));
  const h=location.hash.slice(1).split('-').filter(x=>B.some(b=>b.id===x));if(h.length)on=new Set(h);bars();draw()}).catch(()=>{$('side').textContent='Dati non caricati.'});
 }
