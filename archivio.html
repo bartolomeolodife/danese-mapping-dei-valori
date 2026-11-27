@@ -72,7 +72,7 @@ section.az{scroll-margin-top:90px;border-bottom:1px solid var(--ink);padding:28p
  <div><p>Tutto quello che abbiamo raccolto su ogni azienda: storia, mission e valori, la nostra analisi sulla mappa e l’elenco completo dei prodotti, ognuno con foto, descrizione dalla scheda, voti e link.</p>
  <p class="g">Storia e valori sono riassunti dalle fonti elencate sotto ogni azienda. Foto e descrizioni vengono dalle schede dei siti delle aziende (per Vitra, da un rivenditore). I voti sono la nostra lettura: come si calcolano è spiegato nel <a href="metodo.html"><u>metodo</u></a>.</p></div>
 </div>
-<div class="bar"><input type="search" id="q" placeholder="cerca un prodotto, un designer, una categoria" autocomplete="off"><div class="row" id="nav"></div></div>
+<div class="bar"><input type="search" id="q" placeholder="cosa cerchi? cucchiaio, lampada, legno, Munari…" autocomplete="off"><div class="row" id="nav"></div></div>
 <main id="arch"><p class="none">Caricamento…</p></main>
 <footer>
  <div><p><b>Progetto</b></p><p>Fare book Danese Milano, fase 1. Design del Prodotto 3, prof. Datti, ISIA Roma, 2026.</p></div>
@@ -81,6 +81,7 @@ section.az{scroll-margin-top:90px;border-bottom:1px solid var(--ink);padding:28p
  <div><p><b>Avvertenza</b></p><p>Progetto di studio, non è un sito di Danese Milano né dei marchi citati. Foto e descrizioni restano delle aziende, a cui ogni prodotto rimanda.</p></div>
 </footer>
 </div>
+<script src="search.js"></script>
 <script>
 {
 const $=id=>document.getElementById(id);
@@ -110,7 +111,7 @@ function card(it,b){const v=it.v.split('').map(Number),p=xy(it.v);
  <p class="v">${'UPCL'.split('').map((k,i)=>`<span>${k} <b>${v[i]}</b></span>`).join('')}</p>
  <p class="q">x ${p[0]>0?'+':''}${p[0]} · y ${p[1]>0?'+':''}${p[1]} · <b>${QN[quad(p)]}</b></p>
  ${it.u?`<a class="go" href="${esc(it.u)}" target="_blank" rel="noopener">${it.s?'cerca sul sito':'scheda su '+esc(it.src||b.site)} ↗</a>`:''}</article>`}
-const match=(it,b)=>!q||(it.n+' '+(it.i||'')+' '+(it.d||'')+' '+Object.values(it.g||{}).flat().join(' ')+' '+b.name).toLowerCase().includes(q);
+let QP=[];const match=(it,b)=>!q||SMART.test(QP,it.n+' '+(it.i||'')+' '+(it.d||'')+' '+Object.values(it.g||{}).flat().join(' ')+' '+b.name);
 function render(){
  $('arch').innerHTML=B.map(b=>{const a=A[b.id]||{};const its=b.items.filter(it=>match(it,b)).sort((x,y)=>x.n.localeCompare(y.n));
   if(q&&!its.length)return '';
@@ -124,7 +125,7 @@ function render(){
 fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{B=d;return fetch('aziende.json',{cache:'no-cache'}).then(r=>r.json())}).then(a=>{A=a;
  $('nav').innerHTML=B.map(b=>`<a href="#a-${b.id}"><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</a>`).join('');render();
  if(location.hash){const e=document.querySelector(location.hash);if(e)e.scrollIntoView()}}).catch(()=>{$('arch').innerHTML='<p class="none">Dati non caricati.</p>'});
-let t=0;$('q').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{q=e.target.value.trim().toLowerCase();render()},200)});
+let t=0;$('q').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{q=e.target.value.trim().toLowerCase();QP=SMART.compile(q);render()},200)});
 }
 </script>
 </body>
