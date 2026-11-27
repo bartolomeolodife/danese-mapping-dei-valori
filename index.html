@@ -73,7 +73,7 @@
 <div class="wrap">
 <header class="top">
  <a class="brand" href="index.html">mapping dei valori<span>Fare book Danese · ISIA Roma</span></a>
- <nav class="menu"><a href="index.html" aria-current="page">mappe</a><a href="metodo.html">metodo</a><a href="progetto.html">progetto e fonti</a></nav>
+ <nav class="menu"><a href="index.html" aria-current="page">mappe</a><a href="metodo.html">metodo</a><a href="archivio.html">archivio</a><a href="progetto.html">progetto e fonti</a></nav>
 </header>
 <div class="ctrl">
  <p class="lab">cerca</p><div class="row"><input type="search" id="q" placeholder="nome del prodotto, designer, categoria" autocomplete="off"><span class="g" id="qn"></span></div>
@@ -208,10 +208,10 @@ function card(it,col){
  return `<div class="card"><div class="ph">${it.p?`<img src="${esc(it.p)}" alt="${esc(it.n)}" loading="lazy" referrerpolicy="no-referrer">`:'<span class="no">foto non disponibile sul sito</span>'}</div>
  <h2><span class="dot" style="background:${col[key(it)]||OTHER}"></span>${esc(it.n)}</h2>
  <p class="meta">${esc(it.b.name)}${it.i?' · '+esc(it.i):''}<br>${esc(Object.entries(it.g).map(([k,a])=>k+': '+a.join(', ')).join(' · '))}</p>
- ${it.d?`<p class="desc">${esc(it.d)}</p><p class="from">dalla scheda di ${esc(it.b.site)}</p>`:''}
+ ${it.d?`<p class="desc">${esc(it.d)}</p><p class="from">dalla scheda di ${esc(it.src||it.b.site)}</p>`:''}
  <div class="vv">${'UPCL'.split('').map((k,i)=>`<div><b>${v[i]}</b>${NAME[k]}${dots(v[i])}</div>`).join('')}</div>
  <p class="q">x ${x>0?'+':''}${x} · y ${y>0?'+':''}${y} · <b>${QN[quad([x,y])]}</b></p>
- ${it.u?`<a class="go" href="${esc(it.u)}" target="_blank" rel="noopener">${it.s?'cerca sul sito di '+esc(it.b.name):'apri la scheda su '+esc(it.b.site)} ↗</a>`:'<p class="hint">Questo prodotto non ha una scheda sul sito.</p>'}
+ ${it.u?`<a class="go" href="${esc(it.u)}" target="_blank" rel="noopener">${it.s?'cerca sul sito di '+esc(it.b.name):'apri la scheda su '+esc(it.src||it.b.site)} ↗</a>`:'<p class="hint">Questo prodotto non ha una scheda sul sito.</p>'}
  <p><button class="act" id="close">chiudi</button></p></div>`;
 }
 function side(vis,col){

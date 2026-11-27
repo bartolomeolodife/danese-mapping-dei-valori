@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>archivio · mapping dei valori</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.lead{padding:26px 0 28px;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.lead h1{font:700 32px/36px Archivo,sans-serif;margin:0}
+.lead p{margin:0 0 10px;font-size:16px;line-height:23px;max-width:66ch}
+@media(max-width:866px){.lead{grid-template-columns:1fr;gap:12px}}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--ink);padding:10px 0;display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr);align-items:center;gap:12px}
+.bar input{font:400 16px/22px Archivo,sans-serif;border:0;border-bottom:1px solid var(--ink);padding:6px 0;width:100%;max-width:420px;background:none;outline:none}
+.bar .row{display:flex;flex-wrap:wrap;gap:2px 18px}
+.bar a{font:400 14px/20px Archivo,sans-serif;display:inline-flex;align-items:center;gap:6px;padding:4px 0}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex:none}
+@media(max-width:866px){.bar{grid-template-columns:1fr;position:static}}
+section.az{scroll-margin-top:90px;border-bottom:1px solid var(--ink);padding:28px 0 8px}
+.az h2{font:700 32px/36px Archivo,sans-serif;margin:0 0 4px;display:flex;align-items:center;gap:12px}
+.az h2 .dot{width:16px;height:16px}
+.az .sub{color:var(--grey);margin:0 0 18px}
+.az .sub a{text-decoration:underline;text-underline-offset:3px}
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--hair)}
+.cols>div{padding:14px 18px 18px 0;border-right:1px solid var(--hair)}
+.cols>div+div{padding-left:18px}.cols>div:last-child{border-right:0}
+.cols h3{font:700 12px/17px Archivo,sans-serif;text-transform:uppercase;margin:0 0 8px}
+.cols p{margin:0 0 8px;font-size:14px;line-height:20px}
+.cols ol{margin:0;padding-left:18px;font-size:12px;line-height:17px;color:var(--grey)}
+.cols ol a{text-decoration:underline;text-underline-offset:2px}
+@media(max-width:866px){.cols{grid-template-columns:1fr}.cols>div{border-right:0;padding-left:0!important;border-bottom:1px solid var(--hair)}}
+.ana{display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:16px;align-items:start}
+.qb{display:flex;height:14px;margin:6px 0 4px;border:1px solid var(--ink)}
+.qb span{height:100%}
+.ql{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:12px;line-height:17px;color:var(--grey)}
+.ql i{display:inline-block;width:8px;height:8px;margin-right:4px;vertical-align:0}
+.big{font:700 32px/36px Archivo,sans-serif}
+.mini{width:150px;height:150px;border:1px solid var(--ink)}
+.prod{margin:14px 0 18px}
+.prod summary{cursor:pointer;font:700 14px/20px Archivo,sans-serif;padding:8px 0;list-style:none}
+.prod summary::-webkit-details-marker{display:none}
+.prod summary::before{content:'+ ';}
+.prod[open] summary::before{content:'− ';}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:1px solid var(--ink)}
+.card{border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);padding:12px 12px 14px 0;display:flex;flex-direction:column;gap:6px}
+.card:not(:nth-child(4n+1)){padding-left:12px}.card:nth-child(4n){border-right:0}
+.card .ph{aspect-ratio:1/1;background:#f4f4f4;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.card .ph img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.card .ph span{font-size:12px;color:var(--light)}
+.card h4{font:700 14px/18px Archivo,sans-serif;margin:2px 0 0}
+.card .m{font-size:12px;line-height:16px;color:var(--grey);margin:0}
+.card .d{font-size:12px;line-height:17px;margin:0}
+.card .v{display:flex;gap:10px;font-size:12px;line-height:16px;margin:2px 0 0}
+.card .v b{font-weight:700}
+.card .q{font-size:12px;line-height:16px;margin:0}
+.card a.go{font:700 12px/16px Archivo,sans-serif;text-decoration:underline;text-underline-offset:3px;margin-top:auto}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.card{padding-left:12px!important;border-right:1px solid var(--hair)!important}}
+@media(max-width:592px){.cards{grid-template-columns:1fr 1fr}}
+.none{padding:12px 0;color:var(--grey);font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <a class="brand" href="index.html">mapping dei valori<span>Fare book Danese · ISIA Roma</span></a>
+ <nav class="menu"><a href="index.html">mappe</a><a href="metodo.html">metodo</a><a href="archivio.html" aria-current="page">archivio</a><a href="progetto.html">progetto e fonti</a></nav>
+</header>
+<div class="lead">
+ <h1>Archivio</h1>
+ <div><p>Tutto quello che abbiamo raccolto su ogni azienda: storia, mission e valori, la nostra analisi sulla mappa e l’elenco completo dei prodotti, ognuno con foto, descrizione dalla scheda, voti e link.</p>
+ <p class="g">Storia e valori sono riassunti dalle fonti elencate sotto ogni azienda. Foto e descrizioni vengono dalle schede dei siti delle aziende (per Vitra, da un rivenditore). I voti sono la nostra lettura: come si calcolano è spiegato nel <a href="metodo.html"><u>metodo</u></a>.</p></div>
+</div>
+<div class="bar"><input type="search" id="q" placeholder="cerca un prodotto, un designer, una categoria" autocomplete="off"><div class="row" id="nav"></div></div>
+<main id="arch"><p class="none">Caricamento…</p></main>
+<footer>
+ <div><p><b>Progetto</b></p><p>Fare book Danese Milano, fase 1. Design del Prodotto 3, prof. Datti, ISIA Roma, 2026.</p></div>
+ <div><p><b>Autori</b></p><p>Bartolomeo Lodi-Fè<br>Alessandro dell’Aquila</p></div>
+ <div><p><b>Lettura</b></p><p>I voti sono la nostra lettura (L), proposta da verificare: si basano sulle foto del prodotto, sul prodotto in sé, sul prezzo, su come è costruito e su come viene descritto.</p></div>
+ <div><p><b>Avvertenza</b></p><p>Progetto di studio, non è un sito di Danese Milano né dei marchi citati. Foto e descrizioni restano delle aziende, a cui ogni prodotto rimanda.</p></div>
+</footer>
+</div>
+<script>
+{
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const NAME={U:'U',P:'P',C:'C',L:'L'};
+const QN=['missione','progetto','informazione','euforia','sugli assi'],QC=['#000','#7a7a7a','#bdbdbd','#e4e4e4','#fff'];
+const xy=v=>{const [U,P,C,L]=v.split('').map(Number);return [L-C,U-P]};
+const quad=([x,y])=>y>0&&x<0?0:y>0&&x>0?1:y<0&&x<0?2:y<0&&x>0?3:4;
+let B=[],A={},q='';
+function mini(b){const P=v=>75+v*21;let s=`<svg class="mini" viewBox="0 0 150 150" aria-hidden="true"><line x1="10" y1="75" x2="140" y2="75" stroke="#000" stroke-width="1"/><line x1="75" y1="10" x2="75" y2="140" stroke="#000" stroke-width="1"/>`;
+ const c={};b.items.forEach(it=>{const k=xy(it.v).join(',');c[k]=(c[k]||0)+1});const mx=Math.max(...Object.values(c));
+ Object.entries(c).forEach(([k,n])=>{const [x,y]=k.split(',').map(Number);s+=`<circle cx="${P(x)}" cy="${P(-y)}" r="${(1.5+6*Math.sqrt(n/mx)).toFixed(1)}" fill="${b.col}" fill-opacity=".85"/>`});
+ const m=b.items.reduce((a,it)=>{const p=xy(it.v);return [a[0]+p[0],a[1]+p[1]]},[0,0]).map(v=>v/b.items.length);
+ s+=`<g stroke="#000" stroke-width="1.5"><line x1="${P(m[0])-6}" y1="${P(-m[1])}" x2="${P(m[0])+6}" y2="${P(-m[1])}"/><line x1="${P(m[0])}" y1="${P(-m[1])-6}" x2="${P(m[0])}" y2="${P(-m[1])+6}"/></g></svg>`;return s}
+function analysis(b){const n=b.items.length,cnt=[0,0,0,0,0],cells=new Set();let sx=0,sy=0;
+ b.items.forEach(it=>{const p=xy(it.v);cnt[quad(p)]++;cells.add(p.join(','));sx+=p[0];sy+=p[1]});
+ const pc=cnt.map(c=>Math.round(100*c/n));
+ return `<div class="ana"><div><p><span class="big">${n}</span> prodotti · <b>${cells.size}</b> caselle su 49</p>
+ <div class="qb">${pc.map((p,i)=>p?`<span style="width:${p}%;background:${QC[i]}" title="${QN[i]} ${p}%"></span>`:'').join('')}</div>
+ <div class="ql">${pc.map((p,i)=>`<span><i style="background:${QC[i]};border:1px solid #000"></i>${QN[i]} ${p}%</span>`).join('')}</div>
+ <p style="margin-top:10px">Baricentro: x ${(sx/n).toFixed(2)} · y ${(sy/n).toFixed(2)}</p>
+ <p class="g">${esc(b.note)}</p>
+ <p><a href="index.html#${b.id}"><u>apri sulla mappa</u></a></p></div>${mini(b)}</div>`}
+function card(it,b){const v=it.v.split('').map(Number),p=xy(it.v);
+ return `<article class="card"><div class="ph">${it.p?`<img src="${esc(it.p)}" alt="${esc(it.n)}" loading="lazy" referrerpolicy="no-referrer">`:'<span>foto non disponibile</span>'}</div>
+ <h4>${esc(it.n)}</h4><p class="m">${esc(it.i||'')}</p>${it.d?`<p class="d">${esc(it.d)}</p>`:''}
+ <p class="v">${'UPCL'.split('').map((k,i)=>`<span>${k} <b>${v[i]}</b></span>`).join('')}</p>
+ <p class="q">x ${p[0]>0?'+':''}${p[0]} · y ${p[1]>0?'+':''}${p[1]} · <b>${QN[quad(p)]}</b></p>
+ ${it.u?`<a class="go" href="${esc(it.u)}" target="_blank" rel="noopener">${it.s?'cerca sul sito':'scheda su '+esc(it.src||b.site)} ↗</a>`:''}</article>`}
+const match=(it,b)=>!q||(it.n+' '+(it.i||'')+' '+(it.d||'')+' '+Object.values(it.g||{}).flat().join(' ')+' '+b.name).toLowerCase().includes(q);
+function render(){
+ $('arch').innerHTML=B.map(b=>{const a=A[b.id]||{};const its=b.items.filter(it=>match(it,b)).sort((x,y)=>x.n.localeCompare(y.n));
+  if(q&&!its.length)return '';
+  return `<section class="az" id="a-${b.id}"><h2><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</h2>
+  <p class="sub"><a href="https://${esc(b.site)}" target="_blank" rel="noopener">${esc(b.site)}</a> · ${esc(a.perche||'')}</p>
+  ${q?'':`<div class="cols"><div><h3>Storia</h3>${(a.storia||[]).map(s=>`<p>${esc(s)}</p>`).join('')}</div>
+  <div><h3>Mission e valori</h3>${(a.valori||[]).map(s=>`<p>${esc(s)}</p>`).join('')}<h3 style="margin-top:14px">Fonti</h3><ol>${(a.fonti||[]).map(([t,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join('')}</ol></div>
+  <div><h3>La nostra analisi</h3>${analysis(b)}</div></div>`}
+  <details class="prod"${q?' open':''}><summary>${q?its.length+' prodotti trovati':'tutti i prodotti ('+its.length+')'}</summary><div class="cards">${its.map(it=>card(it,b)).join('')}</div></details></section>`}).join('')||'<p class="none">Nessun prodotto trovato.</p>';
+}
+fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(d=>{B=d;return fetch('aziende.json',{cache:'no-cache'}).then(r=>r.json())}).then(a=>{A=a;
+ $('nav').innerHTML=B.map(b=>`<a href="#a-${b.id}"><span class="dot" style="background:${b.col}"></span>${esc(b.name)}</a>`).join('');render();
+ if(location.hash){const e=document.querySelector(location.hash);if(e)e.scrollIntoView()}}).catch(()=>{$('arch').innerHTML='<p class="none">Dati non caricati.</p>'});
+let t=0;$('q').addEventListener('input',e=>{clearTimeout(t);t=setTimeout(()=>{q=e.target.value.trim().toLowerCase();render()},200)});
+}
+</script>
+</body>
+</html>
