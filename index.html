@@ -81,7 +81,7 @@
  <div class="sep"></div>
  <p class="lab">aziende</p><div class="row" id="brands"></div>
  <div class="sep"></div>
- <p class="lab">vista</p><div class="row" id="vista"><button class="word" aria-pressed="true" data-v="pallini">pallini</button><button class="word" aria-pressed="false" data-v="macchie">macchie</button><button class="word" aria-pressed="false" data-v="mediane">solo mediane</button></div>
+ <p class="lab">vista</p><div class="row" id="vista"><button class="word" aria-pressed="true" data-v="pallini">pallini</button><button class="word" aria-pressed="false" data-v="macchie">macchie</button><button class="word" aria-pressed="false" data-v="mediane">solo baricentri</button></div>
  <div class="sep cpr"></div>
  <p class="lab cpr">colora per</p><div class="row cpr" id="grps"></div>
  <div class="sep msr"></div>
@@ -176,12 +176,12 @@ function drawBlobs(vis,keys,col){
 const qtl=(a,p)=>{const s=a.slice().sort((x,y)=>x-y),i=(s.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo)};
 function drawMed(vis,keys,col){const G=$('med');if(mode!=='mediane'){window.MEDL='';return}
  const by={};vis.forEach(it=>{const k=key(it);(by[k]=by[k]||[]).push(xy(it))});
- const pts=keys.filter(k=>by[k]).map(k=>{const xs=by[k].map(p=>p[0]),ys=by[k].map(p=>p[1]);return {k,n:xs.length,mx:qtl(xs,.5),my:qtl(ys,.5),x1:qtl(xs,.25),x3:qtl(xs,.75),y1:qtl(ys,.25),y3:qtl(ys,.75),c:col[k]||OTHER}});
+ const pts=keys.filter(k=>by[k]).map(k=>{const xs=by[k].map(p=>p[0]),ys=by[k].map(p=>p[1]);return {k,n:xs.length,mx:xs.reduce((a,b)=>a+b,0)/xs.length,my:ys.reduce((a,b)=>a+b,0)/ys.length,x1:qtl(xs,.25),x3:qtl(xs,.75),y1:qtl(ys,.25),y3:qtl(ys,.75),c:col[k]||OTHER}});
  const seen={};pts.forEach(p=>{const s=p.mx+','+p.my;const i=seen[s]=(seen[s]||0)+1;p.i=i-1});
  const cnt={};pts.forEach(p=>{const s=p.mx+','+p.my;cnt[s]=(cnt[s]||0)+1});
- window.MEDL='<div class="res">'+pts.map(p=>`<button data-k="${esc(p.k)}" tabindex="-1"><span class="th"><span class="dot" style="background:${p.c}"></span></span><span>${esc(p.k)}<small>mediana x ${p.mx>0?'+':''}${p.mx} · y ${p.my>0?'+':''}${p.my} · ${QN[quad([p.mx,p.my])]} · ${p.n} prodotti</small></span></button>`).join('')+'</div>';
+ window.MEDL='<div class="res">'+pts.map(p=>`<button data-k="${esc(p.k)}" tabindex="-1"><span class="th"><span class="dot" style="background:${p.c}"></span></span><span>${esc(p.k)}<small>baricentro x ${p.mx>0?'+':''}${p.mx.toFixed(2)} · y ${p.my>0?'+':''}${p.my.toFixed(2)} · ${QN[quad([p.mx,p.my])]} · ${p.n} prodotti</small></span></button>`).join('')+'</div>';
  G.innerHTML=pts.map(p=>{const tot=cnt[p.mx+','+p.my],a=tot>1?2*Math.PI*p.i/tot:0,off=tot>1?24:0,X=P(p.mx)+off*Math.cos(a),Y=P(-p.my)+off*Math.sin(a);
-  return `<g data-k="${esc(p.k)}" style="transform:translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)"><circle r="11" fill="${p.c}" stroke="#fff" stroke-width="2"/><text x="16" y="-12" font-family="Archivo,sans-serif" font-size="15" font-weight="700" fill="${p.c}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(p.k)}</text><title>${esc(p.k)} · mediana x ${p.mx} y ${p.my} · ${p.n} prodotti</title></g>`}).join('');
+  return `<g data-k="${esc(p.k)}" style="transform:translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)"><circle r="11" fill="${p.c}" stroke="#fff" stroke-width="2"/><text x="16" y="-12" font-family="Archivo,sans-serif" font-size="15" font-weight="700" fill="${p.c}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(p.k)}</text><title>${esc(p.k)} · baricentro x ${p.mx.toFixed(2)} y ${p.my.toFixed(2)} · ${p.n} prodotti</title></g>`}).join('');
 }
 function draw(){
  const all=items(),{keys,col}=colors(all);
@@ -241,7 +241,7 @@ function side(vis,col){
  if(hide.size&&!vis.length){$('side').innerHTML='<p class="hint">Nessuna categoria selezionata. Scegline una o più in «mostra», oppure premi «vedi tutte».</p>';return}
  if(hide.size){const ks=[...new Set(vis.map(key))],r=vis.slice().sort((a,b)=>a.n.localeCompare(b.n));
   $('side').innerHTML=`<h2 style="margin:0 0 4px">${ks.map(k=>`<span class="dot" style="background:${col[k]||OTHER}"></span> ${esc(k)}`).join('<br>')}</h2><p class="lab">${r.length} ${r.length===1?'prodotto':'prodotti'}</p><div class="res">`+r.map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+(col[key(it)]||OTHER)+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+'</div>';return}
- $('side').innerHTML=mode==='mediane'?`<p class="hint">Il pallino grande è la mediana di ogni gruppo: metà dei prodotti sta a sinistra e metà a destra, metà sopra e metà sotto.</p>`+(window.MEDL||''):mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
+ $('side').innerHTML=mode==='mediane'?`<p class="hint">Il pallino grande è il baricentro di ogni gruppo, cioè la media della posizione di tutti i suoi prodotti: è lo stesso punto della croce che si vede nella vista a pallini.</p>`+(window.MEDL||''):mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
 }
 function bars(){
  const IRD=['gufram','memphis','meritalia'];
