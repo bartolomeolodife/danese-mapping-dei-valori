@@ -172,7 +172,7 @@ function drawBlobs(vis,keys,col){
   if(!p){p=document.createElementNS('http://www.w3.org/2000/svg','path');p.dataset.id=b.id;p.style.opacity=0;G.appendChild(p);p.getBoundingClientRect()}
   p.setAttribute('d',b.d);p.style.fill=b.c;p.dataset.k=b.k;p.style.opacity=on.size>2?.2:.3;p.classList.toggle('sel',selBlob===b.id)});
 }
-// mediane: per ogni gruppo il punto mediano (mediana di x e mediana di y) e, in linea sottile, lo scarto interquartile (dal 25% al 75% dei prodotti)
+// mediane: per ogni gruppo il punto mediano (mediana di x e mediana di y)
 const qtl=(a,p)=>{const s=a.slice().sort((x,y)=>x-y),i=(s.length-1)*p,lo=Math.floor(i),hi=Math.ceil(i);return s[lo]+(s[hi]-s[lo])*(i-lo)};
 function drawMed(vis,keys,col){const G=$('med');if(mode!=='mediane'){window.MEDL='';return}
  const by={};vis.forEach(it=>{const k=key(it);(by[k]=by[k]||[]).push(xy(it))});
@@ -181,7 +181,7 @@ function drawMed(vis,keys,col){const G=$('med');if(mode!=='mediane'){window.MEDL
  const cnt={};pts.forEach(p=>{const s=p.mx+','+p.my;cnt[s]=(cnt[s]||0)+1});
  window.MEDL='<div class="res">'+pts.map(p=>`<button data-k="${esc(p.k)}" tabindex="-1"><span class="th"><span class="dot" style="background:${p.c}"></span></span><span>${esc(p.k)}<small>mediana x ${p.mx>0?'+':''}${p.mx} · y ${p.my>0?'+':''}${p.my} · ${QN[quad([p.mx,p.my])]} · ${p.n} prodotti</small></span></button>`).join('')+'</div>';
  G.innerHTML=pts.map(p=>{const tot=cnt[p.mx+','+p.my],a=tot>1?2*Math.PI*p.i/tot:0,off=tot>1?24:0,X=P(p.mx)+off*Math.cos(a),Y=P(-p.my)+off*Math.sin(a);
-  return `<g data-k="${esc(p.k)}" style="transform:translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)"><line x1="${P(p.x1)-X}" y1="0" x2="${P(p.x3)-X}" y2="0" stroke="${p.c}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><line x1="0" y1="${P(-p.y3)-Y}" x2="0" y2="${P(-p.y1)-Y}" stroke="${p.c}" stroke-width="1.5" vector-effect="non-scaling-stroke"/><circle r="11" fill="${p.c}" stroke="#fff" stroke-width="2"/><text x="16" y="-12" font-family="Archivo,sans-serif" font-size="15" font-weight="700" fill="${p.c}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(p.k)}</text><title>${esc(p.k)} · mediana x ${p.mx} y ${p.my} · ${p.n} prodotti</title></g>`}).join('');
+  return `<g data-k="${esc(p.k)}" style="transform:translate(${X.toFixed(1)}px,${Y.toFixed(1)}px)"><circle r="11" fill="${p.c}" stroke="#fff" stroke-width="2"/><text x="16" y="-12" font-family="Archivo,sans-serif" font-size="15" font-weight="700" fill="${p.c}" stroke="#fff" stroke-width="4" paint-order="stroke">${esc(p.k)}</text><title>${esc(p.k)} · mediana x ${p.mx} y ${p.my} · ${p.n} prodotti</title></g>`}).join('');
 }
 function draw(){
  const all=items(),{keys,col}=colors(all);
@@ -241,7 +241,7 @@ function side(vis,col){
  if(hide.size&&!vis.length){$('side').innerHTML='<p class="hint">Nessuna categoria selezionata. Scegline una o più in «mostra», oppure premi «vedi tutte».</p>';return}
  if(hide.size){const ks=[...new Set(vis.map(key))],r=vis.slice().sort((a,b)=>a.n.localeCompare(b.n));
   $('side').innerHTML=`<h2 style="margin:0 0 4px">${ks.map(k=>`<span class="dot" style="background:${col[k]||OTHER}"></span> ${esc(k)}`).join('<br>')}</h2><p class="lab">${r.length} ${r.length===1?'prodotto':'prodotti'}</p><div class="res">`+r.map(it=>`<button data-id="${it.id}"><span class="th">${it.p?`<img src="${esc(it.p)}" alt="" loading="lazy" referrerpolicy="no-referrer">`:'<span class="dot" style="background:'+(col[key(it)]||OTHER)+'"></span>'}</span><span>${esc(it.n)}<small>${esc(it.b.name)} · ${QN[quad(xy(it))]}</small></span></button>`).join('')+'</div>';return}
- $('side').innerHTML=mode==='mediane'?`<p class="hint">Il pallino grande è la mediana di ogni gruppo: metà dei prodotti sta a sinistra e metà a destra, metà sopra e metà sotto. Le due linee sottili vanno dal 25% al 75% dei prodotti, cioè dove sta la metà centrale del catalogo: più sono lunghe, più l’azienda è sparsa sulla mappa.</p>`+(window.MEDL||''):mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
+ $('side').innerHTML=mode==='mediane'?`<p class="hint">Il pallino grande è la mediana di ogni gruppo: metà dei prodotti sta a sinistra e metà a destra, metà sopra e metà sotto.</p>`+(window.MEDL||''):mode==='macchie'?`<p class="hint">Ogni macchia copre le caselle dove l’azienda ha almeno un prodotto: le caselle vicine si fondono, una casella lontana forma una macchia a parte. Passaci sopra per isolarla, clic per vedere i prodotti che contiene.</p>`:`<p class="hint">Ogni pallino è un prodotto. Passaci sopra per vederlo, clic per aprire la foto, la descrizione, i voti e il link alla scheda sul sito. La croce colorata è il baricentro di ogni azienda.</p>`;
 }
 function bars(){
  const IRD=['gufram','memphis','meritalia'];
