@@ -63,7 +63,7 @@
 #blobs{transition:opacity .45s ease}#dots{transition:opacity .45s ease}
 #svg:not(.mac) #blobs{opacity:0;pointer-events:none}
 #svg.mac #dots{opacity:0;pointer-events:none}
-#svg.med #dots,#svg.med #bary{opacity:0;pointer-events:none}#svg:not(.med) #med{opacity:0;pointer-events:none}#med{transition:opacity .45s ease}#med g{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .3s}#med.hov g{opacity:.15}#med.hov g.on{opacity:1}#bary{transition:opacity .45s}
+#svg.med #dots,#svg.med #bary{opacity:0;pointer-events:none}#svg:not(.med) #med{opacity:0;pointer-events:none}#med{transition:opacity .45s ease}#med g{transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .3s}#med circle{transition:transform .3s cubic-bezier(.2,.8,.2,1)}#med text{transition:font-size .3s}#med.hov g{opacity:.15}#med.hov g.on{opacity:1}#med g.on circle{transform:scale(1.7)}#med g.on text{font-size:20px}#med g{cursor:pointer}#bary{transition:opacity .45s}
 #svg.mac.peek #dots{opacity:1}#svg.mac.peek #dots a.ob circle{opacity:0!important}#svg.mac.peek #dots a.ob.on circle{opacity:1!important}
 #blobs.hov path{opacity:.08!important}#blobs.hov path.on,#blobs path.sel{opacity:.45!important}
 .word{transition:color .25s}.word .dot{transition:opacity .25s}
@@ -274,6 +274,9 @@ $('side').addEventListener('pointerover',e=>{const b=e.target.closest('.res butt
  const el=$('dots').querySelector(`a.ob[data-id="${b.dataset.id}"]`);if(el===lit)return;unlit();if(!el)return;
  const c=el.firstChild;c.dataset.r0=c.style.r;c.style.r=Math.max(9,parseFloat(c.style.r)*2.2);el.classList.add('on');$('dots').classList.add('hov');$('svg').classList.add('peek');$('dots').appendChild(el);lit=el});
 $('side').addEventListener('pointerleave',unlit);
+$('side').addEventListener('pointerover',e=>{if(mode!=='mediane')return;const b=e.target.closest('.res button[data-k]');const M=$('med');M.querySelectorAll('g.on').forEach(x=>x.classList.remove('on'));
+ if(!b){M.classList.remove('hov');return}const g=[...M.querySelectorAll('g')].find(x=>x.dataset.k===b.dataset.k);if(g){g.classList.add('on');M.appendChild(g);M.classList.add('hov')}});
+$('side').addEventListener('pointerleave',()=>{const M=$('med');M.classList.remove('hov');M.querySelectorAll('g.on').forEach(x=>x.classList.remove('on'))});
 $('zin').onclick=()=>zoom(.7);$('zout').onclick=()=>zoom(1/.7);$('zre').onclick=()=>{vb=[0,0,1000,1000];setView()};
 const fig=$('fig'),tip=$('tip');
 fig.addEventListener('wheel',e=>{e.preventDefault();const [x,y]=toSvg(e);zoom(e.deltaY>0?1.15:1/1.15,x,y)},{passive:false});
@@ -286,7 +289,7 @@ window.addEventListener('pointermove',e=>{if(pts.has(e.pointerId))pts.set(e.poin
 window.addEventListener('pointerup',e=>{pts.delete(e.pointerId);if(pts.size<2)pinch=null;if(!pts.size){drag=null;fig.classList.remove('drag')}});
 fig.addEventListener('click',e=>{if(moved){moved=false;return}const o=e.target.closest('.ob');if(o)pick(o.dataset.id);else{const bp=e.target.closest('#blobs path');if(bp){selBlob=bp.dataset.id;selId=null;draw()}else if(selId||selBlob){selId=null;selBlob=null;draw()}}});
 fig.addEventListener('keydown',e=>{const o=e.target.closest&&e.target.closest('.ob');if(o&&(e.key==='Enter'||e.key===' ')){e.preventDefault();pick(o.dataset.id)}});
-fig.addEventListener('pointerover',e=>{const mg=e.target.closest&&e.target.closest('#med g');$('med').classList.toggle('hov',!!mg);$('med').querySelectorAll('g.on').forEach(x=>x.classList.remove('on'));if(mg){mg.classList.add('on');return}
+fig.addEventListener('pointerover',e=>{const mg=e.target.closest&&e.target.closest('#med g');$('med').classList.toggle('hov',!!mg);$('med').querySelectorAll('g.on').forEach(x=>x.classList.remove('on'));if(mg){mg.classList.add('on');$('med').appendChild(mg);return}
  const bp=e.target.closest&&e.target.closest('#blobs path');
  if(bp){$('blobs').classList.add('hov');$('blobs').querySelectorAll('path.on').forEach(x=>x.classList.remove('on'));$('blobs').querySelectorAll('path').forEach(x=>{if(x.dataset.k===bp.dataset.k&&x===bp)x.classList.add('on')});
   const b=(window.BL||[]).find(x=>x.id===bp.dataset.id);tip.innerHTML=`<b>${esc(b.k)}</b><span class="g">${b.its.length} ${b.its.length===1?'prodotto':'prodotti'}</span>`;tip.style.display='block';return}
