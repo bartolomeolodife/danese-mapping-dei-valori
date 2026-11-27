@@ -9,7 +9,7 @@
 <rect x="604.0" y="112.0" width="42.0" height="30.0" fill="#1a1a1a"/>
 <text x="625.0" y="131.7" font-size="13" font-weight="bold" text-anchor="middle" fill="#fff">Did.</text>
 <rect x="650.0" y="112.0" width="540.0" height="30.0" fill="#1a1a1a"/>
-<text x="920.0" y="132.4" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">Quadrato semiotico (Floch) · perché, dal testo Danese</text>
+<text x="920.0" y="132.4" font-size="15" font-weight="bold" text-anchor="middle" fill="#fff">Mappa dei valori · perché, dal testo Danese</text>
 <text x="399.0" y="350.0" font-size="12" font-weight="normal" text-anchor="start" fill="#111" transform="rotate(-90 399.0 350.0)">bambini</text>
 <text x="445.0" y="350.0" font-size="12" font-weight="normal" text-anchor="start" fill="#111" transform="rotate(-90 445.0 350.0)">una persona</text>
 <text x="491.0" y="350.0" font-size="12" font-weight="normal" text-anchor="start" fill="#111" transform="rotate(-90 491.0 350.0)">famiglia</text>
@@ -61,8 +61,8 @@
 <line x1="1220" y1="439" x2="2395" y2="439" stroke="#e6e6e6"/>
 <rect x="482.0" y="414.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="404.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 404.0L686.0 434.0M686.0 404.0L656.0 434.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="659.6" cy="415.2" r="3.2" fill="#111"/>
+<path d="M671.0 404.0V434.0M656.0 419.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="666.6" cy="432.2" r="3.2" fill="#111"/>
 <text x="706.0" y="422.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«design essenziale… forme e materiali semplici»</text>
 <rect x="1254.1" y="414.0" width="10" height="10" fill="#111"/>
 <rect x="1836.6" y="414.0" width="10" height="10" fill="#111"/>
@@ -76,8 +76,8 @@
 <line x1="1220" y1="481" x2="2395" y2="481" stroke="#e6e6e6"/>
 <rect x="482.0" y="456.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="446.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 446.0L686.0 476.0M686.0 446.0L656.0 476.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="659.6" cy="457.2" r="3.2" fill="#111"/>
+<path d="M671.0 446.0V476.0M656.0 461.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="666.6" cy="474.2" r="3.2" fill="#111"/>
 <text x="706.0" y="464.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«design essenziale… forme e materiali semplici»</text>
 <rect x="1254.1" y="456.0" width="10" height="10" fill="#111"/>
 <rect x="1836.6" y="456.0" width="10" height="10" fill="#111"/>
@@ -91,8 +91,8 @@
 <line x1="1220" y1="523" x2="2395" y2="523" stroke="#e6e6e6"/>
 <rect x="482.0" y="498.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="488.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 488.0L686.0 518.0M686.0 488.0L656.0 518.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="659.6" cy="491.6" r="3.2" fill="#111"/>
+<path d="M671.0 488.0V518.0M656.0 503.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="666.6" cy="516.2" r="3.2" fill="#111"/>
 <text x="706.0" y="506.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«la sua intelligenza si dimostra nell’uso»</text>
 <rect x="1254.1" y="498.0" width="10" height="10" fill="#111"/>
 <rect x="1836.6" y="498.0" width="10" height="10" fill="#111"/>
@@ -105,8 +105,8 @@
 <line x1="1220" y1="565" x2="2395" y2="565" stroke="#e6e6e6"/>
 <rect x="482.0" y="540.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="530.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 530.0L686.0 560.0M686.0 530.0L656.0 560.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="659.6" cy="541.2" r="3.2" fill="#111"/>
+<path d="M671.0 530.0V560.0M656.0 545.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="666.6" cy="558.2" r="3.2" fill="#111"/>
 <text x="706.0" y="548.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«continuamente riutilizzabile in contesti differenti»</text>
 <rect x="1254.1" y="540.0" width="10" height="10" fill="#111"/>
 <rect x="1894.9" y="540.0" width="10" height="10" fill="#111"/>
@@ -120,8 +120,8 @@
 <rect x="482.0" y="582.0" width="10" height="10" fill="#111"/>
 <rect x="528.0" y="582.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="572.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 572.0L686.0 602.0M686.0 572.0L656.0 602.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="667.2" cy="583.2" r="3.2" fill="#111"/>
+<path d="M671.0 572.0V602.0M656.0 587.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="666.6" cy="591.4" r="3.2" fill="#111"/>
 <text x="706.0" y="590.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«contenuto innovativo, tecnologico e concettuale… flessibile agli usi»</text>
 <rect x="1254.1" y="582.0" width="10" height="10" fill="#111"/>
 <rect x="1894.9" y="582.0" width="10" height="10" fill="#111"/>
@@ -135,8 +135,8 @@
 <line x1="1220" y1="649" x2="2395" y2="649" stroke="#e6e6e6"/>
 <rect x="482.0" y="624.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="614.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 614.0L686.0 644.0M686.0 614.0L656.0 644.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="659.6" cy="625.2" r="3.2" fill="#111"/>
+<path d="M671.0 614.0V644.0M656.0 629.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="657.8" cy="642.2" r="3.2" fill="#111"/>
 <text x="706.0" y="632.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«pratica, disassemblabile e monomaterica»</text>
 <rect x="1254.1" y="624.0" width="10" height="10" fill="#111"/>
 <rect x="1836.6" y="624.0" width="10" height="10" fill="#111"/>
@@ -151,8 +151,8 @@
 <line x1="1220" y1="691" x2="2395" y2="691" stroke="#e6e6e6"/>
 <rect x="482.0" y="666.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="656.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 656.0L686.0 686.0M686.0 656.0L656.0 686.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="674.8" cy="674.8" r="3.2" fill="#111"/>
+<path d="M671.0 656.0V686.0M656.0 671.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="675.4" cy="679.8" r="3.2" fill="#111"/>
 <text x="706.0" y="674.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«un oggetto funzionale e grafico» (P. Charpin)</text>
 <rect x="1254.1" y="666.0" width="10" height="10" fill="#111"/>
 <rect x="1894.9" y="666.0" width="10" height="10" fill="#111"/>
@@ -169,8 +169,8 @@
 <line x1="1220" y1="759" x2="2395" y2="759" stroke="#e6e6e6"/>
 <rect x="436.0" y="734.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="724.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 724.0L686.0 754.0M686.0 724.0L656.0 754.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="671.0" cy="727.6" r="3.2" fill="#111"/>
+<path d="M671.0 724.0V754.0M656.0 739.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="679.8" cy="739.0" r="3.2" fill="#111"/>
 <text x="706.0" y="742.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«evoca senza pretese quella museale… un utilizzo libero e personale»</text>
 <rect x="1254.1" y="734.0" width="10" height="10" fill="#111"/>
 <rect x="1778.4" y="734.0" width="10" height="10" fill="#111"/>
@@ -190,8 +190,8 @@
 <rect x="528.0" y="802.0" width="10" height="10" fill="#111"/>
 <rect x="574.0" y="802.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="792.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 792.0L686.0 822.0M686.0 792.0L656.0 822.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="659.6" cy="803.2" r="3.2" fill="#111"/>
+<path d="M671.0 792.0V822.0M656.0 807.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="657.8" cy="820.2" r="3.2" fill="#111"/>
 <text x="706.0" y="810.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«massima flessibilità… intelligenza produttiva e costruttiva»</text>
 <rect x="1254.1" y="802.0" width="10" height="10" fill="#111"/>
 <rect x="1894.9" y="802.0" width="10" height="10" fill="#111"/>
@@ -204,8 +204,8 @@
 <line x1="1220" y1="869" x2="2395" y2="869" stroke="#e6e6e6"/>
 <rect x="482.0" y="844.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="834.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 834.0L686.0 864.0M686.0 834.0L656.0 864.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="671.0" cy="849.0" r="3.2" fill="#111"/>
+<path d="M671.0 834.0V864.0M656.0 849.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="675.4" cy="853.4" r="3.2" fill="#111"/>
 <text x="706.0" y="852.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«rivisita i tavolini del secolo XVIII… trasformabile»</text>
 <rect x="1254.1" y="844.0" width="10" height="10" fill="#111"/>
 <rect x="1894.9" y="844.0" width="10" height="10" fill="#111"/>
@@ -220,8 +220,8 @@
 <line x1="1220" y1="911" x2="2395" y2="911" stroke="#e6e6e6"/>
 <rect x="482.0" y="886.0" width="10" height="10" fill="#111"/>
 <rect x="656.0" y="876.0" width="30" height="30" fill="none" stroke="#bbb" stroke-width="0.6"/>
-<path d="M656.0 876.0L686.0 906.0M686.0 876.0L656.0 906.0" stroke="#ddd" stroke-width="0.5"/>
-<circle cx="667.2" cy="887.2" r="3.2" fill="#111"/>
+<path d="M671.0 876.0V906.0M656.0 891.0H686.0" stroke="#ccc" stroke-width="0.5"/>
+<circle cx="671.0" cy="904.2" r="3.2" fill="#111"/>
 <text x="706.0" y="894.5" font-size="9.5" font-weight="normal" text-anchor="start" fill="#444">«vassoi… rimozione e riposizionamento… facile ed immediato»</text>
 <rect x="1254.1" y="886.0" width="10" height="10" fill="#111"/>
 <rect x="1894.9" y="886.0" width="10" height="10" fill="#111"/>
@@ -256,42 +256,95 @@
 <line x1="2336.8" y1="372" x2="2336.8" y2="912" stroke="#e6e6e6"/>
 <line x1="602.0" y1="372" x2="602.0" y2="912" stroke="#e6e6e6"/>
 <line x1="648.0" y1="372" x2="648.0" y2="912" stroke="#e6e6e6"/>
-<text x="28.0" y="972.0" font-size="18" font-weight="bold" text-anchor="start" fill="#111">Quadrato semiotico · librerie e carrelli</text>
-<text x="28.0" y="992.0" font-size="11" font-weight="normal" text-anchor="start" fill="#666">i numeri rimandano alle righe della tabella</text>
+<text x="28.0" y="972.0" font-size="18" font-weight="bold" text-anchor="start" fill="#111">Mappa dei valori · librerie e carrelli</text>
+<text x="28.0" y="992.0" font-size="11" font-weight="normal" text-anchor="start" fill="#666">i numeri rimandano alle righe della tabella · stessa posizione della mappa sul sito (x = L − C, y = U − P)</text>
 <rect x="330" y="1062" width="560" height="560" fill="none" stroke="#111" stroke-width="1"/>
-<path d="M330 1062L890 1622M890 1062L330 1622" stroke="#bbb" stroke-width="0.6"/>
-<text x="330.0" y="1036.0" font-size="12" font-weight="bold" text-anchor="start" fill="#111">VALORIZZAZIONE PRATICA</text>
-<text x="330.0" y="1050.0" font-size="11" font-weight="normal" text-anchor="start" fill="#666">valori utilitari</text>
-<text x="890.0" y="1036.0" font-size="12" font-weight="bold" text-anchor="end" fill="#111">VALORIZZAZIONE UTOPICA</text>
-<text x="890.0" y="1050.0" font-size="11" font-weight="normal" text-anchor="end" fill="#666">valori esistenziali</text>
-<text x="330.0" y="1644.0" font-size="12" font-weight="bold" text-anchor="start" fill="#111">VALORIZZAZIONE CRITICA</text>
-<text x="330.0" y="1658.0" font-size="11" font-weight="normal" text-anchor="start" fill="#666">valori non esistenziali</text>
-<text x="890.0" y="1644.0" font-size="12" font-weight="bold" text-anchor="end" fill="#111">VALORIZZAZIONE LUDICA</text>
-<text x="890.0" y="1658.0" font-size="11" font-weight="normal" text-anchor="end" fill="#666">valori non utilitari</text>
-<circle cx="362.8" cy="1254.8" r="9" fill="#111"/>
-<text x="362.8" y="1258.3" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">1</text>
-<circle cx="384.8" cy="1282.8" r="9" fill="#111"/>
-<text x="384.8" y="1286.3" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">2</text>
-<circle cx="374.8" cy="1106.8" r="9" fill="#111"/>
-<text x="374.8" y="1110.3" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">3</text>
-<circle cx="379.3" cy="1242.4" r="9" fill="#111"/>
-<text x="379.3" y="1245.9" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">4</text>
-<circle cx="521.3" cy="1263.6" r="9" fill="#111"/>
-<text x="521.3" y="1267.1" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">5</text>
-<circle cx="365.4" cy="1275.2" r="9" fill="#111"/>
-<text x="365.4" y="1278.7" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">6</text>
-<circle cx="688.4" cy="1420.4" r="9" fill="#111"/>
-<text x="688.4" y="1423.9" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">7</text>
-<circle cx="610.0" cy="1106.8" r="9" fill="#111"/>
-<text x="610.0" y="1110.3" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">8</text>
-<circle cx="381.8" cy="1262.7" r="9" fill="#111"/>
-<text x="381.8" y="1266.2" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">9</text>
-<circle cx="610.0" cy="1342.0" r="9" fill="#111"/>
-<text x="610.0" y="1345.5" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">10</text>
-<circle cx="541.9" cy="1263.6" r="9" fill="#111"/>
-<text x="541.9" y="1267.1" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">11</text>
-<text x="1230.0" y="1092.0" font-size="12" font-weight="normal" text-anchor="start" fill="#555">Lettura (L): chi lo usa e posizione nel quadrato semiotico (J.-M. Floch) sono una nostra lettura. Il punto parte da ciò che il designer dichiara di voler esprimere,</text>
-<text x="1230.0" y="1110.0" font-size="12" font-weight="normal" text-anchor="start" fill="#555">citato dalla scheda prodotto su danesemilano.com (consultata il 26.11.2026); più è vicino a un angolo, più l’oggetto sta in quel valore.</text>
+<circle cx="370" cy="1582" r="1.6" fill="#c8c8c8"/>
+<circle cx="370" cy="1502" r="1.6" fill="#c8c8c8"/>
+<circle cx="370" cy="1422" r="1.6" fill="#c8c8c8"/>
+<circle cx="370" cy="1342" r="1.6" fill="#c8c8c8"/>
+<circle cx="370" cy="1262" r="1.6" fill="#c8c8c8"/>
+<circle cx="370" cy="1182" r="1.6" fill="#c8c8c8"/>
+<circle cx="370" cy="1102" r="1.6" fill="#c8c8c8"/>
+<circle cx="450" cy="1582" r="1.6" fill="#c8c8c8"/>
+<circle cx="450" cy="1502" r="1.6" fill="#c8c8c8"/>
+<circle cx="450" cy="1422" r="1.6" fill="#c8c8c8"/>
+<circle cx="450" cy="1342" r="1.6" fill="#c8c8c8"/>
+<circle cx="450" cy="1262" r="1.6" fill="#c8c8c8"/>
+<circle cx="450" cy="1182" r="1.6" fill="#c8c8c8"/>
+<circle cx="450" cy="1102" r="1.6" fill="#c8c8c8"/>
+<circle cx="530" cy="1582" r="1.6" fill="#c8c8c8"/>
+<circle cx="530" cy="1502" r="1.6" fill="#c8c8c8"/>
+<circle cx="530" cy="1422" r="1.6" fill="#c8c8c8"/>
+<circle cx="530" cy="1342" r="1.6" fill="#c8c8c8"/>
+<circle cx="530" cy="1262" r="1.6" fill="#c8c8c8"/>
+<circle cx="530" cy="1182" r="1.6" fill="#c8c8c8"/>
+<circle cx="530" cy="1102" r="1.6" fill="#c8c8c8"/>
+<circle cx="610" cy="1582" r="1.6" fill="#c8c8c8"/>
+<circle cx="610" cy="1502" r="1.6" fill="#c8c8c8"/>
+<circle cx="610" cy="1422" r="1.6" fill="#c8c8c8"/>
+<circle cx="610" cy="1342" r="1.6" fill="#c8c8c8"/>
+<circle cx="610" cy="1262" r="1.6" fill="#c8c8c8"/>
+<circle cx="610" cy="1182" r="1.6" fill="#c8c8c8"/>
+<circle cx="610" cy="1102" r="1.6" fill="#c8c8c8"/>
+<circle cx="690" cy="1582" r="1.6" fill="#c8c8c8"/>
+<circle cx="690" cy="1502" r="1.6" fill="#c8c8c8"/>
+<circle cx="690" cy="1422" r="1.6" fill="#c8c8c8"/>
+<circle cx="690" cy="1342" r="1.6" fill="#c8c8c8"/>
+<circle cx="690" cy="1262" r="1.6" fill="#c8c8c8"/>
+<circle cx="690" cy="1182" r="1.6" fill="#c8c8c8"/>
+<circle cx="690" cy="1102" r="1.6" fill="#c8c8c8"/>
+<circle cx="770" cy="1582" r="1.6" fill="#c8c8c8"/>
+<circle cx="770" cy="1502" r="1.6" fill="#c8c8c8"/>
+<circle cx="770" cy="1422" r="1.6" fill="#c8c8c8"/>
+<circle cx="770" cy="1342" r="1.6" fill="#c8c8c8"/>
+<circle cx="770" cy="1262" r="1.6" fill="#c8c8c8"/>
+<circle cx="770" cy="1182" r="1.6" fill="#c8c8c8"/>
+<circle cx="770" cy="1102" r="1.6" fill="#c8c8c8"/>
+<circle cx="850" cy="1582" r="1.6" fill="#c8c8c8"/>
+<circle cx="850" cy="1502" r="1.6" fill="#c8c8c8"/>
+<circle cx="850" cy="1422" r="1.6" fill="#c8c8c8"/>
+<circle cx="850" cy="1342" r="1.6" fill="#c8c8c8"/>
+<circle cx="850" cy="1262" r="1.6" fill="#c8c8c8"/>
+<circle cx="850" cy="1182" r="1.6" fill="#c8c8c8"/>
+<circle cx="850" cy="1102" r="1.6" fill="#c8c8c8"/>
+<path d="M610 1062V1622M330 1342H890" stroke="#111" stroke-width="0.8"/>
+<text x="610" y="1038" font-size="12" font-weight="bold" text-anchor="middle" fill="#111">UTOPICA</text>
+<text x="610" y="1052" font-size="11" font-weight="normal" text-anchor="middle" fill="#666">valori esistenziali</text>
+<text x="610" y="1644" font-size="12" font-weight="bold" text-anchor="middle" fill="#111">PRATICA</text>
+<text x="610" y="1658" font-size="11" font-weight="normal" text-anchor="middle" fill="#666">valori utilitari</text>
+<text x="322" y="1340" font-size="12" font-weight="bold" text-anchor="end" fill="#111">CRITICA</text>
+<text x="322" y="1354" font-size="11" font-weight="normal" text-anchor="end" fill="#666">non esistenziali</text>
+<text x="898" y="1340" font-size="12" font-weight="bold" text-anchor="start" fill="#111">LUDICA</text>
+<text x="898" y="1354" font-size="11" font-weight="normal" text-anchor="start" fill="#666">non utilitari</text>
+<text x="340" y="1082" font-size="12" font-weight="bold" text-anchor="start" fill="#9a9a9a">missione</text>
+<text x="880" y="1082" font-size="12" font-weight="bold" text-anchor="end" fill="#9a9a9a">progetto</text>
+<text x="340" y="1610" font-size="12" font-weight="bold" text-anchor="start" fill="#9a9a9a">informazione</text>
+<text x="880" y="1610" font-size="12" font-weight="bold" text-anchor="end" fill="#9a9a9a">euforia</text>
+<circle cx="525.0" cy="1573.3" r="9.0" fill="#111"/>
+<text x="525.0" y="1576.8" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">1</text>
+<circle cx="545.0" cy="1573.3" r="9.0" fill="#111"/>
+<text x="545.0" y="1576.8" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">2</text>
+<circle cx="515.0" cy="1590.7" r="9.0" fill="#111"/>
+<text x="515.0" y="1594.2" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">3</text>
+<circle cx="535.0" cy="1590.7" r="9.0" fill="#111"/>
+<text x="535.0" y="1594.2" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">4</text>
+<circle cx="530.0" cy="1422.0" r="9.0" fill="#111"/>
+<text x="530.0" y="1425.5" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">5</text>
+<circle cx="365.0" cy="1573.3" r="9.0" fill="#111"/>
+<text x="365.0" y="1576.8" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">6</text>
+<circle cx="375.0" cy="1590.7" r="9.0" fill="#111"/>
+<text x="375.0" y="1594.2" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">9</text>
+<circle cx="690.0" cy="1502.0" r="9.0" fill="#111"/>
+<text x="690.0" y="1505.5" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">7</text>
+<circle cx="770.0" cy="1342.0" r="9.0" fill="#111"/>
+<text x="770.0" y="1345.5" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">8</text>
+<circle cx="690.0" cy="1422.0" r="9.0" fill="#111"/>
+<text x="690.0" y="1425.5" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">10</text>
+<circle cx="610.0" cy="1582.0" r="9.0" fill="#111"/>
+<text x="610.0" y="1585.5" font-size="9.5" font-weight="bold" text-anchor="middle" fill="#fff">11</text>
+<text x="1230.0" y="1092.0" font-size="12" font-weight="normal" text-anchor="start" fill="#555">Lettura (L): chi lo usa e posizione sulla mappa dei valori (Floch, Semprini) sono una nostra lettura: i voti U P C L sono gli stessi della mappa sul sito.</text>
+<text x="1230.0" y="1110.0" font-size="12" font-weight="normal" text-anchor="start" fill="#555">La frase accanto viene dalla scheda prodotto su danesemilano.com (consultata il 26.11.2026). In alto utopica, in basso pratica, a sinistra critica, a destra ludica.</text>
 <text x="1230.0" y="1128.0" font-size="12" font-weight="normal" text-anchor="start" fill="#555">Le citazioni in rosso segnano oggetti senza testo sul sito: posizione provvisoria.</text>
 <text x="1230.0" y="1146.0" font-size="12" font-weight="normal" text-anchor="start" fill="#555">Didattico: segnato solo dove il testo Danese parla di progettazione didattica, gioco didattico, grafica educativa o educazione.</text>
 <text x="1230.0" y="1164.0" font-size="12" font-weight="normal" text-anchor="start" fill="#555">Struttura (R): materiali, uso, colori, misure e riedizione dalle schede del Danese Catalogue 2026.</text>
