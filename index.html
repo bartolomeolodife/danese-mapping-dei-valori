@@ -252,6 +252,11 @@ $('leg').onclick=e=>{const b=e.target.closest('button');if(!b)return;const k=b.d
 $('all').onclick=()=>{hide.clear();draw()};
 $('q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();selId=null;if(q&&mode==='macchie'){mode='pallini';$('vista').querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v==='pallini'))}draw()});
 $('side').addEventListener('click',e=>{const b=e.target.closest('.res button');if(b)pick(b.dataset.id)});
+let lit=null;const unlit=()=>{if(!lit)return;const c=lit.firstChild;c.style.r=c.dataset.r0;lit.classList.remove('on');$('dots').classList.remove('hov');lit=null};
+$('side').addEventListener('pointerover',e=>{const b=e.target.closest('.res button');if(!b||mode==='macchie'){unlit();return}
+ const el=$('dots').querySelector(`a.ob[data-id="${b.dataset.id}"]`);if(el===lit)return;unlit();if(!el)return;
+ const c=el.firstChild;c.dataset.r0=c.style.r;c.style.r=Math.max(9,parseFloat(c.style.r)*2.2);el.classList.add('on');$('dots').classList.add('hov');$('dots').appendChild(el);lit=el});
+$('side').addEventListener('pointerleave',unlit);
 $('zin').onclick=()=>zoom(.7);$('zout').onclick=()=>zoom(1/.7);$('zre').onclick=()=>{vb=[0,0,1000,1000];setView()};
 const fig=$('fig'),tip=$('tip');
 fig.addEventListener('wheel',e=>{e.preventDefault();const [x,y]=toSvg(e);zoom(e.deltaY>0?1.15:1/1.15,x,y)},{passive:false});
