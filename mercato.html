@@ -29,7 +29,11 @@
 .mapbox{position:relative;border:1px solid var(--hair);background:#fff}
 .mapbox svg{display:block;width:100%;height:auto;max-height:calc(100vh - 120px)}
 .mapbox .c{fill:#f1f1f1;stroke:#fff;stroke-width:.6}
-.mapbox .c.on{fill:#c9c9c9}
+.mapbox svg{touch-action:none;cursor:grab}.mapbox svg.drag{cursor:grabbing}
+.mapbox .c{stroke-width:var(--sw,.6px)}
+.mapbox .c.cd{fill:#7d7d7d}.mapbox .c.cr{fill:#b8b8b8}.mapbox .c.ca{fill:#F6C9A4}.mapbox .c.cg{fill:url(#hat)}
+.mapbox .zb{position:absolute;right:10px;top:10px;display:flex;gap:4px;background:#fff;border:1px solid #000;padding:0 8px}
+.mapbox .zb .act{min-width:22px;font-size:16px}
 .mapbox .pt{fill:#000;fill-opacity:.72;stroke:#fff;stroke-width:.8;cursor:pointer}
 .mapbox .pt.art{fill:#E8772E;fill-opacity:.9}
 .mapbox .pt:hover{fill-opacity:1;stroke:#000}
@@ -38,7 +42,7 @@
 #tip{position:absolute;pointer-events:none;background:#fff;border:1px solid #000;padding:6px 8px;font-size:12px;line-height:16px;max-width:280px;display:none;z-index:3}
 #tip b{display:block}
 .leg{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:12px;line-height:17px;color:var(--grey);margin:8px 0 0}
-.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}.leg i.sq{border-radius:0;border:1px solid #000}
 .tab{width:100%;border-collapse:collapse;font-size:14px;line-height:20px;margin-top:14px}
 .tab th{font:700 12px/17px Archivo,sans-serif;text-transform:uppercase;text-align:left;border-bottom:1px solid #000;padding:6px 8px 6px 0}
 .tab td{border-bottom:1px solid var(--hair);padding:7px 8px 7px 0;vertical-align:top}
@@ -112,7 +116,8 @@
  <div class="nums" id="nums"></div>
  <div class="views" id="views"></div>
  <div class="mapbox" id="mapbox"><div id="tip"></div></div>
- <div class="leg"><span><i style="background:#000"></i>rivenditori (area del punto = numero in quella città)</span><span><i style="background:#E8772E"></i>showroom e sedi Artemide che vendono Danese</span><span><i style="background:#fff;border:2px solid #000"></i>vendita diretta Danese (Milano)</span><span>paesi in grigio scuro: almeno un contatto di vendita</span></div>
+ <div class="leg"><span><b style="color:#000">Paesi:</b></span><span><i class="sq" style="background:#7d7d7d"></i>vendita diretta e rivenditori (Italia)</span><span><i class="sq" style="background:#b8b8b8"></i>rivenditori</span><span><i class="sq" style="background:#F6C9A4"></i>solo rete Artemide</span><span><i class="sq" style="background:repeating-linear-gradient(45deg,#8a8a8a 0 1.5px,#f1f1f1 1.5px 4px)"></i>solo agenti o distributori senza negozio indicato</span></div>
+ <div class="leg"><span><b style="color:#000">Punti:</b></span><span><i style="background:#000"></i>rivenditori (area = numero in quella città)</span><span><i style="background:#E8772E"></i>showroom e sedi Artemide che vendono Danese</span><span><i style="background:#fff;border:2px solid #000"></i>showroom Danese, Milano</span><span>rotella o pizzico per zoomare, trascina per spostarti, doppio clic per avvicinarti</span></div>
  <p class="g" style="font-size:12px;margin-top:8px">Posizione per città (per l’Italia: capoluogo di provincia indicato dal sito). I contatti senza indirizzo, quasi tutti agenti o distributori di area, non sono sulla mappa ma sono nell’elenco per paese.</p>
  <p style="margin-top:16px" id="readnet"></p>
 </section>
@@ -194,21 +199,43 @@ function init(){
 }
 function drawMap(){
  const g=view==='mondo'?G.world:view==='europa'?G.eu:G.it,[x0,x1,y0,y1]=g.box,P=(lo,la)=>[(lo-x0)*g.kx,(y1-la)*g.ky];
- const on=new Set(M.dealers.map(o=>ISO[o.iso]));
+ const T={};M.dealers.forEach(o=>{const id=ISO[o.iso],t=T[id]||(T[id]={r:0,a:0,g:0});if(o.tipo==='rivenditore')t.r++;else if(o.tipo==='rete Artemide')t.a++;else t.g++});
+ const cls=id=>{const t=T[id];if(!t)return '';if(id===380)return ' cd';return t.r?' cr':t.a?' ca':' cg'};
+ const tit=(p)=>{const t=T[+p.id];if(!t)return p.name;return p.name+' · '+[t.r?t.r+' rivenditori':'',t.a?t.a+' rete Artemide':'',t.g?t.g+' agenti/distributori':''].filter(Boolean).join(', ')};
  const k=view==='mondo'?1.6:view==='europa'?2.2:2.6;
- let s=`<svg viewBox="0 0 ${g.W} ${g.H}" role="img" aria-label="Mappa dei rivenditori Danese, vista ${view}">`;
- s+=g.paths.map(p=>`<path class="c${on.has(+p.id)?' on':''}" d="${p.d}"><title>${esc(p.name)}</title></path>`).join('');
+ let s=`<svg viewBox="0 0 ${g.W} ${g.H}" role="img" aria-label="Mappa dei rivenditori Danese, vista ${view}"><defs><pattern id="hat" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="5" height="5" fill="#f1f1f1"/><line x1="0" y1="0" x2="0" y2="5" stroke="#8a8a8a" stroke-width="1.6"/></pattern></defs><g id="zg">`;
+ s+=g.paths.map(p=>`<path class="c${cls(+p.id)}" d="${p.d}"><title>${esc(tit(p))}</title></path>`).join('');
  const pts=M.punti.filter(p=>p.lon>=x0-1&&p.lon<=x1+1&&p.lat>=y0-1&&p.lat<=y1+1).sort((a,b)=>b.n-a.n);
- pts.forEach((p,i)=>{const [x,y]=P(p.lon,p.lat);s+=`<circle class="pt${p.tipo==='rete Artemide'?' art':''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(k*1.9*Math.sqrt(p.n)).toFixed(1)}" data-i="${M.punti.indexOf(p)}"/>`});
+ pts.forEach(p=>{const [x,y]=P(p.lon,p.lat);s+=`<circle class="pt${p.tipo==='rete Artemide'?' art':''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" data-r="${(k*1.9*Math.sqrt(p.n)).toFixed(2)}" data-i="${M.punti.indexOf(p)}"/>`});
  const d=M.diretto[0],[dx,dy]=P(d.lon,d.lat);
- if(d.lon>=x0&&d.lon<=x1){s+=`<circle class="dir" cx="${dx}" cy="${dy}" r="${k*4.5}"/><text x="${dx+k*6}" y="${dy-k*5}">showroom Danese</text>`}
- s+='</svg>';
- const tip=$('tip');$('mapbox').innerHTML=s;$('mapbox').appendChild(tip);
- $('mapbox').onmousemove=e=>{const c=e.target.closest('circle.pt');if(!c){tip.style.display='none';return}
-  const p=M.punti[+c.dataset.i],r=$('mapbox').getBoundingClientRect();
+ if(d.lon>=x0&&d.lon<=x1){s+=`<circle class="dir" cx="${dx}" cy="${dy}" data-r="${k*4.5}"/><text id="dirt" x="${dx}" y="${dy}" data-k="${k}">showroom Danese</text>`}
+ s+='</g></svg><div class="zb"><button class="act" data-z="in" aria-label="ingrandisci">+</button><button class="act" data-z="out" aria-label="riduci">−</button><button class="act" data-z="reset">reset</button></div>';
+ const box=$('mapbox'),tip=$('tip');box.innerHTML=s;box.appendChild(tip);
+ const svg=box.querySelector('svg');let vb=[0,0,g.W,g.H];
+ const apply=()=>{svg.setAttribute('viewBox',vb.map(v=>v.toFixed(2)).join(' '));const z=g.W/vb[2],f=1/Math.pow(z,.75);
+  svg.querySelectorAll('circle').forEach(c=>{c.setAttribute('r',(+c.dataset.r*f).toFixed(2));c.style.strokeWidth=(c.classList.contains('dir')?2.5:.8)/z});
+  svg.querySelectorAll('path.c').forEach(()=>{});svg.style.setProperty('--sw',(.6/z)+'px');
+  const t=svg.querySelector('#dirt');if(t){const kk=+t.dataset.k*f;t.setAttribute('x',dx+kk*6);t.setAttribute('y',dy-kk*5);t.style.fontSize=(11/z)+'px';t.style.strokeWidth=(3/z)+'px'}};
+ const zoomAt=(fx,fy,m)=>{const z=g.W/vb[2],nz=Math.min(16,Math.max(1,z*m)),nw=g.W/nz,nh=g.H/nz;
+  vb=[vb[0]+(vb[2]-nw)*fx,vb[1]+(vb[3]-nh)*fy,nw,nh];clamp();apply()};
+ const clamp=()=>{vb[0]=Math.min(Math.max(vb[0],0),g.W-vb[2]);vb[1]=Math.min(Math.max(vb[1],0),g.H-vb[3])};
+ const rel=e=>{const r=svg.getBoundingClientRect();return [(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height]};
+ svg.addEventListener('wheel',e=>{e.preventDefault();const [fx,fy]=rel(e);zoomAt(fx,fy,Math.exp(-e.deltaY*.0022))},{passive:false});
+ svg.addEventListener('dblclick',e=>{const [fx,fy]=rel(e);zoomAt(fx,fy,2)});
+ const ptr=new Map();let last=null,pinch=null;
+ svg.addEventListener('pointerdown',e=>{svg.setPointerCapture(e.pointerId);ptr.set(e.pointerId,[e.clientX,e.clientY]);last=[e.clientX,e.clientY];if(ptr.size===2){const [a,b]=[...ptr.values()];pinch=Math.hypot(a[0]-b[0],a[1]-b[1])}svg.classList.add('drag')});
+ svg.addEventListener('pointermove',e=>{if(!ptr.has(e.pointerId))return;ptr.set(e.pointerId,[e.clientX,e.clientY]);const r=svg.getBoundingClientRect();
+  if(ptr.size===2&&pinch){const [a,b]=[...ptr.values()],d=Math.hypot(a[0]-b[0],a[1]-b[1]);zoomAt(((a[0]+b[0])/2-r.left)/r.width,((a[1]+b[1])/2-r.top)/r.height,d/pinch);pinch=d;return}
+  const dxp=(e.clientX-last[0])*vb[2]/r.width,dyp=(e.clientY-last[1])*vb[3]/r.height;vb[0]-=dxp;vb[1]-=dyp;last=[e.clientX,e.clientY];clamp();apply();tip.style.display='none'});
+ const up=e=>{ptr.delete(e.pointerId);if(ptr.size<2)pinch=null;if(!ptr.size)svg.classList.remove('drag');else last=[...ptr.values()][0]};
+ svg.addEventListener('pointerup',up);svg.addEventListener('pointercancel',up);
+ box.querySelector('.zb').onclick=e=>{const b=e.target.closest('[data-z]');if(!b)return;if(b.dataset.z==='reset'){vb=[0,0,g.W,g.H];apply()}else zoomAt(.5,.5,b.dataset.z==='in'?1.6:1/1.6)};
+ apply();
+ box.onmousemove=e=>{if(ptr.size)return;const c=e.target.closest('circle.pt');if(!c){tip.style.display='none';return}
+  const p=M.punti[+c.dataset.i],r=box.getBoundingClientRect();
   tip.innerHTML=`<b>${esc(p.citta)} · ${p.n}</b>${p.nomi.slice(0,10).map(esc).join('<br>')}${p.nomi.length>10?'<br>…':''}`;
   tip.style.display='block';const lx=e.clientX-r.left+14;tip.style.left=Math.min(lx,r.width-290)+'px';tip.style.top=(e.clientY-r.top+14)+'px'};
- $('mapbox').onmouseleave=()=>tip.style.display='none';
+ box.onmouseleave=()=>tip.style.display='none';
 }
 function countries(byC){
  const rows=Object.entries(byC).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])),mx=rows[0][1].length;
