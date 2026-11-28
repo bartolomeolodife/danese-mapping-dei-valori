@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>mercato danese · mapping dei valori</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.lead{padding:26px 0 28px;border-bottom:1px solid var(--ink);display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.lead h1{font:700 32px/36px Archivo,sans-serif;margin:0}
+.lead p{margin:0 0 10px;font-size:16px;line-height:23px;max-width:66ch}
+.lead a,.sec a.u,.note a{text-decoration:underline;text-underline-offset:3px}
+@media(max-width:866px){.lead{grid-template-columns:1fr;gap:12px}}
+.idx{display:flex;flex-wrap:wrap;gap:4px 22px;padding:10px 0;border-bottom:1px solid var(--ink);font:700 14px/20px Archivo,sans-serif}
+.idx a{color:var(--grey)}
+.sec{border-bottom:1px solid var(--ink);padding:26px 0 30px;scroll-margin-top:10px}
+.sec>h2{font:700 24px/30px Archivo,sans-serif;margin:0 0 6px}
+.sec>h2 span{color:var(--grey);font-weight:400;margin-right:10px}
+.sec>p{margin:0 0 10px;max-width:80ch;font-size:16px;line-height:23px}
+.rl{font:700 11px/16px Archivo,sans-serif;border:1px solid #000;padding:0 4px;margin-right:6px;vertical-align:1px}
+.nums{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);margin:18px 0}
+.nums div{padding:12px 14px 12px 0;border-right:1px solid var(--hair)}.nums div+div{padding-left:14px}.nums div:last-child{border-right:0}
+.nums b{display:block;font:700 32px/36px Archivo,sans-serif}
+.nums span{font-size:12px;line-height:17px;color:var(--grey)}
+@media(max-width:866px){.nums{grid-template-columns:1fr 1fr}.nums div{border-right:0;padding-left:0!important}}
+.views{display:flex;gap:6px 22px;align-items:center;margin:0 0 8px}
+.mapbox{position:relative;border:1px solid var(--hair);background:#fff}
+.mapbox svg{display:block;width:100%;height:auto;max-height:calc(100vh - 120px)}
+.mapbox .c{fill:#f1f1f1;stroke:#fff;stroke-width:.6}
+.mapbox .c.on{fill:#c9c9c9}
+.mapbox .pt{fill:#000;fill-opacity:.72;stroke:#fff;stroke-width:.8;cursor:pointer}
+.mapbox .pt.art{fill:#E8772E;fill-opacity:.9}
+.mapbox .pt:hover{fill-opacity:1;stroke:#000}
+.mapbox .dir{fill:none;stroke:#000;stroke-width:2.5}
+.mapbox text{font:700 11px Archivo,sans-serif;paint-order:stroke;stroke:#fff;stroke-width:3px}
+#tip{position:absolute;pointer-events:none;background:#fff;border:1px solid #000;padding:6px 8px;font-size:12px;line-height:16px;max-width:280px;display:none;z-index:3}
+#tip b{display:block}
+.leg{display:flex;flex-wrap:wrap;gap:4px 18px;font-size:12px;line-height:17px;color:var(--grey);margin:8px 0 0}
+.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.tab{width:100%;border-collapse:collapse;font-size:14px;line-height:20px;margin-top:14px}
+.tab th{font:700 12px/17px Archivo,sans-serif;text-transform:uppercase;text-align:left;border-bottom:1px solid #000;padding:6px 8px 6px 0}
+.tab td{border-bottom:1px solid var(--hair);padding:7px 8px 7px 0;vertical-align:top}
+.tab td.n{text-align:right;font-weight:700;width:60px}
+.tab .bar{height:10px;background:#000}
+.tab tr.p{cursor:pointer}.tab tr.p:hover td{background:#f6f6f6}
+.tab tr.p td:first-child::before{content:'+ ';font-weight:700}
+.tab tr.p.open td:first-child::before{content:'− '}
+.tab tr.d td{padding:0 0 14px}
+.dl{columns:3 260px;column-gap:24px;font-size:12px;line-height:17px;margin:6px 0 0}
+.dl p{margin:0 0 8px;break-inside:avoid}
+.dl p b{display:block;font-size:13px}
+.dl h4{font:700 12px/17px Archivo,sans-serif;text-transform:uppercase;margin:10px 0 6px;break-after:avoid}
+.qb{display:flex;height:14px;border:1px solid var(--ink)}
+.qb span{height:100%}
+.ql{display:flex;flex-wrap:wrap;gap:2px 12px;font-size:12px;line-height:17px;color:var(--grey);margin:10px 0 0}
+.ql i{display:inline-block;width:8px;height:8px;margin-right:4px;border:1px solid #000}
+.bsg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--hair);margin-top:16px}
+.bsg>div{padding:14px 18px 16px 0;border-right:1px solid var(--hair)}.bsg>div+div{padding-left:18px}.bsg>div:last-child{border-right:0}
+.bsg h3{font:700 16px/20px Archivo,sans-serif;margin:0 0 2px;display:flex;align-items:center;gap:8px}
+.bsg h3 i{width:10px;height:10px;border-radius:50%}
+.bsg .s{font-size:12px;line-height:16px;color:var(--grey);margin:0 0 10px}
+.bsg .r{margin:0 0 10px}
+.bsg .r p{margin:0 0 3px;font-size:12px;line-height:16px}
+.bsg .v{font:700 14px/20px Archivo,sans-serif;margin:10px 0 4px}
+.bsg .e{font-size:13px;line-height:19px;margin:0}
+@media(max-width:1100px){.bsg{grid-template-columns:1fr 1fr}.bsg>div{padding-left:0!important;border-right:0;border-bottom:1px solid var(--hair)}}
+@media(max-width:592px){.bsg{grid-template-columns:1fr}}
+.rows{margin-top:16px;border-top:1px solid var(--hair)}
+.row{display:grid;grid-template-columns:240px minmax(0,1fr) 230px;gap:16px;align-items:center;padding:9px 0;border-bottom:1px solid var(--hair);font-size:14px;line-height:20px}
+.row .y{font-size:12px;color:var(--grey);text-align:right}
+@media(max-width:866px){.row{grid-template-columns:1fr}.row .y{text-align:left}}
+.cards{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--ink);margin-top:16px}
+.card{border-bottom:1px solid var(--hair);border-right:1px solid var(--hair);padding:12px 12px 14px;display:flex;flex-direction:column;gap:5px}
+.card:nth-child(5n){border-right:0}.card:nth-child(5n+1){padding-left:0}
+.card .ph{aspect-ratio:1/1;background:#f4f4f4;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.card .ph img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply}
+.card .ph em{position:absolute;top:6px;left:6px;font:700 12px/16px Archivo,sans-serif;font-style:normal;background:#fff;border:1px solid #000;padding:0 5px}
+.card h4{font:700 14px/18px Archivo,sans-serif;margin:2px 0 0}
+.card .m{font-size:12px;line-height:16px;color:var(--grey);margin:0}
+.card .q{font-size:12px;line-height:16px;margin:0}
+.card a.go{font:700 12px/16px Archivo,sans-serif;text-decoration:underline;text-underline-offset:3px;margin-top:auto}
+@media(max-width:1100px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}.card{padding-left:12px!important;border-right:1px solid var(--hair)!important}}
+@media(max-width:592px){.cards{grid-template-columns:1fr 1fr}}
+.more{margin:14px 0 0}
+.more summary{cursor:pointer;font:700 14px/20px Archivo,sans-serif;padding:8px 0;list-style:none}
+.more summary::-webkit-details-marker{display:none}
+.more summary::before{content:'+ '}.more[open] summary::before{content:'− '}
+.note{font-size:14px;line-height:21px;max-width:80ch}
+.note li{margin:0 0 8px}
+.src{font-size:12px;line-height:18px;color:var(--grey);padding-left:18px}
+.src a{text-decoration:underline;text-underline-offset:2px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+ <a class="brand" href="index.html">mapping dei valori<span>Fare book Danese · ISIA Roma</span></a>
+ <nav class="menu"><a href="index.html">mappe</a><a href="metodo.html">metodo</a><a href="tipologiche.html">tipologiche</a><a href="archivio.html">archivio</a><a href="mercato.html" aria-current="page">mercato danese</a><a href="progetto.html">progetto e fonti</a></nav>
+</header>
+<div class="lead">
+ <h1>Mercato Danese</h1>
+ <div><p>Dove si compra Danese e che cosa si compra. La prima parte traccia la rete di vendita: lo showroom diretto di Milano, il negozio online e tutti i rivenditori indiretti elencati sul sito Danese. La seconda parte guarda la domanda: quali prodotti si vendono di più e di meno, e dove stanno sulla mappa dei valori.</p>
+ <p class="g"><span class="rl">R</span>dato rilevato da una fonte, con link. <span class="rl">L</span>nostra lettura. Tutti i dati sono scaricabili in <a href="archivio.html#a-dati">archivio</a>. Rilevazione del 28/11/2026.</p></div>
+</div>
+<nav class="idx"><a href="#rete">la rete di vendita</a><a href="#paesi">elenco per paese</a><a href="#domanda">offerta o domanda?</a><a href="#piu">danese: i più venduti</a><a href="#meno">danese: i meno venduti</a><a href="#limiti">limiti e fonti</a></nav>
+
+<section class="sec" id="rete">
+ <h2><span>01</span>La rete di vendita</h2>
+ <p><span class="rl">R</span>Danese vende in modo diretto in due posti: lo showroom di Piazza San Nazaro in Brolo 15 a Milano e il negozio online <a class="u" href="https://onlinestore.danesemilano.com" target="_blank" rel="noopener">onlinestore.danesemilano.com</a>. Tutto il resto passa per rivenditori, agenti e la rete del gruppo Artemide, elencati nella pagina <a class="u" href="https://www.danesemilano.com/it/contacts" target="_blank" rel="noopener">contatti</a> del sito Danese, paese per paese e, per l’Italia, regione per regione.</p>
+ <div class="nums" id="nums"></div>
+ <div class="views" id="views"></div>
+ <div class="mapbox" id="mapbox"><div id="tip"></div></div>
+ <div class="leg"><span><i style="background:#000"></i>rivenditori (area del punto = numero in quella città)</span><span><i style="background:#E8772E"></i>showroom e sedi Artemide che vendono Danese</span><span><i style="background:#fff;border:2px solid #000"></i>vendita diretta Danese (Milano)</span><span>paesi in grigio scuro: almeno un contatto di vendita</span></div>
+ <p class="g" style="font-size:12px;margin-top:8px">Posizione per città (per l’Italia: capoluogo di provincia indicato dal sito). I contatti senza indirizzo, quasi tutti agenti o distributori di area, non sono sulla mappa ma sono nell’elenco per paese.</p>
+ <p style="margin-top:16px" id="readnet"></p>
+</section>
+
+<section class="sec" id="paesi">
+ <h2><span>02</span>Elenco per paese</h2>
+ <p>Clic su un paese per vedere tutti i nomi, indirizzi e contatti. Per l’Italia l’elenco è diviso per regione e provincia, come sul sito Danese. File completo: <a class="u" href="dati/danese_rivenditori.csv" download>danese_rivenditori.csv</a>.</p>
+ <table class="tab" id="ctab"></table>
+</section>
+
+<section class="sec" id="domanda">
+ <h2><span>03</span>Offerta o domanda?</h2>
+ <p>Le mappe del sito misurano l’<b>offerta</b>: tutto il catalogo di ogni azienda. Qui misuriamo la <b>domanda</b>. Sui negozi online di Seletti, Design House Stockholm, Alessi e Danese (tutti su Shopify) i prodotti si possono ordinare per «più venduti»: abbiamo preso i primi 50 prodotti diversi (una famiglia per riga, come sulla mappa) e li abbiamo confrontati con il catalogo intero. Se i più venduti stanno in euforia più della media del catalogo, la tesi passa dall’offerta alla domanda: sono i clienti a chiedere euforia.</p>
+ <div class="bsg" id="bsg"></div>
+ <div class="ql" id="ql"></div>
+ <p style="margin-top:18px" id="readbs"></p>
+</section>
+
+<section class="sec" id="piu">
+ <h2><span>04</span>Danese: i più venduti</h2>
+ <p><span class="rl">R</span>Danese non pubblica le vendite per prodotto e non ha un bilancio separato (fa parte del gruppo Artemide). Per questo abbiamo messo insieme tre classifiche «più venduti» di negozi online diversi: il negozio ufficiale Danese, Connox (Germania, uno dei rivenditori dell’elenco) e Design Republic (Italia). Per ogni famiglia calcoliamo un <b>indice di vendita</b> da 0 a 100 (100 = primo in ogni classifica in cui compare); qui sotto le prime 20 famiglie che compaiono in almeno due classifiche.</p>
+ <div class="rows" id="srows"></div>
+ <div class="cards" id="topcards"></div>
+ <p style="margin-top:18px" id="readtop"></p>
+ <details class="more"><summary>classifica completa delle tre fonti (<span id="nall"></span> famiglie)</summary><table class="tab" id="rtab"></table></details>
+</section>
+
+<section class="sec" id="meno">
+ <h2><span>05</span>Danese: i meno venduti</h2>
+ <p><span class="rl">R</span>Due modi di essere «poco venduti». La <b>coda</b>: famiglie che sono solo nel negozio ufficiale e stanno nell’ultimo quarto della sua classifica. Il <b>fuori dalle classifiche</b>: famiglie del catalogo che non compaiono in nessuna delle tre classifiche online, perché non sono vendute online (arredi, contract, pezzi su richiesta) o perché non sono disponibili.</p>
+ <div class="cards" id="lowcards"></div>
+ <p style="margin-top:18px" id="readlow"></p>
+ <details class="more"><summary>le <span id="nnever"></span> famiglie fuori dalle classifiche, per quadrante</summary><div class="dl" id="never"></div></details>
+</section>
+
+<section class="sec" id="limiti">
+ <h2><span>06</span>Limiti e fonti</h2>
+ <ul class="note">
+  <li><b>Nessun report pubblico per prodotto.</b> Abbiamo cercato bilanci, comunicati e articoli: Danese non pubblica dati di vendita per prodotto. Il gruppo Artemide pubblica il fatturato complessivo, che non separa Danese. Le classifiche «più venduti» dei negozi sono l’unico dato di domanda prodotto per prodotto che si può verificare.</li>
+  <li><b>Le classifiche non hanno un periodo dichiarato.</b> Shopify ordina per vendite ma non dice su quanti mesi; ogni negozio vede solo i propri clienti. Per questo ne usiamo tre e diamo peso alle famiglie che compaiono in più di una.</li>
+  <li><b>Una classifica dice l’ordine, non le quantità.</b> Il primo può vendere dieci volte il decimo o poco di più: non lo sappiamo.</li>
+  <li><b>La rete di vendita è quella dichiarata da Danese</b> sul proprio sito il 28/11/2026. Alcuni negozi vendono Danese senza essere in elenco (per esempio Design Republic e Artemest), altri in elenco potrebbero non averlo più a scaffale.</li>
+  <li><b>Il catalogo cambia di direzione artistica.</b> Ron Gilad è stato direttore artistico nel 2017–2018, Giulio Iacchetti dal 2019 (<a href="https://danesemilano.com/en/manifesto" target="_blank" rel="noopener">danesemilano.com, manifesto</a>).</li>
+ </ul>
+ <ol class="src" id="src"></ol>
+</section>
+
+<footer>
+ <div><p><b>Progetto</b></p><p>Fare book Danese Milano, fase 1. Design del Prodotto 3, prof. Datti, ISIA Roma, 2026.</p></div>
+ <div><p><b>Autori</b></p><p>Bartolomeo Lodi-Fè<br>Alessandro dell’Aquila</p></div>
+ <div><p><b>Fonti</b></p><p>danesemilano.com/contacts; classifiche «più venduti» di onlinestore.danesemilano.com, connox.com, designrepublic.com, seletti.it, designhousestockholm.com, alessi.com, consultate il 28/11/2026. Confini dei paesi: Natural Earth (world-atlas).</p></div>
+ <div><p><b>Avvertenza</b></p><p>Progetto di studio, non è un sito di Danese Milano. Foto dei prodotti dalle schede di danesemilano.com.</p></div>
+</footer>
+</div>
+<script>
+{
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=(v,d=1)=>(v>0?'+':v<0?'−':'')+Math.abs(v).toFixed(d).replace('.',',');
+const pct=v=>String(v).replace('.',',')+'%';
+const QN=['missione','progetto','informazione','euforia','asse'],QL=['missione','progetto','informazione','euforia','sugli assi'],QC=['#000','#7a7a7a','#bdbdbd','#e4e4e4','#fff'];
+const qbar=d=>`<div class="qb">${QN.map((q,i)=>d[q]?`<span style="width:${d[q]}%;background:${QC[i]}" title="${QL[i]} ${pct(d[q])}"></span>`:'').join('')}</div>`;
+const ISO={IT:380,DE:276,CH:756,FR:250,GB:826,PT:620,DK:208,AT:40,SE:752,CZ:203,AU:36,HR:191,HK:344,NL:528,NO:578,US:840,SK:703,CA:124,FI:246,CL:152,KR:410,JP:392,IS:352,PL:616,RO:642,QA:634,SG:702,SI:705,SM:674,ES:724,TW:158,BE:56,EE:233,LV:428,LT:440,BG:100,HU:348};
+let M,G,view='mondo';
+Promise.all([fetch('mercato.json',{cache:'no-cache'}).then(r=>r.json()),fetch('mercato-geo.json').then(r=>r.json())]).then(([m,g])=>{M=m;G=g;init()}).catch(()=>{$('mapbox').innerHTML='<p style="padding:20px">Dati non caricati.</p>'});
+
+function init(){
+ const D=M.dealers,shops=D.filter(o=>o.tipo==='rivenditore'||o.tipo==='rete Artemide');
+ const byC={};D.forEach(o=>{(byC[o.paese]=byC[o.paese]||[]).push(o)});
+ const C=Object.keys(byC),it=D.filter(o=>o.paese==='Italia').length,eu=D.filter(o=>o.continente==='Europa').length;
+ const cont={};D.forEach(o=>cont[o.continente]=(cont[o.continente]||0)+1);
+ $('nums').innerHTML=[[D.length,'contatti di vendita elencati da Danese'],[C.length,'paesi'],[pct(Math.round(1000*eu/D.length)/10),'in Europa'],[pct(Math.round(1000*it/D.length)/10),'in Italia ('+it+')'],['2','canali diretti: showroom di Milano e negozio online']].map(([a,b])=>`<div><b>${a}</b><span>${b}</span></div>`).join('');
+ const top=Object.entries(byC).sort((a,b)=>b[1].length-a[1].length);
+ const out=Object.entries(cont).filter(([k])=>k!=='Europa').map(([k,v])=>k+' '+v).join(', ');
+ $('readnet').innerHTML=`<span class="rl">L</span>Danese è un marchio europeo, anzi italo-tedesco-svizzero: Italia, Germania, Svizzera e Francia da sole fanno ${top.slice(0,4).reduce((a,b)=>a+b[1].length,0)} contatti su ${D.length}. Fuori dall’Europa la presenza è puntiforme (${out}) e passa quasi sempre per il gruppo Artemide, che in Nord America è distributore esclusivo del marchio (<a class="u" href="https://artemide.net/en/pressroom/introducing-danese-milano" target="_blank" rel="noopener">artemide.net</a>). I rivenditori sono negozi di arredamento e di design, negozi di musei (Tate, Design Museum, MAK di Colonia) e grandi negozi online come Connox e AmbienteDirect: il canale di un oggetto da regalo d’autore più che di un arredo.`;
+ $('views').innerHTML=['mondo','europa','italia'].map(v=>`<button class="word" aria-pressed="${v===view}" data-v="${v}">${v}</button>`).join('');
+ $('views').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;view=b.dataset.v;[...$('views').children].forEach(x=>x.setAttribute('aria-pressed',x===b));drawMap()};
+ drawMap();countries(byC);demand();danese();sources();
+}
+function drawMap(){
+ const g=view==='mondo'?G.world:view==='europa'?G.eu:G.it,[x0,x1,y0,y1]=g.box,P=(lo,la)=>[(lo-x0)*g.kx,(y1-la)*g.ky];
+ const on=new Set(M.dealers.map(o=>ISO[o.iso]));
+ const k=view==='mondo'?1.6:view==='europa'?2.2:2.6;
+ let s=`<svg viewBox="0 0 ${g.W} ${g.H}" role="img" aria-label="Mappa dei rivenditori Danese, vista ${view}">`;
+ s+=g.paths.map(p=>`<path class="c${on.has(+p.id)?' on':''}" d="${p.d}"><title>${esc(p.name)}</title></path>`).join('');
+ const pts=M.punti.filter(p=>p.lon>=x0-1&&p.lon<=x1+1&&p.lat>=y0-1&&p.lat<=y1+1).sort((a,b)=>b.n-a.n);
+ pts.forEach((p,i)=>{const [x,y]=P(p.lon,p.lat);s+=`<circle class="pt${p.tipo==='rete Artemide'?' art':''}" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(k*1.9*Math.sqrt(p.n)).toFixed(1)}" data-i="${M.punti.indexOf(p)}"/>`});
+ const d=M.diretto[0],[dx,dy]=P(d.lon,d.lat);
+ if(d.lon>=x0&&d.lon<=x1){s+=`<circle class="dir" cx="${dx}" cy="${dy}" r="${k*4.5}"/><text x="${dx+k*6}" y="${dy-k*5}">showroom Danese</text>`}
+ s+='</svg>';
+ const tip=$('tip');$('mapbox').innerHTML=s;$('mapbox').appendChild(tip);
+ $('mapbox').onmousemove=e=>{const c=e.target.closest('circle.pt');if(!c){tip.style.display='none';return}
+  const p=M.punti[+c.dataset.i],r=$('mapbox').getBoundingClientRect();
+  tip.innerHTML=`<b>${esc(p.citta)} · ${p.n}</b>${p.nomi.slice(0,10).map(esc).join('<br>')}${p.nomi.length>10?'<br>…':''}`;
+  tip.style.display='block';const lx=e.clientX-r.left+14;tip.style.left=Math.min(lx,r.width-290)+'px';tip.style.top=(e.clientY-r.top+14)+'px'};
+ $('mapbox').onmouseleave=()=>tip.style.display='none';
+}
+function countries(byC){
+ const rows=Object.entries(byC).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])),mx=rows[0][1].length;
+ const dl=L=>L.map(o=>`<p><b>${esc(o.nome)}</b>${esc(o.indirizzo||'')}${o.indirizzo?'<br>':''}${o.tipo!=='rivenditore'?'<i>'+esc(o.tipo)+'</i><br>':''}${esc(o.telefono?'tel. '+o.telefono:'')}${o.telefono&&o.email?' · ':''}${esc(o.email||'')}</p>`).join('');
+ const detail=(p,L)=>{if(p!=='Italia')return dl(L);const R={};L.forEach(o=>{(R[o.regione]=R[o.regione]||[]).push(o)});
+  return Object.entries(R).sort((a,b)=>b[1].length-a[1].length).map(([r,l])=>`<h4>${esc(r)} · ${l.length}</h4>`+dl(l.sort((a,b)=>a.provincia.localeCompare(b.provincia)).map(o=>({...o,indirizzo:(o.provincia?o.provincia+' — ':'')+(o.indirizzo||'')})))).join('')};
+ $('ctab').innerHTML=`<tr><th>paese</th><th>continente</th><th style="text-align:right">contatti</th><th style="width:40%"></th><th>di cui</th></tr>`+rows.map(([p,L],i)=>{
+  const c=t=>L.filter(o=>o.tipo===t).length,sh=c('rivenditore'),ar=c('rete Artemide'),dc=c('contatto commerciale Danese'),ag=L.length-sh-ar-dc;
+  const parts=[sh?sh+(sh>1?' rivenditori':' rivenditore'):'',ar?ar+' rete Artemide':'',ag?ag+(ag>1?' agenti o distributori':' agente o distributore')+' senza indirizzo':'',dc?'contatto commerciale diretto Danese (sales@danesemilano.com)':''].filter(Boolean).join(', ');
+  return `<tr class="p" data-i="${i}"><td>${esc(p)}</td><td class="g">${esc(L[0].continente)}</td><td class="n">${L.length}</td><td><div class="bar" style="width:${100*L.length/mx}%"></div></td><td class="g">${parts}</td></tr><tr class="d" hidden><td colspan="5"><div class="dl">${detail(p,L)}</div></td></tr>`}).join('');
+ $('ctab').onclick=e=>{const r=e.target.closest('tr.p');if(!r)return;const d=r.nextElementSibling;d.hidden=!d.hidden;r.classList.toggle('open',!d.hidden)};
+}
+function demand(){
+ const N={seletti:['Seletti','#E4007C'],dhs:['Design House Stockholm','#1E7FD8'],alessi:['Alessi','#D62828'],danese:['Danese','#000']};
+ const ord=['seletti','dhs','alessi','danese'];
+ $('bsg').innerHTML=ord.map(k=>{const b=M.bs[k],de=b.top_pct.euforia||0,dc=b.cat.euforia||0,dy=b.bar_top[1]-b.bar_cat[1];
+  const pass=de>dc;
+  const host=b.fonte.split('/')[2].replace('www.','');
+  return `<div><h3><i style="background:${N[k][1]}"></i>${N[k][0]}</h3><p class="s">catalogo ${b.n} · primi ${b.m} su <a class="u" href="${esc(b.fonte)}" target="_blank" rel="noopener" style="text-decoration:underline">${esc(host)}</a></p>
+  <div class="r"><p>catalogo · euforia <b>${pct(dc)}</b></p>${qbar(b.cat)}</div>
+  <div class="r"><p>più venduti · euforia <b>${pct(de)}</b></p>${qbar(b.top_pct)}</div>
+  <p class="s">baricentro y: catalogo ${fmt(b.bar_cat[1],2)} → più venduti ${fmt(b.bar_top[1],2)}</p>
+  <p class="v">${pass?'la domanda conferma':'la domanda non conferma'} (${fmt(de-dc)} punti)</p>
+  <p class="e">${{seletti:'Il catalogo è già all’80% in euforia; i più venduti lo sono meno (60%) e salgono verso il progetto. Chi compra Seletti sceglie anche i pezzi più “d’autore”.',dhs:'Euforia leggermente più alta tra i più venduti e baricentro un po’ più su: la domanda segue l’offerta, quasi alla pari.',alessi:'I più venduti sono più euforici del catalogo (72% contro 59%): è il caso in cui la tesi passa davvero alla domanda.',danese:'I più venduti sono meno euforici del catalogo e quasi metà sta in progetto (46% contro 28%): chi compra Danese compra il pezzo utopico, d’autore.'}[k]}</p></div>`}).join('');
+ $('ql').innerHTML=QL.map((q,i)=>`<span><i style="background:${QC[i]}"></i>${q}</span>`).join('');
+ $('readbs').innerHTML=`<span class="rl">L</span>La tesi passa alla domanda solo per Alessi (e di poco per Design House Stockholm). Per Seletti e per Danese succede il contrario: i clienti comprano più in alto sulla mappa di quanto l’azienda offra. Per Danese il dato è netto: il baricentro dei più venduti sale da ${fmt(M.bs.danese.bar_cat[1],2)} a ${fmt(M.bs.danese.bar_top[1],2)}, quasi sull’asse orizzontale. La domanda chiede a Danese i valori utopici del progetto, non l’euforia.`;
+}
+function danese(){
+ const R=M.rank,S=R.stat,F=Object.keys(R.fonti),FN={'onlinestore.danesemilano.com':'Danese','connox.com':'Connox','designrepublic.com':'Design Republic'};
+ const row=(t,s)=>`<div class="row"><div><b>${t}</b><br><span class="g" style="font-size:12px">${s.n} famiglie</span></div>${qbar(s.dist)}<div class="y">progetto ${pct(s.dist.progetto)} · euforia ${pct(s.dist.euforia)}<br>baricentro y ${fmt(s.bar[1],2)}</div></div>`;
+ $('srows').innerHTML=row('catalogo Danese oggi',S.catalogo)+row('primi 20 per indice di vendita',S.top20_consenso)+row('tutte le famiglie in classifica',S.in_classifica)+row('coda (meno vendute online)',S.coda)+row('fuori da tutte le classifiche',S.mai_in_classifica);
+ const byN={};R.righe.forEach(r=>byN[r.famiglia]=r);
+ const xy=v=>{const [U,P,C,L]=v.split('').map(Number);return [L-C,U-P]};
+ const card=(r,lab)=>{const p=xy(r.v);return `<article class="card"><div class="ph">${r.p?`<img src="${esc(r.p)}" alt="${esc(r.famiglia)}" loading="lazy" referrerpolicy="no-referrer">`:''}<em>${lab}</em></div><h4>${esc(r.famiglia)}</h4>
+  <p class="m">${F.filter(f=>r.fonti[f]).map(f=>`${FN[f]} ${r.fonti[f].pos}/${r.fonti[f].su}`).join(' · ')}</p>
+  <p class="q">indice ${String(r.indice).replace('.',',')} · <b>${QL[QN.indexOf(r.q)]}</b> (x ${fmt(p[0],0)}, y ${fmt(p[1],0)})</p>
+  <a class="go" href="${esc(r.u)}" target="_blank" rel="noopener">scheda su danesemilano.com ↗</a></article>`};
+ $('topcards').innerHTML=S.top20_consenso.famiglie.map((n,i)=>card(byN[n],i+1)).join('');
+ $('readtop').innerHTML=`<span class="rl">L</span>I più venduti sono quasi tutti di Enzo Mari e Bruno Munari (18 su 20, contro il 46% del catalogo): i calendari Timor e Formosa, il posacenere Cubo, gli oggetti da scrivania (Flores, Sumatra, Ameland, Ellice, Maiorca) e soprattutto le serigrafie della Serie della Natura, che da sole sono 9 dei primi 20. Sono oggetti piccoli, sotto i 200 € per la scrivania e tra 150 e 450 € per le stampe: il regalo d’autore. Metà sta in progetto, nessuno in missione e uno solo in euforia (Flores). Il nuovo catalogo dal 2017 compare una volta sola.`;
+ $('nall').textContent=R.righe.length;
+ $('rtab').innerHTML=`<tr><th>#</th><th>famiglia</th><th>quadrante</th><th style="text-align:right">indice</th>${F.map(f=>`<th>${FN[f]}</th>`).join('')}</tr>`+R.righe.slice().sort((a,b)=>b.n_fonti-a.n_fonti||b.indice-a.indice).map((r,i)=>`<tr><td class="g">${i+1}</td><td><a href="${esc(r.u)}" target="_blank" rel="noopener">${esc(r.famiglia)}</a></td><td>${QL[QN.indexOf(r.q)]}</td><td class="n">${String(r.indice).replace('.',',')}</td>${F.map(f=>`<td class="g">${r.fonti[f]?r.fonti[f].pos+'/'+r.fonti[f].su:'–'}</td>`).join('')}</tr>`).join('');
+ $('lowcards').innerHTML=S.coda.famiglie.map(n=>card(byN[n],'coda')).join('');
+ $('readlow').innerHTML=`<span class="rl">L</span>La coda è il catalogo nuovo: 11 delle 17 famiglie meno vendute sono entrate dal 2017, 8 sono di Ron Gilad (Surface+Border, Border No. 2, Drawing, Fruit Bowl No. 10, Vase 96, Venezia / Pisa / Torcello). Stanno soprattutto sugli assi e in progetto, con il baricentro più alto di tutti (y ${fmt(S.coda.bar[1],2)}): pezzi da collezione, cari, poco richiesti. Le famiglie fuori da ogni classifica (${S.mai_in_classifica.n}) sono invece in basso (y ${fmt(S.mai_in_classifica.bar[1],2)}): arredi Bincan e Familia, vasi Paros e Window Garden, oggetti da contract che non si comprano con un clic.`;
+ const D=M.never||null;
+ $('nnever').textContent=S.mai_in_classifica.n;
+ const qOf={};R.righe.forEach(r=>qOf[r.famiglia]=r.q);
+ fetch('data.json',{cache:'no-cache'}).then(r=>r.json()).then(B=>{const it=B.find(b=>b.id==='danese').items,I={};it.forEach(i=>I[i.n]=i);
+  const g={};S.mai_in_classifica.famiglie.forEach(n=>{const i=I[n];if(!i)return;const [x,y]=xy(i.v);const q=x===0||y===0?4:y>0&&x<0?0:y>0?1:x<0?2:3;(g[q]=g[q]||[]).push(i)});
+  $('never').innerHTML=[0,1,2,3,4].filter(q=>g[q]).map(q=>`<h4>${QL[q]} · ${g[q].length}</h4>`+g[q].map(i=>`<p><a href="${esc(i.u)}" target="_blank" rel="noopener"><b>${esc(i.n)}</b></a>${esc(i.i||'')}</p>`).join('')).join('')}).catch(()=>{});
+}
+function sources(){
+ const L=[['danesemilano.com · contatti e rivenditori (con le chiamate /it/contacts/country e /it/contacts/region)','https://www.danesemilano.com/it/contacts'],
+ ['onlinestore.danesemilano.com · tutti i prodotti, ordinati per più venduti',M.rank.fonti['onlinestore.danesemilano.com']],
+ ['connox.com · Danese Milano, ordinati per più venduti',M.rank.fonti['connox.com']],
+ ['designrepublic.com · Danese, ordinati per più venduti',M.rank.fonti['designrepublic.com']],
+ ['seletti.it · tutti i prodotti per più venduti',M.bs.seletti.fonte],['designhousestockholm.com · tutti i prodotti per più venduti',M.bs.dhs.fonte],['alessi.com · tutti i prodotti per più venduti',M.bs.alessi.fonte],
+ ['artemide.net · Artemide distributore esclusivo di Danese in Nord America','https://artemide.net/en/pressroom/introducing-danese-milano'],
+ ['artemide.com · il gruppo: 24 società, circa 55 showroom, 98 paesi','https://artemide.com/en/vacancies'],
+ ['danesemilano.com · manifesto (direzione artistica Iacchetti dal 2019)','https://danesemilano.com/en/manifesto'],
+ ['Artribune 2017 · intervista a Ron Gilad','https://www.artribune.com/progettazione/design/2017/04/intervista-ron-gilad-direttore-creativo-danese/'],
+ ['dati: danese_rivenditori.csv','dati/danese_rivenditori.csv'],['dati: danese_classifiche_vendita.csv','dati/danese_classifiche_vendita.csv'],['dati: piu_venduti_top50.csv','dati/piu_venduti_top50.csv'],['dati: piu_venduti_confronto.csv','dati/piu_venduti_confronto.csv']];
+ $('src').innerHTML=L.map(([t,u])=>`<li><a href="${esc(u)}" target="_blank" rel="noopener">${esc(t)}</a></li>`).join('');
+}
+}
+</script>
+</body>
+</html>
