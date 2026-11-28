@@ -356,5 +356,58 @@
 "https://artemest.com/en-ae/artisans/fornasetti?ppage=44"
 ]
 ]
+},
+"danese_fc": {
+"perche": "Il catalogo Danese prima della direzione artistica di Ron Gilad (2017): cosa è stato tolto.",
+"storia": [
+"Ron Gilad è direttore creativo di Danese da novembre 2016 (unprogetto.com) e cura il catalogo dal 2017; Archiproducts indica la direzione dal 2017 al 2018.",
+"Sul taglio Gilad dice: «ho eliminato l’80% del catalogo, senza toccare le icone ma anche senza lasciarmi influenzare dal successo commerciale dei singoli prodotti» (Artribune, aprile 2017).",
+"In un’altra intervista: «Il catalogo è stato snellito del 60%» e «Ho deciso di togliere dal catalogo tutti i grandi pezzi di arredo e le ricerche illumino-tecniche» (unprogetto.com).",
+"Il sito Danese parla di «una prima radicale razionalizzazione del catalogo» che ha riportato l’azienda «a concentrarsi su una galleria di prodotti per la casa e l’ufficio» (danesemilano.com, history 2017)."
+],
+"valori": [
+"Il nostro confronto (R): le pagine prodotto del vecchio sito Danese archiviate nel 2015–2016 sono 403 (comprese le varianti); 283, cioè il 70%, non corrispondono a prodotti del catalogo di oggi. Raggruppate per famiglia, le famiglie non più in catalogo sono 139.",
+"Cosa è stato tolto, in sintesi (R): soprattutto lampade tecniche e sistemi di illuminazione (55 famiglie: Una Pro, Due, Tre, Miyako, Sol, 100% Suspension, Trix…) e grandi arredi e sistemi (100% Al, Farallon Table, Gravity, Xarxa, Double Size, Bincan Desk…), come dichiara Gilad.",
+"La nostra lettura (L) sulla mappa: gli articoli tolti stanno molto più verso la pratica (baricentro x +0,34, y −2,10) del catalogo di oggi (x +0,70, y −0,55): nessuno è in missione, il 27% è in informazione. Togliendo le lampade tecniche e i grandi arredi, Gilad ha spostato Danese verso l’alto, verso i valori utopici e ludici.",
+"Limite: il confronto è con il catalogo di oggi, non con quello del 2018; alcuni prodotti possono essere usciti prima del 2017 o dopo il 2018. Il catalogo 2018 è su danesemilano.com ma non lo abbiamo ancora potuto leggere."
+],
+"fonti": [
+[
+"Artribune 2017 · Intervista a Ron Gilad",
+"https://www.artribune.com/progettazione/design/2017/04/intervista-ron-gilad-direttore-creativo-danese/"
+],
+[
+"unprogetto.com · Intervista Ron Gilad",
+"https://www.unprogetto.com/intervista-ron-gilad-artista-e-designer/"
+],
+[
+"danesemilano.com · history 2017",
+"https://www.danesemilano.com/it/history_2017"
+],
+[
+"DAMN° Magazine · Eyes Wide Open",
+"https://www.damnmagazine.net/2017/07/12/ron-gilad-eyes-wide-open/"
+],
+[
+"Archiproducts · Ron Gilad",
+"https://www.archiproducts.com/it/designer/ron-gilad"
+],
+[
+"Danese Catalogue 2018 (PDF)",
+"https://www.danesemilano.com/contents/media/2018_Danese_Catalogue.pdf"
+],
+[
+"web.archive.org · vecchio sito danesemilano.com 2015–2016",
+"https://web.archive.org/web/2016/http://www.danesemilano.com/"
+],
+[
+"Nostro file · pagine prodotto 2015–2016 (CSV)",
+"dati/danese_sito_2015_2016_pagine_prodotto.csv"
+],
+[
+"Nostro file · articoli fuori catalogo (CSV)",
+"dati/danese_fuori_catalogo.csv"
+]
+]
 }
 }
